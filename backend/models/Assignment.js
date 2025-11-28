@@ -8,4 +8,4 @@ const assignmentSchema = new mongoose.Schema({
   customLabel: String,
 });
 
-module.exports = mongoose.model('Assignment', assignmentSchema);
+module.exports = mongoose.models.Assignment || mongoose.model('Assignment', assignmentSchema);

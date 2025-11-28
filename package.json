@@ -12,7 +12,17 @@
   "devDependencies": {
     "concurrently": "^8.2.2"
   },
-  "keywords": ["react", "express", "mongodb", "pwa"],
+  "keywords": [
+    "react",
+    "express",
+    "mongodb",
+    "pwa"
+  ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mongoose": "^8.20.1"
+  }
 }

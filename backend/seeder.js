@@ -124,15 +124,15 @@ async function seedDatabase() {
     await mongoose.connect(MONGO_URI);
     console.log('Connected to MongoDB');
 
-    // Clear existing data
-    await Participant.deleteMany({});
+    // Clear existing data (except participants - keep real data)
+    // await Participant.deleteMany({}); // COMMENTED OUT - Keep real participants
     await SubjectType.deleteMany({});
     await Program.deleteMany({});
     await RolePermissions.deleteMany({});
 
-    // Insert data
-    await Participant.insertMany(participantsData);
-    console.log('Participants seeded');
+    // Insert data (participants commented out - use real data)
+    // await Participant.insertMany(participantsData);
+    // console.log('Participants seeded');
 
     await SubjectType.insertMany(subjectTypesData);
     console.log('SubjectTypes seeded');

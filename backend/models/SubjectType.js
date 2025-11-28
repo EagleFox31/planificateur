@@ -15,4 +15,4 @@ const subjectTypeSchema = new mongoose.Schema({
   isArchived: { type: Boolean, default: false },
 });
 
-module.exports = mongoose.model('SubjectType', subjectTypeSchema);
+module.exports = mongoose.models.SubjectType || mongoose.model('SubjectType', subjectTypeSchema);

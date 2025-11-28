@@ -1,38 +1,30 @@
-const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
+const app = require('../backend/app');
 
-// Import routes
-const participantsRouter = require('../backend/routes/participants');
-const subjectTypesRouter = require('../backend/routes/subjectTypes');
-const programsRouter = require('../backend/routes/programs');
-const rolePermissionsRouter = require('../backend/routes/rolePermissions');
-const spiritualRolesRouter = require('../backend/routes/spiritualRoles');
+let cachedConnectionPromise;
 
-const app = express();
+const connectToDatabase = () => {
+  if (mongoose.connection.readyState === 1) {
+    return Promise.resolve(mongoose.connection);
+  }
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+  if (!process.env.MONGODB_URI) {
+    return Promise.reject(new Error('MONGODB_URI is not defined'));
+  }
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
+  if (!cachedConnectionPromise) {
+    cachedConnectionPromise = mongoose.connect(process.env.MONGODB_URI);
+  }
 
-// Routes
-app.use('/api/participants', participantsRouter);
-app.use('/api/subjectTypes', subjectTypesRouter);
-app.use('/api/programs', programsRouter);
-app.use('/api/rolePermissions', rolePermissionsRouter);
-app.use('/api/spiritualRoles', spiritualRolesRouter);
+  return cachedConnectionPromise;
+};
 
-// Basic route
-app.get('/api', (req, res) => {
-  res.json({ message: 'Backend API' });
-});
-
-// Export for Vercel
-module.exports = app;
+module.exports = async (req, res) => {
+  try {
+    await connectToDatabase();
+    return app(req, res);
+  } catch (error) {
+    console.error('API handler error', error);
+    res.status(500).json({ error: 'Database connection error' });
+  }
+};

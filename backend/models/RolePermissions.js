@@ -5,4 +5,4 @@ const rolePermissionsSchema = new mongoose.Schema({
   permissions: { type: Map, of: [String] }, // Map<SpiritualRole, string[]>
 });
 
-module.exports = mongoose.model('RolePermissions', rolePermissionsSchema);
+module.exports = mongoose.models.RolePermissions || mongoose.model('RolePermissions', rolePermissionsSchema);

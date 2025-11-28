@@ -5,4 +5,4 @@ const spiritualRolesSchema = new mongoose.Schema({
   roles: { type: [String], default: [] }
 });
 
-module.exports = mongoose.model('SpiritualRoles', spiritualRolesSchema);
+module.exports = mongoose.models.SpiritualRoles || mongoose.model('SpiritualRoles', spiritualRolesSchema);

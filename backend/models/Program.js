@@ -19,4 +19,4 @@ const programSchema = new mongoose.Schema({
   status: { type: String, enum: ['draft', 'published'], required: true },
 });
 
-module.exports = mongoose.model('Program', programSchema);
+module.exports = mongoose.models.Program || mongoose.model('Program', programSchema);

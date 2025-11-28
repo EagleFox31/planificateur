@@ -38,4 +38,4 @@ const participantSchema = new mongoose.Schema({
   capabilities: { type: capabilitiesSchema, default: {} },
 });
 
-module.exports = mongoose.model('Participant', participantSchema);
+module.exports = mongoose.models.Participant || mongoose.model('Participant', participantSchema);
