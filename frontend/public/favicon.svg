@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <pattern id="img" x="0" y="0" width="1" height="1" patternUnits="objectBoundingBox">
+      <image href="/images/logo.webp" x="0" y="0" width="64" height="64" preserveAspectRatio="xMidYMid slice" />
+    </pattern>
+  </defs>
+  <rect x="0" y="0" width="64" height="64" rx="12" fill="url(#img)"/>
+</svg>

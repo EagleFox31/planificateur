@@ -1,0 +1,5 @@
+{
+  "name": "Planificateur de Réunions Théocratiques",
+  "description": "Une application intelligente pour gérer et automatiser la planification des sujets bibliques pour une assemblée de Témoins de Jéhovah, en se basant sur la disponibilité des participants, leurs rôles et des règles spécifiques.",
+  "requestFramePermissions": []
+}
