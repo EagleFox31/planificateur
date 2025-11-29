@@ -1,4 +1,4 @@
-const CACHE_NAME = 'jw-scheduler-cache-v1';
+const CACHE_NAME = 'jw-scheduler-cache-v2';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -15,6 +15,7 @@ self.addEventListener('install', event => {
         return cache.addAll(urlsToCache);
       })
   );
+  self.skipWaiting();
 });
 
 // Cache and return requests
@@ -75,4 +76,5 @@ self.addEventListener('activate', event => {
       );
     })
   );
+  self.clients.claim();
 });
