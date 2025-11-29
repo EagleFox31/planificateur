@@ -16,10 +16,10 @@ app.get('/', (req, res) => {
   res.json({ message: 'Backend API for Planificateur de Reunions Theocratiques' });
 });
 
-app.use('/api/participants', participantsRouter);
-app.use('/api/subjectTypes', subjectTypesRouter);
-app.use('/api/programs', programsRouter);
-app.use('/api/rolePermissions', rolePermissionsRouter);
-app.use('/api/spiritualRoles', spiritualRolesRouter);
+app.use('/participants', participantsRouter);
+app.use('/subjectTypes', subjectTypesRouter);
+app.use('/programs', programsRouter);
+app.use('/rolePermissions', rolePermissionsRouter);
+app.use('/spiritualRoles', spiritualRolesRouter);
 
 module.exports = app;
