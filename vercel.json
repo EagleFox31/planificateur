@@ -6,7 +6,7 @@
       "use": "@vercel/static-build"
     },
     {
-      "src": "api/index.js",
+      "src": "api/[...slug].js",
       "use": "@vercel/node",
       "config": {
         "includeFiles": "backend/**/*"
@@ -16,7 +16,7 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/index.js"
+      "dest": "/api/[...slug].js"
     },
     {
       "src": "/(.*)",
