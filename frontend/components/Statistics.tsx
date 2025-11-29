@@ -95,10 +95,12 @@ export const Statistics: React.FC<StatisticsProps> = ({ assignments, participant
    }, [currentStep, isGuideOpen]);
 
    const kpiData = useMemo(() => {
-     const activeParticipants = participants.filter(p => assignments.some(a => a.participantIds.includes(p.id))).length;
-     const totalAssignments = assignments.length;
+     const safeParticipants = Array.isArray(participants) ? participants : [];
+     const safeAssignments = Array.isArray(assignments) ? assignments : [];
+     const activeParticipants = safeParticipants.filter(p => safeAssignments.some(a => a.participantIds.includes(p.id))).length;
+     const totalAssignments = safeAssignments.length;
      const avgAssignments = activeParticipants > 0 ? (totalAssignments / activeParticipants).toFixed(1) : '0';
-     const participationRate = participants.length > 0 ? ((activeParticipants / participants.length) * 100).toFixed(1) : '0';
+     const participationRate = safeParticipants.length > 0 ? ((activeParticipants / safeParticipants.length) * 100).toFixed(1) : '0';
 
      return {
        activeParticipants,
@@ -109,20 +111,24 @@ export const Statistics: React.FC<StatisticsProps> = ({ assignments, participant
    }, [assignments, participants]);
 
    const assignmentsPerParticipant = useMemo(() => {
-    return participants
-      .map(p => ({
-        name: p.name,
-        Attributions: assignments.filter(a => a.participantIds.includes(p.id)).length,
-      }))
-      .filter(p => p.Attributions > 0)
-      .sort((a,b) => b.Attributions - a.Attributions)
-      .slice(0, 10);
-  }, [assignments, participants]);
+     const safeParticipants = Array.isArray(participants) ? participants : [];
+     const safeAssignments = Array.isArray(assignments) ? assignments : [];
+     return safeParticipants
+       .map(p => ({
+         name: p.name,
+         Attributions: safeAssignments.filter(a => a.participantIds.includes(p.id)).length,
+       }))
+       .filter(p => p.Attributions > 0)
+       .sort((a,b) => b.Attributions - a.Attributions)
+       .slice(0, 10);
+   }, [assignments, participants]);
 
   const assignmentsPerSubjectType = useMemo(() => {
+    const safeAssignments = Array.isArray(assignments) ? assignments : [];
+    const safeSubjectTypes = Array.isArray(subjectTypes) ? subjectTypes : [];
     const counts: { [key: string]: number } = {};
-    for (const assignment of assignments) {
-      const subject = subjectTypes.find(s => s.id === assignment.subjectTypeId);
+    for (const assignment of safeAssignments) {
+      const subject = safeSubjectTypes.find(s => s.id === assignment.subjectTypeId);
       if (subject) {
         counts[subject.mainTopic] = (counts[subject.mainTopic] || 0) + 1;
       }
@@ -131,9 +137,11 @@ export const Statistics: React.FC<StatisticsProps> = ({ assignments, participant
   }, [assignments, subjectTypes]);
 
   const participantsPerSubjectType = useMemo(() => {
+    const safeAssignments = Array.isArray(assignments) ? assignments : [];
+    const safeSubjectTypes = Array.isArray(subjectTypes) ? subjectTypes : [];
     const participantSets: { [key: string]: Set<number> } = {};
-    for (const assignment of assignments) {
-      const subject = subjectTypes.find(s => s.id === assignment.subjectTypeId);
+    for (const assignment of safeAssignments) {
+      const subject = safeSubjectTypes.find(s => s.id === assignment.subjectTypeId);
       if (subject) {
         if (!participantSets[subject.mainTopic]) {
           participantSets[subject.mainTopic] = new Set();
@@ -145,14 +153,17 @@ export const Statistics: React.FC<StatisticsProps> = ({ assignments, participant
   }, [assignments, subjectTypes]);
 
   const skillsMatrix = useMemo(() => {
+    const safeParticipants = Array.isArray(participants) ? participants : [];
+    const safeAssignments = Array.isArray(assignments) ? assignments : [];
+    const safeSubjectTypes = Array.isArray(subjectTypes) ? subjectTypes : [];
     const matrix: { [participantId: number]: { [subjectId: number]: number } } = {};
-    const allActiveParticipants = participants.filter(p => assignments.some(a => a.participantIds.includes(p.id))).sort((a, b) => a.name.localeCompare(b.name));
-    const allSubjects = subjectTypes;
+    const allActiveParticipants = safeParticipants.filter(p => safeAssignments.some(a => a.participantIds.includes(p.id))).sort((a, b) => a.name.localeCompare(b.name));
+    const allSubjects = safeSubjectTypes;
 
     allActiveParticipants.forEach(p => {
       matrix[p.id] = {};
       allSubjects.forEach(subject => {
-        matrix[p.id][subject.id] = assignments.filter(a => a.participantIds.includes(p.id) && a.subjectTypeId === subject.id).length;
+        matrix[p.id][subject.id] = safeAssignments.filter(a => a.participantIds.includes(p.id) && a.subjectTypeId === subject.id).length;
       });
     });
 

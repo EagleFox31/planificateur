@@ -27,17 +27,26 @@ module.exports = async (req, res) => {
     // For debugging
     console.log('Request URL:', req.url);
     console.log('Query slug:', req.query.slug);
+    console.log('Method:', req.method);
 
-    // Reconstruct the URL for Express routing
-    // req.query.slug contains the path segments after /api/
+    // Simple routing for testing
     const slug = req.query.slug || [];
-    const path = '/' + slug.join('/');
-    req.url = path;
+    const endpoint = slug[0];
 
-    console.log('Reconstructed URL:', req.url);
+    if (endpoint === 'spiritualRoles') {
+      const SpiritualRoles = require('../backend/models/SpiritualRoles');
+      const roles = await SpiritualRoles.find({});
+      return res.json(roles);
+    }
 
-    // Handle the request with the backend Express app
-    return backendApp(req, res);
+    if (endpoint === 'participants') {
+      const Participant = require('../backend/models/Participant');
+      const participants = await Participant.find({});
+      return res.json(participants);
+    }
+
+    // Default response
+    return res.json({ message: 'API working', endpoint, slug });
   } catch (error) {
     console.error('API Error:', error);
     res.status(500).json({ error: 'Internal Server Error', details: error.message });
