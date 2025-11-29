@@ -52,12 +52,13 @@ const App: React.FC = () => {
           api.getRolePermissions(),
           api.getSpiritualRoles(),
         ]);
+        const toArray = (data: any) => (Array.isArray(data) ? data : []);
         // Always update state with API data, even if empty
-        setParticipants(participantsData || []);
-        setSubjectTypes(subjectTypesData || []);
-        setPrograms(programsData || []);
+        setParticipants(toArray(participantsData));
+        setSubjectTypes(toArray(subjectTypesData));
+        setPrograms(toArray(programsData));
         setRolePermissions(rolePermissionsData || INITIAL_ROLE_PERMISSIONS);
-        setSpiritualRoles(spiritualRolesData || INITIAL_SPIRITUAL_ROLES);
+        setSpiritualRoles(toArray(spiritualRolesData).length ? spiritualRolesData : INITIAL_SPIRITUAL_ROLES);
       } catch (error) {
         console.error('Failed to load data from API:', error);
         // Fallback to empty data instead of initial data
