@@ -7,14 +7,12 @@
     },
     {
       "src": "api/index.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": "backend/**/*"
+      }
     }
   ],
-  "functions": {
-    "api/index.js": {
-      "includeFiles": "backend/**/*"
-    }
-  },
   "routes": [
     {
       "src": "/api/(.*)",
