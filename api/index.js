@@ -19,12 +19,8 @@ const connectToDatabase = () => {
   return cachedConnectionPromise;
 };
 
-module.exports = async (req, res) => {
-  try {
-    await connectToDatabase();
-    return app(req, res);
-  } catch (error) {
-    console.error('API handler error', error);
-    res.status(500).json({ error: 'Database connection error' });
-  }
-};
+// Initialize database connection on startup
+connectToDatabase().catch(console.error);
+
+// Export the Express app for Vercel
+module.exports = app;
