@@ -69,8 +69,9 @@ const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({ assignment, s
     const [customLabel, setCustomLabel] = useState(assignment.customLabel || '');
 
     const eligibleCandidates = useMemo(() => {
+        const safeAssignments = Array.isArray(program.assignments) ? program.assignments : [];
         const otherAssignedIdsInWeek = new Set<number>(
-            program.assignments
+            safeAssignments
                 .filter(a => a.week === assignment.week && a.id !== assignment.id)
                 .flatMap(a => a.participantIds)
         );
@@ -190,12 +191,15 @@ const groupAssignmentsByWeek = (assignments: Assignment[]) => {
 export const ProgramDetailView: React.FC<ProgramDetailViewProps> = ({ program, participants, subjectTypes, onBack, role, setPrograms, rolePermissions }) => {
     const [isPrinting, setIsPrinting] = useState(false);
     const [editingAssignment, setEditingAssignment] = useState<Assignment | null>(null);
+    const safeAssignments = Array.isArray(program.assignments) ? program.assignments : [];
+    const safeSubjects = Array.isArray(subjectTypes) ? subjectTypes : [];
+    const safeParticipants = Array.isArray(participants) ? participants : [];
 
-    const getParticipantName = (id: number) => participants.find(p => p.id === id)?.name || 'Inconnu';
+    const getParticipantName = (id: number) => safeParticipants.find(p => p.id === id)?.name || 'Inconnu';
     const programRangeLabel = formatProgramRange(program.weekRange.start, program.weekRange.end);
     
     const allProgramWeeks = useMemo(() => {
-        const weeks = new Set(program.assignments.map(a => a.week));
+        const weeks = new Set(safeAssignments.map(a => a.week));
         const startWeekNum = parseInt(program.weekRange.start.split('-W')[1]);
         const endWeekNum = parseInt(program.weekRange.end.split('-W')[1]);
         const year = program.weekRange.start.split('-W')[0];
@@ -209,19 +213,19 @@ export const ProgramDetailView: React.FC<ProgramDetailViewProps> = ({ program, p
 
     const handleSaveAssignment = async (assignmentToSave: Assignment) => {
         try {
-            const existingAssignmentIndex = program.assignments.findIndex(a => a.id === assignmentToSave.id);
+            const existingAssignmentIndex = safeAssignments.findIndex(a => a.id === assignmentToSave.id);
             let newAssignments: Assignment[];
 
             if (existingAssignmentIndex !== -1) {
                 // Update existing assignment
-                newAssignments = program.assignments.map(a => a.id === assignmentToSave.id ? assignmentToSave : a);
+                newAssignments = safeAssignments.map(a => a.id === assignmentToSave.id ? assignmentToSave : a);
             } else {
                 // Add new assignment
                 const finalNewAssignment = {
                   ...assignmentToSave,
                   id: `${assignmentToSave.week}-${assignmentToSave.subjectTypeId}-${Date.now()}`
                 };
-                newAssignments = [...program.assignments, finalNewAssignment];
+                newAssignments = [...safeAssignments, finalNewAssignment];
             }
 
             const updatedProgram = {
@@ -258,18 +262,18 @@ export const ProgramDetailView: React.FC<ProgramDetailViewProps> = ({ program, p
             return;
         }
         let shareText = `${program.title}\n\n`;
-        const assignmentsByWeek = groupAssignmentsByWeek(program.assignments);
+        const assignmentsByWeek = groupAssignmentsByWeek(safeAssignments);
         const sortedWeeks = Object.keys(assignmentsByWeek).sort();
 
         for (const week of sortedWeeks) {
             shareText += `--- Semaine : ${week} ---\n`;
             const assignmentsForWeek = assignmentsByWeek[week];
             for (const topic of MAIN_TOPICS) {
-                const topicAssignments = assignmentsForWeek.filter(a => subjectTypes.find(st => st.id === a.subjectTypeId)?.mainTopic === topic);
+                const topicAssignments = assignmentsForWeek.filter(a => safeSubjects.find(st => st.id === a.subjectTypeId)?.mainTopic === topic);
                 if (topicAssignments.length > 0) {
                      shareText += `\n*${topic}*\n`;
                      topicAssignments.forEach(a => {
-                         const subject = subjectTypes.find(st => st.id === a.subjectTypeId);
+                         const subject = safeSubjects.find(st => st.id === a.subjectTypeId);
                          const displayLabel = a.customLabel || subject?.label;
                          const participantNames = a.participantIds.map(getParticipantName).join(' & ');
                          shareText += `  - ${displayLabel}: ${participantNames || 'Non attribué'}\n`;
@@ -352,8 +356,8 @@ export const ProgramDetailView: React.FC<ProgramDetailViewProps> = ({ program, p
                             Semaine : {formatWeekHuman(week)}
                         </motion.h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {MAIN_TOPICS.map(topic => {
-                                const topicSubjects = subjectTypes.filter(s => s.mainTopic === topic && !s.isArchived);
+                                    {MAIN_TOPICS.map(topic => {
+                                        const topicSubjects = safeSubjects.filter(s => s.mainTopic === topic && !s.isArchived);
                                 if (topicSubjects.length === 0) return null;
 
                                 const assignmentsByWeek = groupAssignmentsByWeek(program.assignments);
@@ -412,7 +416,7 @@ export const ProgramDetailView: React.FC<ProgramDetailViewProps> = ({ program, p
                                                                             className="flex items-center text-indigo-600 hover:text-indigo-700 transition-colors"
                                                                         >
                                                                             <UserCircleIcon className="h-5 w-5 mr-3 text-indigo-500" />
-                                                                            <span title={`${getParticipantName(pid)} — ${participants.find(p => p.id === pid)?.spiritualRole || 'Rôle non défini'}`} className="font-medium">
+                                                                    <span title={`${getParticipantName(pid)} — ${safeParticipants.find(p => p.id === pid)?.spiritualRole || 'Rôle non défini'}`} className="font-medium">
                                                                                 {getParticipantName(pid)}
                                                                             </span>
                                                                         </motion.div>

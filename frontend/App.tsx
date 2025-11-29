@@ -21,7 +21,7 @@ import { AdminGuide } from './components/AdminGuide';
 import { Modal } from './components/ui/Modal';
 import { Button } from './components/ui/Button';
 
-const toArray = (data: any) => (Array.isArray(data) ? data : []);
+const toArray = (data: any) => Array.isArray(data) ? data : [];
 
 const App: React.FC = () => {
   const navigate = useNavigate();

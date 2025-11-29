@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
-const spiritualRolesRouter = require('../backend/routes/spiritualRoles');
+const subjectTypesRouter = require('../backend/routes/subjectTypes');
 
 let isConnected = false;
 
@@ -15,15 +15,16 @@ const connectToDatabase = async () => {
 
 const app = express();
 app.use(express.json());
-app.use('/spiritualRoles', spiritualRolesRouter);
+app.use('/subjectTypes', subjectTypesRouter);
 
 module.exports = async (req, res) => {
   try {
     await connectToDatabase();
+    // Strip /api prefix for router
     req.url = req.url.replace(/^\/api/, '');
     return app(req, res);
   } catch (err) {
-    console.error('API Error (spiritualRoles):', err);
+    console.error('API Error (subjectTypes):', err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
