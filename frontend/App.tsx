@@ -37,7 +37,10 @@ const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<Participant | null>(null);
   const [showUserGuide, setShowUserGuide] = useState(false);
 
-  const allAssignments = useMemo(() => programs.flatMap(p => p.assignments), [programs]);
+  const allAssignments = useMemo(() => {
+    if (!Array.isArray(programs)) return [];
+    return programs.flatMap(p => p.assignments || []);
+  }, [programs]);
 
   useEffect(() => {
     const loadData = async () => {
