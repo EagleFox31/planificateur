@@ -18,22 +18,15 @@ root.render(
   </React.StrictMode>
 );
 
+// Désactivation volontaire du service worker pour éviter les 404 cachées / caches obsolètes.
+// Si besoin de PWA plus tard, réactiver avec une stratégie de versioning stricte.
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    if (import.meta.env.PROD) {
-      navigator.serviceWorker.register('/sw.js')
-        .then(registration => {
-          console.log('SW registered: ', registration);
-        })
-        .catch(registrationError => {
-          console.log('SW registration failed: ', registrationError);
-        });
-    } else {
-      navigator.serviceWorker.getRegistrations()
-        .then(registrations => {
-          registrations.forEach(reg => reg.unregister());
-        })
-        .catch(err => console.error('SW unregister failed: ', err));
-    }
+    navigator.serviceWorker.getRegistrations()
+      .then(registrations => {
+        registrations.forEach(reg => reg.unregister());
+        console.log('SW unregistered');
+      })
+      .catch(err => console.error('SW unregister failed: ', err));
   });
 }
