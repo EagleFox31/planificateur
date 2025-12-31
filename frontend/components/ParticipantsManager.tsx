@@ -1,5 +1,3 @@
-
-
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Participant, Role, Gender, SpiritualRole, Affiliation, RelationshipType, relationshipTypeLabels, CapabilityKey, ParticipantCapabilities, RolePermissions } from '../types';
@@ -278,11 +276,25 @@ export const ParticipantsManager: React.FC<ParticipantsManagerProps> = ({ role, 
     const [genderFilter, setGenderFilter] = useState('ALL');
     const [ageFilter, setAgeFilter] = useState('ALL');
     const [roleFilter, setRoleFilter] = useState('ALL');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [capabilityFilter, setCapabilityFilter] = useState<'ALL' | CapabilityKey>('ALL');
     const [currentPage, setCurrentPage] = useState(1);
 
     const filteredParticipants = useMemo(() => {
+        const normalizedSearch = searchTerm.trim().toLowerCase();
+
+        const hasCapability = (participant: Participant) => {
+            if (capabilityFilter === 'ALL') return true;
+            const explicit = participant.capabilities?.[capabilityFilter];
+            if (typeof explicit !== 'undefined') return !!explicit;
+            const defaults = getRoleCapabilityDefaults(rolePermissions, participant.spiritualRole, participant.gender);
+            return !!defaults[capabilityFilter];
+        };
+
         return participants
             .filter(p => {
+                if (!p?.name) return false;
+                if (normalizedSearch && !p.name.toLowerCase().includes(normalizedSearch)) return false;
                 if (genderFilter !== 'ALL' && p.gender !== genderFilter) return false;
                 if (ageFilter === 'CHILD') {
                     if (p.age === undefined || p.age === null) return false;
@@ -293,14 +305,15 @@ export const ParticipantsManager: React.FC<ParticipantsManagerProps> = ({ role, 
                     if (p.age < 18) return false;
                 }
                 if (roleFilter !== 'ALL' && p.spiritualRole !== roleFilter) return false;
+                if (!hasCapability(p)) return false;
                 return true;
             })
             .sort((a, b) => a.name.localeCompare(b.name));
-    }, [participants, genderFilter, ageFilter, roleFilter]);
+    }, [participants, genderFilter, ageFilter, roleFilter, searchTerm, capabilityFilter, rolePermissions]);
 
     useEffect(() => {
         setCurrentPage(1);
-    }, [genderFilter, ageFilter, roleFilter]);
+    }, [genderFilter, ageFilter, roleFilter, searchTerm, capabilityFilter]);
 
     const totalPages = Math.max(1, Math.ceil(filteredParticipants.length / ITEMS_PER_PAGE));
 
@@ -343,10 +356,13 @@ export const ParticipantsManager: React.FC<ParticipantsManagerProps> = ({ role, 
     const handleSave = async (participant: Participant) => {
         try {
             if (editingParticipant) {
-                await api.updateParticipant(participant.id, participant);
+                const updated = await api.updateParticipant(participant.id, participant);
+                setParticipants(prev => prev.map(p => p.id === participant.id ? updated : p));
                 setSuccessMessage('Participant mis à jour avec succès !');
             } else {
+                const nextId = participants.length > 0 ? Math.max(...participants.map(p => p.id || 0)) + 1 : 1;
                 const newParticipant = await api.createParticipant({
+                    id: nextId,
                     name: participant.name,
                     age: participant.age ?? undefined,
                     gender: participant.gender,
@@ -354,6 +370,7 @@ export const ParticipantsManager: React.FC<ParticipantsManagerProps> = ({ role, 
                     unavailabilities: participant.unavailabilities,
                     affiliation: participant.affiliation,
                     notes: participant.notes,
+                    capabilities: participant.capabilities,
                 });
                 setParticipants(prev => [...prev, newParticipant]);
                 setSuccessMessage('Participant ajouté avec succès !');
@@ -450,30 +467,58 @@ export const ParticipantsManager: React.FC<ParticipantsManagerProps> = ({ role, 
             transition={{ delay: 0.4, duration: 0.5 }}
         >
             <Card className="bg-white border border-gray-200 shadow-sm">
-                <div className="p-6">
-                    <h4 className="text-lg font-semibold text-gray-900 mb-4">Filtres</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div>
+                <div className="p-6 space-y-3">
+                    <div className="flex items-center justify-between">
+                        <h4 className="text-lg font-semibold text-gray-900">Filtres</h4>
+                        <span className="text-xs uppercase tracking-wide text-gray-400">Affinage instantané</span>
+                    </div>
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                        <div className="lg:col-span-4">
+                            <label htmlFor="searchFilter" className="block text-sm font-medium text-gray-700 mb-2">Rechercher par nom</label>
+                            <input
+                                id="searchFilter"
+                                type="text"
+                                value={searchTerm}
+                                onChange={e => setSearchTerm(e.target.value)}
+                                placeholder="Tapez un nom…"
+                                className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 shadow-sm"
+                            />
+                        </div>
+                        <div className="lg:col-span-2">
                             <label htmlFor="genderFilter" className="block text-sm font-medium text-gray-700 mb-2">Genre</label>
-                            <select id="genderFilter" value={genderFilter} onChange={e => setGenderFilter(e.target.value)} className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 transition-colors">
+                            <select id="genderFilter" value={genderFilter} onChange={e => setGenderFilter(e.target.value)} className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 shadow-sm">
                                 <option value="ALL">Tous</option>
                                 <option value={Gender.MALE}>Hommes</option>
                                 <option value={Gender.FEMALE}>Femmes</option>
                             </select>
                         </div>
-                        <div>
+                        <div className="lg:col-span-2">
                             <label htmlFor="ageFilter" className="block text-sm font-medium text-gray-700 mb-2">Âge</label>
-                            <select id="ageFilter" value={ageFilter} onChange={e => setAgeFilter(e.target.value)} className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 transition-colors">
+                            <select id="ageFilter" value={ageFilter} onChange={e => setAgeFilter(e.target.value)} className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 shadow-sm">
                                 <option value="ALL">Tous</option>
                                 <option value="CHILD">Enfants (-18 ans)</option>
                                 <option value="ADULT">Adultes</option>
                             </select>
                         </div>
-                        <div>
+                        <div className="lg:col-span-2">
                             <label htmlFor="roleFilter" className="block text-sm font-medium text-gray-700 mb-2">Rôle</label>
-                            <select id="roleFilter" value={roleFilter} onChange={e => setRoleFilter(e.target.value)} className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 transition-colors">
+                            <select id="roleFilter" value={roleFilter} onChange={e => setRoleFilter(e.target.value)} className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 shadow-sm">
                                 <option value="ALL">Tous les rôles</option>
                                 {spiritualRoles.map(r => <option key={r} value={r}>{r}</option>)}
+                            </select>
+                        </div>
+                        <div className="lg:col-span-2">
+                            <label htmlFor="capabilityFilter" className="block text-sm font-medium text-gray-700 mb-2">Capacité</label>
+                            <select
+                                id="capabilityFilter"
+                                value={capabilityFilter}
+                                onChange={e => setCapabilityFilter(e.target.value as 'ALL' | CapabilityKey)}
+                                className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 shadow-sm"
+                            >
+                                <option value="ALL">Toutes les capacités</option>
+                                {CAPABILITY_ORDER.map(cap => (
+                                    <option key={cap} value={cap}>{CAPABILITY_LABELS[cap]}</option>
+                                ))}
                             </select>
                         </div>
                     </div>
@@ -586,7 +631,12 @@ export const ParticipantsManager: React.FC<ParticipantsManagerProps> = ({ role, 
             </Card>
         </motion.div>
         {isModalOpen && (
-            <Modal title={editingParticipant ? "Détails du participant" : "Ajouter un participant"} onClose={() => setIsModalOpen(false)}>
+            <Modal
+                title={editingParticipant ? "Détails du participant" : "Ajouter un participant"}
+                onClose={() => setIsModalOpen(false)}
+                size="xl"
+                position="top"
+            >
                 <ParticipantForm
                     participant={editingParticipant}
                     allParticipants={participants}

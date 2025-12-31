@@ -6,10 +6,13 @@ export const api = {
   // Participants
   async getParticipants(): Promise<Participant[]> {
     const response = await fetch(`${API_BASE_URL}/participants`);
+    if (!response.ok) {
+      throw new Error(`API Error: ${response.status} ${response.statusText}`);
+    }
     return response.json();
   },
 
-  async createParticipant(participant: Omit<Participant, 'id' | 'assignmentHistory' | 'isExcluded'>): Promise<Participant> {
+  async createParticipant(participant: Omit<Participant, 'assignmentHistory' | 'isExcluded'>): Promise<Participant> {
     const response = await fetch(`${API_BASE_URL}/participants`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

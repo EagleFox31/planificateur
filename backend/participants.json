@@ -1,0 +1,3386 @@
+[{
+  "_id": {
+    "$oid": "692eec8cc330aeeb771d07f2"
+  },
+  "id": 1,
+  "name": "BOUTCHEKEP HILAIRE",
+  "gender": "MALE",
+  "spiritualRole": "Ancien",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": true,
+    "canPrayerOpening": true,
+    "canPrayerClosing": true,
+    "canJoyaux": true,
+    "canPerles": true,
+    "canBibleReading": false,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": true,
+    "canNeeds": true,
+    "canAssemblyStudy": true,
+    "canReadEBA": true
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 23,
+      "week": "2025-W32",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb1b"
+      }
+    },
+    {
+      "subjectTypeId": 2,
+      "week": "2025-W31",
+      "_id": {
+        "$oid": "692f341c2a06bb1b5b6ed577"
+      }
+    },
+    {
+      "subjectTypeId": 21,
+      "week": "2025-W35",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf0a1"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692eec8cc330aeeb771d07f3"
+  },
+  "id": 2,
+  "name": "NJO EMMANUEL",
+  "gender": "MALE",
+  "spiritualRole": "Ancien",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": true,
+    "canPrayerOpening": true,
+    "canPrayerClosing": true,
+    "canJoyaux": true,
+    "canPerles": true,
+    "canBibleReading": false,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": true,
+    "canNeeds": true,
+    "canAssemblyStudy": true,
+    "canReadEBA": true
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 23,
+      "week": "2025-W33",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb1f"
+      }
+    },
+    {
+      "subjectTypeId": 21,
+      "week": "2025-W31",
+      "_id": {
+        "$oid": "692f341c2a06bb1b5b6ed579"
+      }
+    },
+    {
+      "subjectTypeId": 2,
+      "week": "2025-W35",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf0a7"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692eec8cc330aeeb771d07f4"
+  },
+  "id": 3,
+  "name": "EBENE EUGENE",
+  "gender": "MALE",
+  "spiritualRole": "Ancien",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": true,
+    "canPrayerOpening": true,
+    "canPrayerClosing": true,
+    "canJoyaux": true,
+    "canPerles": true,
+    "canBibleReading": false,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": true,
+    "canNeeds": true,
+    "canAssemblyStudy": true,
+    "canReadEBA": true
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 21,
+      "week": "2025-W31",
+      "_id": {
+        "$oid": "692f341c2a06bb1b5b6ed57b"
+      }
+    },
+    {
+      "subjectTypeId": 21,
+      "week": "2025-W35",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf0ac"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692eec8cc330aeeb771d07f5"
+  },
+  "id": 4,
+  "name": "NDOKON MANGUELE DAVID",
+  "gender": "MALE",
+  "spiritualRole": "Ancien",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": true,
+    "canPrayerOpening": true,
+    "canPrayerClosing": true,
+    "canJoyaux": true,
+    "canPerles": true,
+    "canBibleReading": false,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": true,
+    "canNeeds": true,
+    "canAssemblyStudy": true,
+    "canReadEBA": true
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 23,
+      "week": "2025-W34",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf0af"
+      }
+    },
+    {
+      "subjectTypeId": 1,
+      "week": "2025-W31",
+      "_id": {
+        "$oid": "692f341c2a06bb1b5b6ed57d"
+      }
+    },
+    {
+      "subjectTypeId": 20,
+      "week": "2025-W35",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf0b1"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692ef2e4e062d56d0cbe8ef8"
+  },
+  "id": 5,
+  "name": "ANONG JOSEPH",
+  "gender": "MALE",
+  "spiritualRole": "Assistant Ministériel",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": true,
+    "canPrayerClosing": true,
+    "canJoyaux": true,
+    "canPerles": true,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": true
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 3,
+      "week": "2025-W31",
+      "_id": {
+        "$oid": "692f341c2a06bb1b5b6ed57f"
+      }
+    },
+    {
+      "subjectTypeId": 1,
+      "week": "2025-W35",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf0b5"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692ef2e4e062d56d0cbe8ef9"
+  },
+  "id": 6,
+  "name": "NKALLA FELIX",
+  "gender": "MALE",
+  "spiritualRole": "Assistant Ministériel",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": true,
+    "canPrayerClosing": true,
+    "canJoyaux": true,
+    "canPerles": true,
+    "canBibleReading": false,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": true
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 30,
+      "week": "2025-W31",
+      "_id": {
+        "$oid": "692f341c2a06bb1b5b6ed581"
+      }
+    },
+    {
+      "subjectTypeId": 3,
+      "week": "2025-W35",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf0b9"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692ef2e4e062d56d0cbe8efa"
+  },
+  "id": 7,
+  "name": "EBOA MARTIN",
+  "gender": "MALE",
+  "spiritualRole": "Assistant Ministériel",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": true,
+    "canPrayerClosing": true,
+    "canJoyaux": true,
+    "canPerles": true,
+    "canBibleReading": false,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": true
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 4,
+      "week": "2025-W31",
+      "_id": {
+        "$oid": "692f341c2a06bb1b5b6ed583"
+      }
+    },
+    {
+      "subjectTypeId": 24,
+      "week": "2025-W35",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf0bd"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692ef2e4e062d56d0cbe8efb"
+  },
+  "id": 8,
+  "name": "FANDOM SIDOINE",
+  "gender": "MALE",
+  "spiritualRole": "Assistant Ministériel",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": true,
+    "canPrayerClosing": true,
+    "canJoyaux": true,
+    "canPerles": true,
+    "canBibleReading": false,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": true
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 4,
+      "week": "2025-W32",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb31"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692ef2e4e062d56d0cbe8efc"
+  },
+  "id": 9,
+  "name": "FOMEKONG JORDAN ",
+  "gender": "MALE",
+  "spiritualRole": "Assistant Ministériel",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": true,
+    "canPrayerClosing": true,
+    "canJoyaux": true,
+    "canPerles": true,
+    "canBibleReading": false,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": true
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 3,
+      "week": "2025-W32",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb33"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692ef2e4e062d56d0cbe8efd"
+  },
+  "id": 10,
+  "name": "OMEIGUEL DANIEL",
+  "gender": "MALE",
+  "spiritualRole": "Assistant Ministériel",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": true,
+    "canPrayerClosing": true,
+    "canJoyaux": true,
+    "canPerles": true,
+    "canBibleReading": false,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": true
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 1,
+      "week": "2025-W32",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb35"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692ef2e4e062d56d0cbe8efe"
+  },
+  "id": 11,
+  "name": "KEBAWEU RUSSEL ",
+  "gender": "MALE",
+  "spiritualRole": "Assistant Ministériel",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": true,
+    "canPrayerClosing": true,
+    "canJoyaux": true,
+    "canPerles": true,
+    "canBibleReading": false,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": true
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 24,
+      "week": "2025-W31",
+      "_id": {
+        "$oid": "692f341c2a06bb1b5b6ed588"
+      }
+    },
+    {
+      "subjectTypeId": 4,
+      "week": "2025-W35",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf0ca"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2c9389712a69ae2ef9df"
+  },
+  "id": 12,
+  "name": "ADIABA JAPHET",
+  "gender": "MALE",
+  "spiritualRole": "Nouveau Élève",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2c9389712a69ae2ef9e0"
+  },
+  "id": 13,
+  "name": "BOUTCHEKEP HANS NEMIR",
+  "gender": "MALE",
+  "spiritualRole": "Nouveau Élève",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2c9389712a69ae2ef9e1"
+  },
+  "id": 14,
+  "name": "ESSAME M. CHARLES FRANCOIS K.",
+  "gender": "MALE",
+  "spiritualRole": "Nouveau Élève",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 5,
+      "week": "2025-W31",
+      "_id": {
+        "$oid": "692f341c2a06bb1b5b6ed58c"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2c9389712a69ae2ef9e2"
+  },
+  "id": 15,
+  "name": "PENGOU EDDY",
+  "gender": "MALE",
+  "spiritualRole": "Nouveau Élève",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06ada"
+  },
+  "id": 16,
+  "name": "ABANDA ANNETE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06adb"
+  },
+  "id": 17,
+  "name": "ABOGO JOCELYNE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 10,
+      "week": "2025-W33",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb41"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06adc"
+  },
+  "id": 18,
+  "name": "ABOGO VICTOIRE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 11,
+      "week": "2025-W35",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf0d7"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06add"
+  },
+  "id": 19,
+  "name": "ADIABA NICOLE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 11,
+      "week": "2025-W31",
+      "_id": {
+        "$oid": "692f341c2a06bb1b5b6ed592"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06ade"
+  },
+  "id": 20,
+  "name": "AKONO MONIQUE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 10,
+      "week": "2025-W32",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb47"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06adf"
+  },
+  "id": 21,
+  "name": "ANONG JOLIE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 10,
+      "week": "2025-W34",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf0df"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06ae0"
+  },
+  "id": 22,
+  "name": "ASSENG NGON ISABELLE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 11,
+      "week": "2025-W35",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf0e1"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06ae1"
+  },
+  "id": 23,
+  "name": "AWONO LYDIENNE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 10,
+      "week": "2025-W32",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb4b"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06ae2"
+  },
+  "id": 24,
+  "name": "BAMBIA ESTHER",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 10,
+      "week": "2025-W35",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf0e6"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06ae3"
+  },
+  "id": 25,
+  "name": "BILOA ANNE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06ae4"
+  },
+  "id": 26,
+  "name": "BIYONG Aurelle",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06ae5"
+  },
+  "id": 27,
+  "name": "BIYONG Irene",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06ae6"
+  },
+  "id": 28,
+  "name": "BIYONG Jean Paul",
+  "gender": "MALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": true,
+    "canPrayerClosing": true,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": true,
+    "canTalk": true,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": true
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 24,
+      "week": "2025-W32",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb51"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06ae7"
+  },
+  "id": 29,
+  "name": "BONKEU Nelly",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 12,
+      "week": "2025-W33",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb53"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06ae8"
+  },
+  "id": 30,
+  "name": "BOUTCHEKEP HALONA",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 13,
+      "week": "2025-W31",
+      "_id": {
+        "$oid": "692f341c2a06bb1b5b6ed59e"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06ae9"
+  },
+  "id": 31,
+  "name": "BOUTCHEKEP ROMIDA",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 12,
+      "week": "2025-W33",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb58"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06aea"
+  },
+  "id": 32,
+  "name": "DOMCHE Merveille ",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06aeb"
+  },
+  "id": 33,
+  "name": "EBENE MIREILLE ",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 11,
+      "week": "2025-W34",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf0f8"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06aec"
+  },
+  "id": 34,
+  "name": "EKONGOLO DORETTE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06aed"
+  },
+  "id": 35,
+  "name": "EONE CHARONNE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 11,
+      "week": "2025-W32",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb5d"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06aee"
+  },
+  "id": 36,
+  "name": "EONE EMILIENNE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06aef"
+  },
+  "id": 37,
+  "name": "EONE FRANCHESCA",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 11,
+      "week": "2025-W33",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb60"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06af0"
+  },
+  "id": 38,
+  "name": "EONE GABRIELLA",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 12,
+      "week": "2025-W35",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf102"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06af1"
+  },
+  "id": 39,
+  "name": "EPALE ALOYSETTE ",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 11,
+      "week": "2025-W34",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf104"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06af2"
+  },
+  "id": 40,
+  "name": "ESSAME FLORA",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 12,
+      "week": "2025-W31",
+      "_id": {
+        "$oid": "692f341c2a06bb1b5b6ed5a9"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06af3"
+  },
+  "id": 41,
+  "name": "ESSAME MARYLINE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06af4"
+  },
+  "id": 42,
+  "name": "GUEBIDIANG MICHELLINE ",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06af5"
+  },
+  "id": 43,
+  "name": "KEBAWEU HAVILA",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 12,
+      "week": "2025-W32",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb69"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06af6"
+  },
+  "id": 44,
+  "name": "KEBAWEU IRENE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 13,
+      "week": "2025-W35",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf10e"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06af7"
+  },
+  "id": 45,
+  "name": "KEBAWEU LYSETTE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06af8"
+  },
+  "id": 46,
+  "name": "LEUDJEU ARIANE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06af9"
+  },
+  "id": 47,
+  "name": "LOGA BILONG DORCAS",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06afa"
+  },
+  "id": 48,
+  "name": "LOGA JEANNE LOISE ",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06afb"
+  },
+  "id": 49,
+  "name": "MAPOKO ESTHER",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06afc"
+  },
+  "id": 50,
+  "name": "MBAGBE ODETTE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 12,
+      "week": "2025-W34",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf115"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06afd"
+  },
+  "id": 51,
+  "name": "MECHE TOUNOUGAN ASHLEY",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 12,
+      "week": "2025-W31",
+      "_id": {
+        "$oid": "692f341c2a06bb1b5b6ed5b5"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06afe"
+  },
+  "id": 52,
+  "name": "METCHOUM MYRIAM",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06aff"
+  },
+  "id": 53,
+  "name": "MITEKE DAMARIS",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 13,
+      "week": "2025-W35",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf11b"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b00"
+  },
+  "id": 54,
+  "name": "MITEKE SILIKI JANAINA",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 13,
+      "week": "2025-W32",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb77"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b01"
+  },
+  "id": 55,
+  "name": "MOUANA MARIE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b02"
+  },
+  "id": 56,
+  "name": "NAOMIE KALLA",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 13,
+      "week": "2025-W31",
+      "_id": {
+        "$oid": "692f341c2a06bb1b5b6ed5bb"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b03"
+  },
+  "id": 57,
+  "name": "NDOKON AIMEE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 10,
+      "week": "2025-W34",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf124"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b04"
+  },
+  "id": 58,
+  "name": "NGALLE CECILE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 11,
+      "week": "2025-W32",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb7e"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b05"
+  },
+  "id": 59,
+  "name": "NGANDJOU ANNE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b06"
+  },
+  "id": 60,
+  "name": "NGANG ESMERALDA",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 13,
+      "week": "2025-W33",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb81"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b07"
+  },
+  "id": 61,
+  "name": "NGANG EVELYNE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b08"
+  },
+  "id": 62,
+  "name": "NGASSA NINELLE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 12,
+      "week": "2025-W34",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf12e"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b09"
+  },
+  "id": 63,
+  "name": "NGO NGANG JAQUELINE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 10,
+      "week": "2025-W33",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb85"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b0a"
+  },
+  "id": 64,
+  "name": "NGO NGOCK CARINE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b0b"
+  },
+  "id": 65,
+  "name": "NGOMBEKE MARIE ANTOINETTE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b0c"
+  },
+  "id": 66,
+  "name": "NJAN THEODORINE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 13,
+      "week": "2025-W32",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb89"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b0d"
+  },
+  "id": 67,
+  "name": "NJO AUGUSTINE ",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 13,
+      "week": "2025-W34",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf138"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b0e"
+  },
+  "id": 68,
+  "name": "NKALASSI Brigitte ",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b0f"
+  },
+  "id": 69,
+  "name": "NKALLA SUZANNE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 12,
+      "week": "2025-W35",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf13b"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b10"
+  },
+  "id": 70,
+  "name": "NKEKEU ESTHER ",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 11,
+      "week": "2025-W31",
+      "_id": {
+        "$oid": "692f341c2a06bb1b5b6ed5ca"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b11"
+  },
+  "id": 71,
+  "name": "NOUKICHIESSA Romida",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 10,
+      "week": "2025-W31",
+      "_id": {
+        "$oid": "692f341c2a06bb1b5b6ed5cc"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b12"
+  },
+  "id": 72,
+  "name": "PENGOU CELESTINE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 13,
+      "week": "2025-W34",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf143"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b13"
+  },
+  "id": 73,
+  "name": "SOUKAN MARIE ",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b14"
+  },
+  "id": 74,
+  "name": "TAMDEU YVONE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 10,
+      "week": "2025-W35",
+      "_id": {
+        "$oid": "6932a22712b19cce944bf146"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b15"
+  },
+  "id": 75,
+  "name": "TCHUANTEU AKSA",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 12,
+      "week": "2025-W32",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb97"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b16"
+  },
+  "id": 76,
+  "name": "TCHUANTEU Danielle",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 11,
+      "week": "2025-W33",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb99"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b17"
+  },
+  "id": 77,
+  "name": "TCHUANTEU Seveline",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 10,
+      "week": "2025-W31",
+      "_id": {
+        "$oid": "692f341c2a06bb1b5b6ed5d3"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b18"
+  },
+  "id": 78,
+  "name": "TOUNOUGAN EVERGETTE",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f2e69dcc7785fb5c06b19"
+  },
+  "id": 79,
+  "name": "YOUMBI MAEVA",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 13,
+      "week": "2025-W33",
+      "_id": {
+        "$oid": "69318c0df6118fbced18cb9f"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f3050dcc7785fb5c06b1d"
+  },
+  "id": 80,
+  "name": "ABANDA CHRISTOPHE",
+  "gender": "MALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 5,
+      "week": "2025-W34",
+      "_id": {
+        "$oid": "6932a22812b19cce944bf155"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f3050dcc7785fb5c06b1e"
+  },
+  "id": 81,
+  "name": "BAMBIA ALEXANDRE",
+  "gender": "MALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": true,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 14,
+      "week": "2025-W32",
+      "_id": {
+        "$oid": "69318c0ef6118fbced18cba2"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f3050dcc7785fb5c06b1f"
+  },
+  "id": 82,
+  "name": "BILONGO GABRIEL",
+  "gender": "MALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f3050dcc7785fb5c06b20"
+  },
+  "id": 83,
+  "name": "EBOUEL STEPHANE",
+  "gender": "MALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 5,
+      "week": "2025-W35",
+      "_id": {
+        "$oid": "6932a22812b19cce944bf15b"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f3050dcc7785fb5c06b21"
+  },
+  "id": 84,
+  "name": "EPALE JEHU",
+  "gender": "MALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": true,
+    "canPrayerClosing": true,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": true
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 24,
+      "week": "2025-W33",
+      "_id": {
+        "$oid": "69318c0ef6118fbced18cba6"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f3050dcc7785fb5c06b22"
+  },
+  "id": 85,
+  "name": "ESSAME MOISE",
+  "gender": "MALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": true,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 14,
+      "week": "2025-W35",
+      "_id": {
+        "$oid": "6932a22812b19cce944bf160"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f3050dcc7785fb5c06b23"
+  },
+  "id": 86,
+  "name": "KOHO PIERRE",
+  "gender": "MALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": true,
+    "canPrayerClosing": true,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": true
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 5,
+      "week": "2025-W32",
+      "_id": {
+        "$oid": "69318c0ef6118fbced18cba9"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f3050dcc7785fb5c06b24"
+  },
+  "id": 87,
+  "name": "KWEMI Jean",
+  "gender": "MALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": true,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f3050dcc7785fb5c06b25"
+  },
+  "id": 88,
+  "name": "LEUDJEU RENE",
+  "gender": "MALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f3050dcc7785fb5c06b26"
+  },
+  "id": 89,
+  "name": "MITEKE STANISLAS",
+  "gender": "MALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f3050dcc7785fb5c06b27"
+  },
+  "id": 90,
+  "name": "NDOKON DAVIDSON",
+  "gender": "MALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f3050dcc7785fb5c06b28"
+  },
+  "id": 91,
+  "name": "NGANG SAMUEL",
+  "gender": "MALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f3050dcc7785fb5c06b29"
+  },
+  "id": 92,
+  "name": "NJAN ALEXANDRE",
+  "gender": "MALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": true,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 5,
+      "week": "2025-W33",
+      "_id": {
+        "$oid": "69318c0ef6118fbced18cbb0"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f3050dcc7785fb5c06b2a"
+  },
+  "id": 93,
+  "name": "PENGOU MOISE",
+  "gender": "MALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f3050dcc7785fb5c06b2b"
+  },
+  "id": 94,
+  "name": "TCHUANTEU Emile",
+  "gender": "MALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": true,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 14,
+      "week": "2025-W33",
+      "_id": {
+        "$oid": "69318c0ef6118fbced18cbb3"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "692f3050dcc7785fb5c06b2c"
+  },
+  "id": 95,
+  "name": "TOUNOUGAN JEPHTE",
+  "gender": "MALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": true,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [
+    {
+      "subjectTypeId": 14,
+      "week": "2025-W34",
+      "_id": {
+        "$oid": "6932a22812b19cce944bf171"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6930058e7ba4d60895502b17"
+  },
+  "id": 96,
+  "name": "MAPOKO FILS",
+  "gender": "MALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": true,
+    "canApplication": false,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "693179ecc99e74ac020ac0e0"
+  },
+  "id": 97,
+  "name": "DJOUME Rosette",
+  "gender": "FEMALE",
+  "spiritualRole": "Proclamateur",
+  "unavailabilities": [],
+  "affiliation": [],
+  "notes": "",
+  "isExcluded": false,
+  "capabilities": {
+    "canPreside": false,
+    "canPrayerOpening": false,
+    "canPrayerClosing": false,
+    "canJoyaux": false,
+    "canPerles": false,
+    "canBibleReading": false,
+    "canApplication": true,
+    "canTalk": false,
+    "canLifeChristian": false,
+    "canNeeds": false,
+    "canAssemblyStudy": false,
+    "canReadEBA": false
+  },
+  "assignmentHistory": [],
+  "__v": 0
+}]

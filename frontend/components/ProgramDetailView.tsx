@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Program, Participant, SubjectType, Assignment, Role, RolePermissions } from '../types';
 import { Button } from './ui/Button';
@@ -7,8 +7,8 @@ import { Modal } from './ui/Modal';
 import { PrintLayout } from './ui/PrintLayout';
 import { MAIN_TOPICS, COLORS } from '../constants';
 import { ArrowLeftIcon, PrinterIcon, ShareIcon, UserCircleIcon, PencilSquareIcon, DocumentTextIcon } from './ui/Icons';
-import { getEligibleCandidates } from '../services/algo/filtering.service';
 import { api } from '../services/api';
+import { getEligibleCandidates } from '../services/algo/filtering.service';
 
 const MONTH_LABELS = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
 
@@ -78,16 +78,10 @@ const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({ assignment, s
         return getEligibleCandidates(subject, assignment.week, participants, otherAssignedIdsInWeek, rolePermissions, subjectTypes);
     }, [assignment, subject, participants, program.assignments, rolePermissions, subjectTypes]);
 
-    const finalOptions = useMemo(() => {
-        const currentParticipants = assignment.participantIds
-            .map(id => participants.find(p => p.id === id))
-            .filter((p): p is Participant => !!p);
-        
-        const combined = [...eligibleCandidates, ...currentParticipants];
-        const uniqueParticipants = Array.from(new Map(combined.map(p => [p.id, p])).values());
-        
-        return uniqueParticipants.sort((a,b) => a.name.localeCompare(b.name));
-    }, [eligibleCandidates, assignment.participantIds, participants]);
+    const finalOptions = useMemo(
+        () => eligibleCandidates.slice().sort((a, b) => a.name.localeCompare(b.name)),
+        [eligibleCandidates]
+    );
 
     const handleParticipantChange = (index: number, newParticipantId: string) => {
         const newIds = [...currentParticipantIds];
@@ -99,6 +93,14 @@ const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({ assignment, s
         const finalParticipantIds = currentParticipantIds.filter(id => !isNaN(id));
         if (new Set(finalParticipantIds).size !== finalParticipantIds.length) {
             alert("Un participant ne peut être assigné qu'une seule fois à ce sujet.");
+            return;
+        }
+        // Enforce: no participant can be assigned to multiple subjects in the same week
+        const safeAssignments = Array.isArray(program.assignments) ? program.assignments : [];
+        const otherAssignmentsSameWeek = safeAssignments.filter(a => a.week === assignment.week && a.id !== assignment.id);
+        const conflict = finalParticipantIds.find(pid => otherAssignmentsSameWeek.some(a => a.participantIds.includes(pid)));
+        if (conflict) {
+            alert("Un participant ne peut pas être assigné à plusieurs sujets la même semaine.");
             return;
         }
         onSave({ 
@@ -140,9 +142,7 @@ const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({ assignment, s
                         >
                             <option value="" disabled className="bg-slate-blue-800 text-slate-blue-200">Sélectionner un participant</option>
                             {finalOptions.map(p => {
-                                const isEligible = eligibleCandidates.some(ec => ec.id === p.id);
                                 const isCurrentlyAssignedInAnotherSlot = currentParticipantIds.includes(p.id) && currentParticipantIds[index] !== p.id;
-                                const conflictText = !isEligible ? ' (Conflit de règles)' : '';
 
                                 return (
                                     <option
@@ -151,7 +151,7 @@ const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({ assignment, s
                                         disabled={isCurrentlyAssignedInAnotherSlot}
                                         className="bg-slate-blue-800 text-slate-blue-50"
                                     >
-                                        {p.name}{conflictText}
+                                        {p.name}
                                     </option>
                                 );
                             })}
@@ -191,18 +191,22 @@ const groupAssignmentsByWeek = (assignments: Assignment[]) => {
 export const ProgramDetailView: React.FC<ProgramDetailViewProps> = ({ program, participants, subjectTypes, onBack, role, setPrograms, rolePermissions }) => {
     const [isPrinting, setIsPrinting] = useState(false);
     const [editingAssignment, setEditingAssignment] = useState<Assignment | null>(null);
-    const safeAssignments = Array.isArray(program.assignments) ? program.assignments : [];
+    const [localProgram, setLocalProgram] = useState<Program>(program);
+    useEffect(() => {
+        setLocalProgram(program);
+    }, [program]);
+    const safeAssignments = Array.isArray(localProgram.assignments) ? localProgram.assignments : [];
     const safeSubjects = Array.isArray(subjectTypes) ? subjectTypes : [];
     const safeParticipants = Array.isArray(participants) ? participants : [];
 
     const getParticipantName = (id: number) => safeParticipants.find(p => p.id === id)?.name || 'Inconnu';
-    const programRangeLabel = formatProgramRange(program.weekRange.start, program.weekRange.end);
+    const programRangeLabel = formatProgramRange(localProgram.weekRange.start, localProgram.weekRange.end);
     
     const allProgramWeeks = useMemo(() => {
         const weeks = new Set(safeAssignments.map(a => a.week));
-        const startWeekNum = parseInt(program.weekRange.start.split('-W')[1]);
-        const endWeekNum = parseInt(program.weekRange.end.split('-W')[1]);
-        const year = program.weekRange.start.split('-W')[0];
+        const startWeekNum = parseInt(localProgram.weekRange.start.split('-W')[1]);
+        const endWeekNum = parseInt(localProgram.weekRange.end.split('-W')[1]);
+        const year = localProgram.weekRange.start.split('-W')[0];
 
         for (let i = startWeekNum; i <= endWeekNum; i++) {
             weeks.add(`${year}-W${String(i).padStart(2, '0')}`);
@@ -228,14 +232,15 @@ export const ProgramDetailView: React.FC<ProgramDetailViewProps> = ({ program, p
                 newAssignments = [...safeAssignments, finalNewAssignment];
             }
 
-            const updatedProgram = {
-                ...program,
+            const updatedProgram: Program = {
+                ...localProgram,
                 assignments: newAssignments,
                 updatedAt: new Date().toISOString(),
             };
 
-            await api.updateProgram(program.id, updatedProgram);
-            setPrograms(prevPrograms => prevPrograms.map(p => p.id === program.id ? updatedProgram : p));
+            await api.updateProgram(localProgram.id, updatedProgram);
+            setLocalProgram(updatedProgram);
+            setPrograms(prevPrograms => prevPrograms.map(p => p.id === localProgram.id ? updatedProgram : p));
         } catch (error) {
             console.error('Error saving assignment:', error);
         }
@@ -261,7 +266,7 @@ export const ProgramDetailView: React.FC<ProgramDetailViewProps> = ({ program, p
             alert("La fonction de partage n'est pas disponible sur ce navigateur.");
             return;
         }
-        let shareText = `${program.title}\n\n`;
+        let shareText = `${localProgram.title}\n\n`;
         const assignmentsByWeek = groupAssignmentsByWeek(safeAssignments);
         const sortedWeeks = Object.keys(assignmentsByWeek).sort();
 
@@ -283,7 +288,7 @@ export const ProgramDetailView: React.FC<ProgramDetailViewProps> = ({ program, p
              shareText += '\n';
         }
         try {
-            await navigator.share({ title: program.title, text: shareText });
+            await navigator.share({ title: localProgram.title, text: shareText });
         } catch (error) {
             console.error('Erreur lors du partage :', error);
         }
@@ -324,8 +329,8 @@ export const ProgramDetailView: React.FC<ProgramDetailViewProps> = ({ program, p
                     transition={{ delay: 0.3, duration: 0.5 }}
                     className="flex flex-col sm:flex-row gap-3"
                 >
-                    <Button onClick={onBack} variant="secondary" size="sm" className="bg-white hover:bg-gray-50 text-gray-700 border-gray-300">
-                        <ArrowLeftIcon className="h-4 w-4 mr-2" />
+                    <Button onClick={onBack} variant="secondary" size="sm" className="bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 shadow">
+                        <ArrowLeftIcon className="h-4 w-4 mr-2 text-white" />
                         Retour aux programmes
                     </Button>
                     <Button onClick={() => setIsPrinting(true)} variant="secondary" className="bg-green-600 hover:bg-green-700">
@@ -360,7 +365,7 @@ export const ProgramDetailView: React.FC<ProgramDetailViewProps> = ({ program, p
                                         const topicSubjects = safeSubjects.filter(s => s.mainTopic === topic && !s.isArchived);
                                 if (topicSubjects.length === 0) return null;
 
-                                const assignmentsByWeek = groupAssignmentsByWeek(program.assignments);
+                                const assignmentsByWeek = groupAssignmentsByWeek(localProgram.assignments);
                                 const topicColorName = topicSubjects[0].color;
                                 const topicColorClass = COLORS[topicColorName as keyof typeof COLORS] || 'bg-slate-blue-700';
 
@@ -400,8 +405,14 @@ export const ProgramDetailView: React.FC<ProgramDetailViewProps> = ({ program, p
                                                             <div className="flex justify-between items-center">
                                                                 <p className={`font-semibold text-gray-800 ${labelClass} text-base`}>{displayLabel}</p>
                                                                 {role === Role.ADMIN && (
-                                                                    <Button variant="secondary" size="sm" onClick={() => handleOpenAssignmentModal(subject, week, assignment)} title={assignment ? "Modifier l'affectation" : "Attribuer ce sujet"} className="bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-300">
-                                                                        <PencilSquareIcon className="h-4 w-4" />
+                                                                    <Button
+                                                                        variant="secondary"
+                                                                        size="sm"
+                                                                        onClick={() => handleOpenAssignmentModal(subject, week, assignment)}
+                                                                        title={assignment ? "Modifier l'affectation" : "Attribuer ce sujet"}
+                                                                        className="bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 shadow-sm"
+                                                                    >
+                                                                        <PencilSquareIcon className="h-4 w-4 text-white" />
                                                                     </Button>
                                                                 )}
                                                             </div>
@@ -453,7 +464,7 @@ export const ProgramDetailView: React.FC<ProgramDetailViewProps> = ({ program, p
                     participants={participants}
                     onSave={handleSaveAssignment}
                     onClose={() => setEditingAssignment(null)}
-                    program={program}
+                    program={localProgram}
                     subjectTypes={subjectTypes}
                     rolePermissions={rolePermissions}
                 />

@@ -1,19 +1,19 @@
-import { Participant, SubjectType, RolePermissions } from '../../types';
+const { hasCapability } = require('../../utils/capabilities');
 
-const getWeekValue = (week: string): number => {
+const getWeekValue = (week) => {
     const [year, weekNum] = week.split('-W').map(Number);
     // Using 53 to handle all potential ISO week years simply
     return year * 53 + weekNum;
 };
 
 const hasRecentRotationConflict = (
-    participant: Participant,
-    subject: SubjectType,
-    week: string,
-    allSubjectTypes: SubjectType[]
-): boolean => {
+    participant,
+    subject,
+    week,
+    allSubjectTypes
+) => {
     if (subject.rotationWeeks <= 0) return false;
-    
+
     // Find all subjects that share the same rotation period
     const conflictingSubjects = allSubjectTypes.filter(st => st.rotationWeeks === subject.rotationWeeks);
     const conflictingSubjectIds = new Set(conflictingSubjects.map(cs => cs.id));
@@ -29,14 +29,14 @@ const hasRecentRotationConflict = (
 };
 
 
-export function getEligibleCandidates(
-    subject: SubjectType,
-    week: string,
-    allParticipants: Participant[],
-    weeklyAssignedIds: Set<number>,
-    rolePermissions: RolePermissions,
-    allSubjectTypes: SubjectType[]
-): Participant[] {
+function getEligibleCandidates(
+    subject,
+    week,
+    allParticipants,
+    weeklyAssignedIds,
+    rolePermissions,
+    allSubjectTypes
+) {
     return allParticipants.filter(p => {
         // Hard constraint: Excluded
         if (p.isExcluded) return false;
@@ -49,16 +49,23 @@ export function getEligibleCandidates(
 
         // Hard constraint: Gender
         if (subject.requiredGender && p.gender !== subject.requiredGender) return false;
-        
+
         // Hard constraint: Spiritual Role
         if (subject.requiredSpiritualRole && p.spiritualRole !== subject.requiredSpiritualRole) return false;
 
-        // Hard constraint: Capability required for the subject
-        if (subject.requiredCapability && !p.capabilities?.[subject.requiredCapability]) return false;
-        
+        // Hard constraint: Role Permissions based on color
+        const permissions = rolePermissions[p.spiritualRole] || [];
+        if (!permissions.includes(subject.color)) return false;
+
+        if (subject.requiredCapability && !hasCapability(p, subject.requiredCapability)) {
+            return false;
+        }
+
         // Hard constraint: Rotation
         if (hasRecentRotationConflict(p, subject, week, allSubjectTypes)) return false;
-        
+
         return true;
     });
 }
+
+module.exports = { getEligibleCandidates };

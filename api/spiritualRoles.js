@@ -1,29 +1,48 @@
-const mongoose = require('mongoose');
-const express = require('express');
-const spiritualRolesRouter = require('../backend/routes/spiritualRoles');
-
-let isConnected = false;
-
-const connectToDatabase = async () => {
-  if (isConnected) return;
-  if (!process.env.MONGODB_URI) {
-    throw new Error('MONGODB_URI is not defined');
-  }
-  await mongoose.connect(process.env.MONGODB_URI);
-  isConnected = true;
-};
-
-const app = express();
-app.use(express.json());
-app.use('/spiritualRoles', spiritualRolesRouter);
+const { URL } = require('url');
+const { connectToDatabase } = require('./_lib/db');
+const SpiritualRoles = require('./models/SpiritualRoles');
 
 module.exports = async (req, res) => {
+  await connectToDatabase();
+
+  const url = new URL(req.url, `http://${req.headers.host}`);
+  const pathname = url.pathname.replace('/api/spiritualRoles', '');
+  const method = req.method;
+
   try {
-    await connectToDatabase();
-    req.url = req.url.replace(/^\/api/, '');
-    return app(req, res);
+    if (method === 'GET') {
+      // GET spiritual roles
+      let doc = await SpiritualRoles.findOne({ _id: 'roles' });
+      if (!doc) {
+        doc = new SpiritualRoles();
+        await doc.save();
+      }
+      return res.status(200).json(doc.roles);
+    } else if (method === 'POST') {
+      // ADD spiritual role
+      const { role } = req.body;
+      if (!role || typeof role !== 'string') {
+        return res.status(400).json({ message: 'Role name is required' });
+      }
+      const doc = await SpiritualRoles.findOneAndUpdate(
+        { _id: 'roles' },
+        { $addToSet: { roles: role } },
+        { new: true, upsert: true }
+      );
+      return res.status(200).json(doc.roles);
+    } else if (method === 'DELETE') {
+      // DELETE spiritual role
+      const role = decodeURIComponent(pathname.slice(1)); // remove leading /
+      const doc = await SpiritualRoles.findOneAndUpdate(
+        { _id: 'roles' },
+        { $pull: { roles: role } },
+        { new: true }
+      );
+      return res.status(200).json(doc ? doc.roles : []);
+    } else {
+      return res.status(405).json({ message: 'Method not allowed' });
+    }
   } catch (err) {
-    console.error('API Error (spiritualRoles):', err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ message: err.message });
   }
 };

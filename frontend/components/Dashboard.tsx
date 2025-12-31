@@ -6,7 +6,8 @@ import { api } from '../services/api';
 import { Card } from './ui/Card';
 import { Button } from './ui/Button';
 import { Modal } from './ui/Modal';
-import { MagicWandIcon, UserCircleIcon, ChevronLeftIcon, ChevronRightIcon } from './ui/Icons';
+import { MagicWandIcon, UserCircleIcon, ChevronLeftIcon, ChevronRightIcon, CalendarDaysIcon } from './ui/Icons';
+import { StartWeekPicker } from './ui/WeekPickerModal';
 import { THEME_CLASSES, COLORS } from '../styles/theme';
 
 interface DashboardProps {
@@ -20,18 +21,41 @@ interface DashboardProps {
   rolePermissions: RolePermissions;
 }
 
+const getCurrentWeek = (): string => {
+  const now = new Date();
+  const year = now.getFullYear();
+
+  // Find the first Thursday of the year
+  const firstThursday = new Date(year, 0, 1);
+  while (firstThursday.getDay() !== 4) {
+    firstThursday.setDate(firstThursday.getDate() + 1);
+  }
+
+  // Calculate the week number
+  const diff = now.getTime() - firstThursday.getTime();
+  const oneWeek = 7 * 24 * 60 * 60 * 1000;
+  const weekNumber = Math.floor(diff / oneWeek) + 1;
+
+  return `${year}-W${String(weekNumber).padStart(2, '0')}`;
+};
+
 const getNextWeek = (startWeek: string, offset: number): string => {
   const [yearStr, weekStr] = startWeek.split('-W');
   let year = parseInt(yearStr);
   let week = parseInt(weekStr);
-  
+
   week += offset;
-  
+
   while (week > 53) {
-    week -= 53; 
+    week -= 53;
     year += 1;
   }
-  
+
+  while (week < 1) {
+    week += 53;
+    year -= 1;
+  }
+
   return `${year}-W${String(week).padStart(2, '0')}`;
 };
 
@@ -71,13 +95,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ role, assignments, program
   const [error, setError] = useState<string | null>(null);
 
   const latestWeek = useMemo(() => {
-    if (assignments.length === 0) return '2025-W30';
+    if (assignments.length === 0) return getCurrentWeek();
     return assignments.reduce((latest, a) => a.week > latest ? a.week : latest, '2025-W01');
   }, [assignments]);
 
   const [currentWeek, setCurrentWeek] = useState(latestWeek);
 
   const [isGenerationModalOpen, setIsGenerationModalOpen] = useState(false);
+  const [isStartWeekPickerOpen, setIsStartWeekPickerOpen] = useState(false);
+  const [startWeek, setStartWeek] = useState(getCurrentWeek());
   const [weeksToGenerate, setWeeksToGenerate] = useState(1);
   const [generationProgress, setGenerationProgress] = useState(0);
   const [generationStatusText, setGenerationStatusText] = useState('');
@@ -105,8 +131,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ role, assignments, program
     setGenerationProgress(0);
 
     try {
-        const startWeek = getNextWeek(latestWeek, 1);
-
         setGenerationStatusText('Génération en cours...');
         setGenerationProgress(50);
 
@@ -164,19 +188,39 @@ export const Dashboard: React.FC<DashboardProps> = ({ role, assignments, program
       {/* Header Section with Material Design */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
-          <Card className="bg-white border border-gray-200 shadow-lg p-6">
-            <h1 className={`${THEME_CLASSES.typography.headline.large} text-gray-900 mb-2`}>
-              Programme hebdomadaire
-            </h1>
-            <p className={`${THEME_CLASSES.typography.body.medium} text-gray-700`}>
-              {formattedWeekLabel}
-            </p>
-          </Card>
-        </motion.div>
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+      >
+        <Card className="bg-white border border-gray-200 shadow-lg p-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <h1 className={`${THEME_CLASSES.typography.headline.large} text-gray-900 mb-2`}>
+                  Programme hebdomadaire
+                </h1>
+                <p className={`${THEME_CLASSES.typography.body.medium} text-gray-700`}>
+                  {formattedWeekLabel}
+                </p>
+              </div>
+              {role === Role.ADMIN && (
+                <div className="flex items-center gap-3 md:gap-4">
+                  <div className="hidden sm:block text-right">
+                    <p className="text-sm font-semibold text-slate-800">Génération de programme</p>
+                    <p className="text-xs text-slate-500">En un clic, lancez l'IA pour planifier vos semaines.</p>
+                  </div>
+                  <Button
+                    onClick={handleOpenGenerationModal}
+                    disabled={isLoading}
+                    className="!bg-gradient-to-r !from-indigo-600 !via-blue-600 !to-cyan-500 !hover:from-indigo-700 !hover:via-blue-700 !hover:to-cyan-600 shadow-lg shadow-indigo-300 !border-0 text-white"
+                  >
+                    <MagicWandIcon className="h-5 w-5 mr-2" />
+                    Générer un programme
+                  </Button>
+                </div>
+              )}
+            </div>
+        </Card>
+      </motion.div>
 
         {/* Week Navigation */}
         <motion.div
@@ -375,20 +419,42 @@ export const Dashboard: React.FC<DashboardProps> = ({ role, assignments, program
         }}
         size="lg"
       >
-        <div className="space-y-4 text-slate-blue-50">
-          <p className="text-slate-blue-100">
+        <div className="space-y-4 text-gray-900">
+          <p className="text-gray-900">
             Choisissez le nombre de semaines à planifier. La génération utilise vos participants, rôles et indisponibilités.
           </p>
 
           <div className="space-y-2">
-            <label className="block text-sm text-slate-blue-200">Nombre de semaines</label>
+            <label className="block text-sm text-gray-900 font-semibold">Semaine de départ</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                value={formatWeekLabel(startWeek)}
+                readOnly
+                className="flex-1 rounded-md bg-gray-50 border border-gray-300 px-3 py-2 text-gray-900 cursor-not-allowed"
+              />
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                onClick={() => setIsStartWeekPickerOpen(true)}
+                disabled={isLoading}
+                className="!bg-gray-100 !hover:bg-gray-200 !border !border-gray-300"
+              >
+                <CalendarDaysIcon className="h-5 w-5" />
+              </Button>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-sm text-gray-900 font-semibold">Nombre de semaines</label>
             <input
               type="number"
               min={1}
               max={12}
               value={weeksToGenerate}
               onChange={e => setWeeksToGenerate(Math.max(1, Math.min(12, Number(e.target.value))))}
-              className="w-full rounded-md bg-slate-blue-900/60 border border-slate-blue-700 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-sanctus-blue"
+              className="w-full rounded-md bg-white border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sanctus-blue"
               disabled={isLoading}
             />
           </div>
@@ -424,6 +490,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ role, assignments, program
           </div>
         </div>
       </Modal>
+    )}
+
+    {isStartWeekPickerOpen && (
+      <StartWeekPicker
+        initialWeek={startWeek}
+        onSave={(week) => setStartWeek(week)}
+        onClose={() => setIsStartWeekPickerOpen(false)}
+      />
     )}
     </>
   );

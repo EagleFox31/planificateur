@@ -1,29 +1,42 @@
-const mongoose = require('mongoose');
-const express = require('express');
-const rolePermissionsRouter = require('../backend/routes/rolePermissions');
-
-let isConnected = false;
-
-const connectToDatabase = async () => {
-  if (isConnected) return;
-  if (!process.env.MONGODB_URI) {
-    throw new Error('MONGODB_URI is not defined');
-  }
-  await mongoose.connect(process.env.MONGODB_URI);
-  isConnected = true;
-};
-
-const app = express();
-app.use(express.json());
-app.use('/rolePermissions', rolePermissionsRouter);
+require('dotenv').config();
+const { connectToDatabase } = require('./_lib/db');
+const RolePermissions = require('./models/RolePermissions');
 
 module.exports = async (req, res) => {
   try {
     await connectToDatabase();
-    req.url = req.url.replace(/^\/api/, '');
-    return app(req, res);
   } catch (err) {
-    console.error('API Error (rolePermissions):', err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error('DB connection error:', err);
+    return res.status(500).json({ message: 'Database connection failed' });
+  }
+
+  const { method, body } = req;
+
+  try {
+    if (method === 'GET') {
+      let doc = await RolePermissions.findById('permissions');
+      if (!doc) {
+        doc = new RolePermissions({ _id: 'permissions', permissions: {} });
+        await doc.save();
+      }
+      const permissionsObj = doc.permissions ? Object.fromEntries(doc.permissions) : {};
+      return res.status(200).json(permissionsObj);
+    }
+
+    if (method === 'PUT') {
+      const updated = await RolePermissions.findByIdAndUpdate(
+        'permissions',
+        { permissions: body || {} },
+        { new: true, upsert: true, setDefaultsOnInsert: true }
+      );
+      const permissionsObj = updated.permissions ? Object.fromEntries(updated.permissions) : {};
+      return res.status(200).json(permissionsObj);
+    }
+
+    return res.status(405).json({ message: 'Method not allowed' });
+  } catch (err) {
+    console.error('Role permissions handler error:', err);
+    const status = method === 'POST' || method === 'PUT' ? 400 : 500;
+    return res.status(status).json({ message: err.message });
   }
 };

@@ -6,15 +6,26 @@
       "use": "@vercel/static-build"
     },
     {
-      "src": "api/[...slug].js",
+      "src": "api/*.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": "backend/**/*"
+        "includeFiles": [
+          "api/_lib/**",
+          "api/services/**",
+          "api/utils/**",
+          "api/models/**",
+          "backend/**/*",
+          "node_modules/mongoose/**"
+        ]
       }
     }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "/api/[...slug].js" },
+    { "src": "/api/participants(.*)", "dest": "/api/participants.js" },
+    { "src": "/api/programs(.*)", "dest": "/api/programs.js" },
+    { "src": "/api/subjectTypes(.*)", "dest": "/api/subjectTypes.js" },
+    { "src": "/api/spiritualRoles(.*)", "dest": "/api/spiritualRoles.js" },
+    { "src": "/api/rolePermissions(.*)", "dest": "/api/rolePermissions.js" },
     { "src": "/(.*\\..*)", "dest": "/frontend/$1" },
     { "src": "/.*", "dest": "/frontend/index.html" }
   ]
