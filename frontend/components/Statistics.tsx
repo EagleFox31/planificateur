@@ -241,16 +241,18 @@ export const Statistics: React.FC<StatisticsProps> = ({ assignments, participant
                 className="group"
             >
                 <Card className="p-6 text-center relative overflow-hidden bg-white border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300">
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.3, duration: 0.5, type: "spring" }}
-                        className="text-3xl font-bold text-gray-900 mb-2"
-                    >
-                        {kpiData.activeParticipants}
-                    </motion.div>
-                    <div className="text-sm text-blue-600 font-medium">Participants actifs</div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-0" />
+                    <div className="relative z-10">
+                        <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.3, duration: 0.5, type: "spring" }}
+                            className="text-3xl font-bold text-gray-900 mb-2"
+                        >
+                            {kpiData.activeParticipants}
+                        </motion.div>
+                        <div className="text-sm text-blue-600 font-medium">Participants actifs</div>
+                    </div>
                 </Card>
             </motion.div>
             <motion.div
@@ -261,16 +263,18 @@ export const Statistics: React.FC<StatisticsProps> = ({ assignments, participant
                 className="group"
             >
                 <Card className="p-6 text-center relative overflow-hidden bg-white border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300">
-                    <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-emerald-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.4, duration: 0.5, type: "spring" }}
-                        className="text-3xl font-bold text-gray-900 mb-2"
-                    >
-                        {kpiData.totalAssignments}
-                    </motion.div>
-                    <div className="text-sm text-green-600 font-medium">Total attributions</div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-emerald-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-0" />
+                    <div className="relative z-10">
+                        <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.4, duration: 0.5, type: "spring" }}
+                            className="text-3xl font-bold text-gray-900 mb-2"
+                        >
+                            {kpiData.totalAssignments}
+                        </motion.div>
+                        <div className="text-sm text-green-600 font-medium">Total attributions</div>
+                    </div>
                 </Card>
             </motion.div>
             <motion.div
@@ -281,16 +285,18 @@ export const Statistics: React.FC<StatisticsProps> = ({ assignments, participant
                 className="group"
             >
                 <Card className="p-6 text-center relative overflow-hidden bg-white border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300">
-                    <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-violet-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.5, duration: 0.5, type: "spring" }}
-                        className="text-3xl font-bold text-gray-900 mb-2"
-                    >
-                        {kpiData.avgAssignments}
-                    </motion.div>
-                    <div className="text-sm text-purple-600 font-medium">Moyenne/participant</div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-violet-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-0" />
+                    <div className="relative z-10">
+                        <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.5, duration: 0.5, type: "spring" }}
+                            className="text-3xl font-bold text-gray-900 mb-2"
+                        >
+                            {kpiData.avgAssignments}
+                        </motion.div>
+                        <div className="text-sm text-purple-600 font-medium">Moyenne/participant</div>
+                    </div>
                 </Card>
             </motion.div>
             <motion.div
@@ -301,16 +307,18 @@ export const Statistics: React.FC<StatisticsProps> = ({ assignments, participant
                 className="group"
             >
                 <Card className="p-6 text-center relative overflow-hidden bg-white border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300">
-                    <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-amber-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.6, duration: 0.5, type: "spring" }}
-                        className="text-3xl font-bold text-gray-900 mb-2"
-                    >
-                        {kpiData.participationRate}%
-                    </motion.div>
-                    <div className="text-sm text-orange-600 font-medium">Taux participation</div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-amber-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-0" />
+                    <div className="relative z-10">
+                        <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.6, duration: 0.5, type: "spring" }}
+                            className="text-3xl font-bold text-gray-900 mb-2"
+                        >
+                            {kpiData.participationRate}%
+                        </motion.div>
+                        <div className="text-sm text-orange-600 font-medium">Taux participation</div>
+                    </div>
                 </Card>
             </motion.div>
         </div>
