@@ -117,6 +117,7 @@ const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({ assignment, s
     const [showUnavailableWarning, setShowUnavailableWarning] = useState(false);
     const [pendingUnavailableParticipant, setPendingUnavailableParticipant] = useState<{id: number, name: string} | null>(null);
     const [pendingUnavailableIndex, setPendingUnavailableIndex] = useState<number | null>(null);
+    const [validationError, setValidationError] = useState<string | null>(null);
 
     // Get all participants with required capabilities for this subject
     const allCapableParticipants = useMemo(() => {
@@ -167,6 +168,7 @@ const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({ assignment, s
     const handleParticipantChange = (index: number, newParticipantId: string) => {
         const participantId = parseInt(newParticipantId, 10);
         const selectedParticipant = participantOptions.find(p => p.id === participantId);
+        setValidationError(null);
 
         if (selectedParticipant && !selectedParticipant.isEligible) {
             // Show warning for unavailable participant
@@ -201,7 +203,7 @@ const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({ assignment, s
     const handleSave = () => {
         const finalParticipantIds = currentParticipantIds.filter(id => !isNaN(id));
         if (new Set(finalParticipantIds).size !== finalParticipantIds.length) {
-            alert("Un participant ne peut être assigné qu'une seule fois à ce sujet.");
+            setValidationError("Un participant ne peut être assigné qu'une seule fois à ce sujet.");
             return;
         }
         // Enforce: no participant can be assigned to multiple subjects in the same week
@@ -209,7 +211,7 @@ const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({ assignment, s
         const otherAssignmentsSameWeek = safeAssignments.filter(a => a.week === assignment.week && a.id !== assignment.id);
         const conflict = finalParticipantIds.find(pid => otherAssignmentsSameWeek.some(a => a.participantIds.includes(pid)));
         if (conflict) {
-            alert("Un participant ne peut pas être assigné à plusieurs sujets la même semaine.");
+            setValidationError("Un participant ne peut pas être assigné à plusieurs sujets la même semaine.");
             return;
         }
         onSave({ 
@@ -271,6 +273,9 @@ const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({ assignment, s
                         </div>
                     ))}
                     <div className="flex justify-end space-x-3 pt-4">
+                        {validationError && (
+                            <p className="text-sm text-red-600 mr-auto">{validationError}</p>
+                        )}
                         <Button variant="secondary" onClick={onClose} className="!bg-white !hover:bg-gray-50 !text-white !border !border-gray-300">Annuler</Button>
                         <Button onClick={handleSave}>Enregistrer</Button>
                     </div>
