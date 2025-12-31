@@ -5,6 +5,7 @@ import { Card } from './ui/Card';
 import { UserCircleIcon, ClipboardDocumentListIcon } from './ui/Icons';
 import { Button } from './ui/Button';
 import { api } from '../services/api';
+import { ConfirmModal } from './ui/ConfirmModal';
 
 interface UnavailabilityViewerProps {
   participants: Participant[];
@@ -31,6 +32,7 @@ export const UnavailabilityViewer: React.FC<UnavailabilityViewerProps> = ({ part
     const unavailabilitiesByWeek = useMemo(() => getUnavailabilitiesByWeek(participants), [participants]);
     const excludedParticipants = useMemo(() => participants.filter(p => p.isExcluded), [participants]);
     const [dateEdits, setDateEdits] = useState<Record<number, string>>({});
+    const [deactivateTarget, setDeactivateTarget] = useState<Participant | null>(null);
 
     useEffect(() => {
         setDateEdits(prev => {
@@ -83,8 +85,6 @@ export const UnavailabilityViewer: React.FC<UnavailabilityViewerProps> = ({ part
 
     const handleDeactivateParticipant = async (participant: Participant) => {
         if (role !== Role.ADMIN) return;
-        const confirmed = window.confirm(`Desactiver ${participant.name} et le retirer de la base ?`);
-        if (!confirmed) return;
         try {
             await api.deleteParticipant(participant.id);
             setParticipants(prev => prev.filter(p => p.id !== participant.id));
@@ -188,7 +188,7 @@ export const UnavailabilityViewer: React.FC<UnavailabilityViewerProps> = ({ part
                                                 <Button
                                                     size="sm"
                                                     variant="secondary"
-                                                    onClick={() => handleDeactivateParticipant(p)}
+                                                    onClick={() => setDeactivateTarget(p)}
                                                     className="bg-slate-700 hover:bg-slate-800 text-white border-slate-800"
                                                 >
                                                     Desactiver
@@ -249,6 +249,19 @@ export const UnavailabilityViewer: React.FC<UnavailabilityViewerProps> = ({ part
                     )}
                 </Card>
             </motion.div>
+            {deactivateTarget && (
+                <ConfirmModal
+                    title="Desactiver un participant"
+                    description={`Desactiver ${deactivateTarget.name} et le retirer de la base ?`}
+                    confirmLabel="Desactiver"
+                    confirmClassName="bg-red-600 hover:bg-red-700"
+                    onCancel={() => setDeactivateTarget(null)}
+                    onConfirm={() => {
+                        handleDeactivateParticipant(deactivateTarget);
+                        setDeactivateTarget(null);
+                    }}
+                />
+            )}
         </motion.div>
     );
 };

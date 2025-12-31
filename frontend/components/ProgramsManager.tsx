@@ -7,6 +7,7 @@ import { ProgramDetailView } from './ProgramDetailView';
 import { DocumentTextIcon, CheckCircleIcon, TrashIcon } from './ui/Icons';
 import { api } from '../services/api';
 import { THEME_CLASSES } from '../styles/theme';
+import { ConfirmModal } from './ui/ConfirmModal';
 
 interface ProgramsManagerProps {
     role: Role;
@@ -31,6 +32,7 @@ const formatDate = (dateString: string) => {
 
 export const ProgramsManager: React.FC<ProgramsManagerProps> = ({ role, programs, setPrograms, participants, subjectTypes, rolePermissions }) => {
     const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
+    const [deleteTarget, setDeleteTarget] = useState<Program | null>(null);
     
     const sortedPrograms = [...programs].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
@@ -46,10 +48,8 @@ export const ProgramsManager: React.FC<ProgramsManagerProps> = ({ role, programs
         }
     };
 
-    const handleDelete = async (programId: string, programTitle: string) => {
+    const handleDelete = async (programId: string) => {
         if (role !== Role.ADMIN) return;
-        const confirmed = window.confirm(`Supprimer définitivement le programme "${programTitle}" ?`);
-        if (!confirmed) return;
         try {
             await api.deleteProgram(programId);
             setPrograms(prevPrograms => prevPrograms.filter(p => p.id !== programId));
@@ -136,7 +136,7 @@ export const ProgramsManager: React.FC<ProgramsManagerProps> = ({ role, programs
                                 )}
                                 {role === Role.ADMIN && (
                                     <Button
-                                        onClick={() => handleDelete(program.id, program.title)}
+                                        onClick={() => setDeleteTarget(program)}
                                         variant="secondary"
                                         size="sm"
                                         className="bg-red-600 hover:bg-red-700 border border-red-700"
@@ -152,6 +152,19 @@ export const ProgramsManager: React.FC<ProgramsManagerProps> = ({ role, programs
                         </div>
                     ))}
                 </div>
+            )}
+            {deleteTarget && (
+                <ConfirmModal
+                    title="Supprimer le programme"
+                    description={`Supprimer définitivement le programme "${deleteTarget.title}" ?`}
+                    confirmLabel="Supprimer"
+                    confirmClassName="bg-red-600 hover:bg-red-700"
+                    onCancel={() => setDeleteTarget(null)}
+                    onConfirm={() => {
+                        handleDelete(deleteTarget.id);
+                        setDeleteTarget(null);
+                    }}
+                />
             )}
         </motion.div>
     );
