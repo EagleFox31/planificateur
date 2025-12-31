@@ -31,6 +31,39 @@ const getWeekDateRange = (week: string) => {
     return { start: weekStart, end: weekEnd };
 };
 
+const parseDateOnly = (dateString?: string) => {
+    if (!dateString) return null;
+    const [yearStr, monthStr, dayStr] = dateString.split('-');
+    const year = parseInt(yearStr, 10);
+    const month = parseInt(monthStr, 10) - 1;
+    const day = parseInt(dayStr, 10);
+    if (Number.isNaN(year) || Number.isNaN(month) || Number.isNaN(day)) return null;
+    return new Date(year, month, day);
+};
+
+const getWeekValue = (week: string) => {
+    const [yearStr, weekStr] = week.split('-W');
+    const year = parseInt(yearStr, 10);
+    const weekNumber = parseInt(weekStr, 10);
+    if (Number.isNaN(year) || Number.isNaN(weekNumber)) return null;
+    return year * 53 + weekNumber;
+};
+
+const getWeekDateRangeFromStartDate = (week: string, startWeek: string, startDate?: string) => {
+    const parsedStartDate = parseDateOnly(startDate);
+    const startWeekValue = getWeekValue(startWeek);
+    const weekValue = getWeekValue(week);
+    if (!parsedStartDate || startWeekValue === null || weekValue === null) {
+        return getWeekDateRange(week);
+    }
+    const offsetWeeks = weekValue - startWeekValue;
+    const weekStart = new Date(parsedStartDate);
+    weekStart.setDate(parsedStartDate.getDate() + offsetWeeks * 7);
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 6);
+    return { start: weekStart, end: weekEnd };
+};
+
 const formatRangeLabel = (start: Date, end: Date) => {
     const sameYear = start.getFullYear() === end.getFullYear();
     const startLabel = `${start.getDate().toString().padStart(2, '0')} ${MONTH_LABELS[start.getMonth()]}`;
@@ -47,9 +80,22 @@ const formatWeekHuman = (week: string) => {
     return `Semaine ${formatRangeLabel(range.start, range.end)}`;
 };
 
+const formatWeekHumanFromStartDate = (week: string, startWeek: string, startDate?: string) => {
+    const range = getWeekDateRangeFromStartDate(week, startWeek, startDate);
+    if (!range) return `Semaine ${week}`;
+    return `Semaine ${formatRangeLabel(range.start, range.end)}`;
+};
+
 const formatProgramRange = (startWeek: string, endWeek: string) => {
     const startRange = getWeekDateRange(startWeek);
     const endRange = getWeekDateRange(endWeek);
+    if (!startRange || !endRange) return `des semaines ${startWeek} à ${endWeek}`;
+    return formatRangeLabel(startRange.start, endRange.end);
+};
+
+const formatProgramRangeFromStartDate = (startWeek: string, endWeek: string, startDate?: string) => {
+    const startRange = getWeekDateRangeFromStartDate(startWeek, startWeek, startDate);
+    const endRange = getWeekDateRangeFromStartDate(endWeek, startWeek, startDate);
     if (!startRange || !endRange) return `des semaines ${startWeek} à ${endWeek}`;
     return formatRangeLabel(startRange.start, endRange.end);
 };
@@ -298,7 +344,7 @@ export const ProgramDetailView: React.FC<ProgramDetailViewProps> = ({ program, p
     const safeParticipants = Array.isArray(participants) ? participants : [];
 
     const getParticipantName = (id: number) => safeParticipants.find(p => p.id === id)?.name || 'Inconnu';
-    const programRangeLabel = formatProgramRange(localProgram.weekRange.start, localProgram.weekRange.end);
+    const programRangeLabel = formatProgramRangeFromStartDate(localProgram.weekRange.start, localProgram.weekRange.end, localProgram.startDate);
     
     const allProgramWeeks = useMemo(() => {
         const weeks = new Set(safeAssignments.map(a => a.week));
@@ -456,7 +502,7 @@ export const ProgramDetailView: React.FC<ProgramDetailViewProps> = ({ program, p
                             transition={{ duration: 0.5 }}
                             className="text-2xl font-bold text-gray-900 mb-6 pb-3 border-b-2 border-green-200"
                         >
-                            Semaine : {formatWeekHuman(week)}
+                            Semaine : {formatWeekHumanFromStartDate(week, localProgram.weekRange.start, localProgram.startDate)}
                         </motion.h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                     {MAIN_TOPICS.map(topic => {

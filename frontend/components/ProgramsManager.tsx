@@ -4,7 +4,7 @@ import { Program, Participant, SubjectType, Role, RolePermissions } from '../typ
 import { Card } from './ui/Card';
 import { Button } from './ui/Button';
 import { ProgramDetailView } from './ProgramDetailView';
-import { DocumentTextIcon, CheckCircleIcon } from './ui/Icons';
+import { DocumentTextIcon, CheckCircleIcon, TrashIcon } from './ui/Icons';
 import { api } from '../services/api';
 import { THEME_CLASSES } from '../styles/theme';
 
@@ -43,6 +43,18 @@ export const ProgramsManager: React.FC<ProgramsManagerProps> = ({ role, programs
             setPrograms(updatedPrograms);
         } catch (error) {
             console.error('Error publishing program:', error);
+        }
+    };
+
+    const handleDelete = async (programId: string, programTitle: string) => {
+        if (role !== Role.ADMIN) return;
+        const confirmed = window.confirm(`Supprimer définitivement le programme "${programTitle}" ?`);
+        if (!confirmed) return;
+        try {
+            await api.deleteProgram(programId);
+            setPrograms(prevPrograms => prevPrograms.filter(p => p.id !== programId));
+        } catch (error) {
+            console.error('Error deleting program:', error);
         }
     };
 
@@ -120,6 +132,17 @@ export const ProgramsManager: React.FC<ProgramsManagerProps> = ({ role, programs
                                      <Button onClick={() => handlePublish(program.id)} size="sm">
                                         <CheckCircleIcon className="h-5 w-5 mr-2" />
                                         Publier
+                                    </Button>
+                                )}
+                                {role === Role.ADMIN && (
+                                    <Button
+                                        onClick={() => handleDelete(program.id, program.title)}
+                                        variant="secondary"
+                                        size="sm"
+                                        className="bg-red-600 hover:bg-red-700 border border-red-700"
+                                    >
+                                        <TrashIcon className="h-5 w-5 mr-2" />
+                                        Supprimer
                                     </Button>
                                 )}
                                 <Button onClick={() => setSelectedProgram(program)} variant="secondary" size="sm">

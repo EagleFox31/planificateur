@@ -20,6 +20,48 @@ const groupAssignmentsByWeek = (assignments: Assignment[]) => {
     }, {} as { [week: string]: Assignment[] });
 };
 
+const parseDateOnly = (dateString?: string) => {
+    if (!dateString) return null;
+    const [yearStr, monthStr, dayStr] = dateString.split('-');
+    const year = parseInt(yearStr, 10);
+    const month = parseInt(monthStr, 10) - 1;
+    const day = parseInt(dayStr, 10);
+    if (Number.isNaN(year) || Number.isNaN(month) || Number.isNaN(day)) return null;
+    return new Date(year, month, day);
+};
+
+const getWeekValue = (week: string) => {
+    const [yearStr, weekStr] = week.split('-W');
+    const year = parseInt(yearStr, 10);
+    const weekNumber = parseInt(weekStr, 10);
+    if (Number.isNaN(year) || Number.isNaN(weekNumber)) return null;
+    return year * 53 + weekNumber;
+};
+
+const getWeekDateRangeFromStartDate = (week: string, startWeek: string, startDate?: string) => {
+    const parsedStartDate = parseDateOnly(startDate);
+    const startWeekValue = getWeekValue(startWeek);
+    const weekValue = getWeekValue(week);
+    if (!parsedStartDate || startWeekValue === null || weekValue === null) return null;
+    const offsetWeeks = weekValue - startWeekValue;
+    const weekStart = new Date(parsedStartDate);
+    weekStart.setDate(parsedStartDate.getDate() + offsetWeeks * 7);
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 6);
+    return { start: weekStart, end: weekEnd };
+};
+
+const formatRangeLabel = (start: Date, end: Date) => {
+    const sameYear = start.getFullYear() === end.getFullYear();
+    const monthNames = ['janv.', 'fevr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'aout', 'sept.', 'oct.', 'nov.', 'dec.'];
+    const startLabel = `${start.getDate().toString().padStart(2, '0')} ${monthNames[start.getMonth()]}`;
+    const endLabel = `${end.getDate().toString().padStart(2, '0')} ${monthNames[end.getMonth()]}`;
+    if (sameYear) {
+        return `du ${startLabel} au ${endLabel} ${start.getFullYear()}`;
+    }
+    return `du ${startLabel} ${start.getFullYear()} au ${endLabel} ${end.getFullYear()}`;
+};
+
 // Define text colors for printing to match the subject categories
 const TEXT_COLORS_PRINT: { [key: string]: string } = {
   noir: 'text-gray-800',
@@ -59,6 +101,9 @@ export const PrintLayout: React.FC<PrintLayoutProps> = ({ program, participants,
     
     const assignmentsByWeek = useMemo(() => groupAssignmentsByWeek(program.assignments), [program.assignments]);
     const sortedWeeks = useMemo(() => Object.keys(assignmentsByWeek).sort(), [assignmentsByWeek]);
+    const startRange = getWeekDateRangeFromStartDate(program.weekRange.start, program.weekRange.start, program.startDate);
+    const endRange = getWeekDateRangeFromStartDate(program.weekRange.end, program.weekRange.start, program.startDate);
+    const programRangeLabel = startRange && endRange ? formatRangeLabel(startRange.start, endRange.end) : null;
 
     useEffect(() => {
         // Trigger print dialog
@@ -120,7 +165,7 @@ export const PrintLayout: React.FC<PrintLayoutProps> = ({ program, participants,
                 </button>
                 <h1 className="text-3xl font-bold text-center mb-2 text-black">{program.title}</h1>
                 <h2 className="text-xl text-center text-gray-800 mb-8">
-                    Semaines du {program.weekRange.start} au {program.weekRange.end}
+                    {programRangeLabel ? `Programme ${programRangeLabel}` : `Semaines du ${program.weekRange.start} au ${program.weekRange.end}`}
                 </h2>
                 
                 {sortedWeeks.map((week, weekIndex) => (

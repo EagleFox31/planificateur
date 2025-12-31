@@ -50,7 +50,7 @@ async function runSimulation() {
 
   const generator = new ProgramGenerator(participantsData, subjectTypesData, rolePermissionsData);
 
-  const result = generator.generateProgram('2025-W36', 5, (progress, status) => {
+  const result = generator.generateProgram('2025-W36', 5, undefined, (progress, status) => {
     console.log(`${progress.toFixed(1)}% - ${status}`);
   });
 

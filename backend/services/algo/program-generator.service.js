@@ -59,9 +59,36 @@
             return `Programme du ${startDateStr} au ${endDateStr}`;
         }
 
+        formatProgramTitleFromStartDate(startDate, numWeeks) {
+            const [yearStr, monthStr, dayStr] = startDate.split('-');
+            const year = parseInt(yearStr, 10);
+            const month = parseInt(monthStr, 10) - 1;
+            const day = parseInt(dayStr, 10);
+
+            if (Number.isNaN(year) || Number.isNaN(month) || Number.isNaN(day)) {
+                return null;
+            }
+
+            const start = new Date(year, month, day);
+            const end = new Date(start);
+            end.setDate(start.getDate() + (numWeeks * 7) - 1);
+
+            const formatDate = (date) => {
+                const dayNum = date.getDate();
+                const monthNames = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+                                  'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+                const monthName = monthNames[date.getMonth()];
+                const yearNum = date.getFullYear();
+                return `${dayNum} ${monthName} ${yearNum}`;
+            };
+
+            return `Programme du ${formatDate(start)} au ${formatDate(end)}`;
+        }
+
         generateProgram(
             startWeek,
             numWeeks,
+            startDate,
             onProgress
         ) {
             // Deep copy to avoid mutating original state until the end
@@ -79,9 +106,11 @@
             }
 
             const endWeek = this.getEndWeek(startWeek, numWeeks - 1);
+            const titleFromStartDate = startDate ? this.formatProgramTitleFromStartDate(startDate, numWeeks) : null;
             const newProgram = {
                 id: `program-${Date.now()}`,
-                title: this.formatProgramTitle(startWeek, endWeek),
+                title: titleFromStartDate || this.formatProgramTitle(startWeek, endWeek),
+                startDate: startDate || undefined,
                 weekRange: { start: startWeek, end: endWeek },
                 assignments: accumulatedAssignments,
                 createdAt: new Date().toISOString(),

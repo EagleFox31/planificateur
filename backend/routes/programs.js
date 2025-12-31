@@ -67,13 +67,13 @@ router.delete('/:id', async (req, res) => {
 // GENERATE program
 router.post('/generate', async (req, res) => {
   try {
-    const { startWeek, numWeeks, rolePermissions } = req.body;
+    const { startWeek, numWeeks, rolePermissions, startDate } = req.body;
 
     const participants = await Participant.find();
     const subjectTypes = await SubjectType.find();
 
     const generator = new ProgramGenerator(participants, subjectTypes, rolePermissions || {});
-    const { newProgram, updatedParticipants } = generator.generateProgram(startWeek, numWeeks);
+    const { newProgram, updatedParticipants } = generator.generateProgram(startWeek, numWeeks, startDate);
 
     // Save the program
     const program = new Program(newProgram);

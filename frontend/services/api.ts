@@ -99,11 +99,11 @@ export const api = {
     await fetch(`${API_BASE_URL}/programs/${id}`, { method: 'DELETE' });
   },
 
-  async generateProgram(startWeek: string, numWeeks: number, rolePermissions: any): Promise<Program> {
+  async generateProgram(startWeek: string, numWeeks: number, rolePermissions: any, startDate?: string): Promise<Program> {
     const response = await fetch(`${API_BASE_URL}/programs/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ startWeek, numWeeks, rolePermissions }),
+      body: JSON.stringify({ startWeek, numWeeks, rolePermissions, startDate }),
     });
     return response.json();
   },

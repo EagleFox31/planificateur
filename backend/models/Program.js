@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const programSchema = new mongoose.Schema({
   id: { type: String, required: true, unique: true },
   title: { type: String, required: true },
+  startDate: { type: String },
   weekRange: {
     start: { type: String, required: true },
     end: { type: String, required: true },

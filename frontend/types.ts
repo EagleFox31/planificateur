@@ -118,6 +118,7 @@ export interface Assignment {
 export interface Program {
   id: string; // unique ID for the program, e.g., timestamp
   title: string;
+  startDate?: string; // YYYY-MM-DD, used for display when provided
   weekRange: { start: string; end: string };
   assignments: Assignment[];
   createdAt: string; // ISO string
