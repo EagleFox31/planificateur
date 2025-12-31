@@ -9,6 +9,7 @@ import { MAIN_TOPICS, COLORS } from '../constants';
 import { ArrowLeftIcon, PrinterIcon, ShareIcon, UserCircleIcon, PencilSquareIcon, DocumentTextIcon } from './ui/Icons';
 import { api } from '../services/api';
 import { getEligibleCandidates } from '../services/algo/filtering.service';
+import { getDefaultCapabilities, getRoleCapabilityDefaults } from '../utils/capabilities';
 
 const MONTH_LABELS = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
 
@@ -67,7 +68,35 @@ interface EditAssignmentModalProps {
 const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({ assignment, subject, participants, onSave, onClose, program, subjectTypes, rolePermissions }) => {
     const [currentParticipantIds, setCurrentParticipantIds] = useState(assignment.participantIds);
     const [customLabel, setCustomLabel] = useState(assignment.customLabel || '');
+    const [showUnavailableWarning, setShowUnavailableWarning] = useState(false);
+    const [pendingUnavailableParticipant, setPendingUnavailableParticipant] = useState<{id: number, name: string} | null>(null);
+    const [pendingUnavailableIndex, setPendingUnavailableIndex] = useState<number | null>(null);
 
+    // Get all participants with required capabilities for this subject
+    const allCapableParticipants = useMemo(() => {
+        return participants.filter(p => {
+            if (p.isExcluded) return false;
+
+            // Check if participant has required spiritual role
+            if (subject.requiredSpiritualRole && p.spiritualRole !== subject.requiredSpiritualRole) {
+                return false;
+            }
+
+            // Check if participant has required gender
+            if (subject.requiredGender && p.gender !== subject.requiredGender) {
+                return false;
+            }
+
+            // Check if participant has required capability
+            const requiredCapability = subject.capability || 'canTalk';
+            const participantCapabilities = getRoleCapabilityDefaults(rolePermissions, p.spiritualRole, p.gender);
+            const hasCapability = p.capabilities?.[requiredCapability] ?? participantCapabilities[requiredCapability];
+
+            return !!hasCapability;
+        });
+    }, [participants, subject, rolePermissions]);
+
+    // Get eligible candidates (those who can actually be assigned)
     const eligibleCandidates = useMemo(() => {
         const safeAssignments = Array.isArray(program.assignments) ? program.assignments : [];
         const otherAssignedIdsInWeek = new Set<number>(
@@ -78,15 +107,48 @@ const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({ assignment, s
         return getEligibleCandidates(subject, assignment.week, participants, otherAssignedIdsInWeek, rolePermissions, subjectTypes);
     }, [assignment, subject, participants, program.assignments, rolePermissions, subjectTypes]);
 
-    const finalOptions = useMemo(
-        () => eligibleCandidates.slice().sort((a, b) => a.name.localeCompare(b.name)),
-        [eligibleCandidates]
-    );
+    // Combine all capable participants with eligibility status
+    const participantOptions = useMemo(() => {
+        const eligibleIds = new Set(eligibleCandidates.map(p => p.id));
+
+        return allCapableParticipants.map(p => ({
+            ...p,
+            isEligible: eligibleIds.has(p.id)
+        })).sort((a, b) => a.name.localeCompare(b.name));
+    }, [allCapableParticipants, eligibleCandidates]);
 
     const handleParticipantChange = (index: number, newParticipantId: string) => {
+        const participantId = parseInt(newParticipantId, 10);
+        const selectedParticipant = participantOptions.find(p => p.id === participantId);
+
+        if (selectedParticipant && !selectedParticipant.isEligible) {
+            // Show warning for unavailable participant
+            setPendingUnavailableParticipant({ id: participantId, name: selectedParticipant.name });
+            setPendingUnavailableIndex(index);
+            setShowUnavailableWarning(true);
+            return;
+        }
+
         const newIds = [...currentParticipantIds];
-        newIds[index] = parseInt(newParticipantId, 10);
+        newIds[index] = participantId;
         setCurrentParticipantIds(newIds);
+    };
+
+    const handleConfirmUnavailableParticipant = () => {
+        if (pendingUnavailableParticipant && pendingUnavailableIndex !== null) {
+            const newIds = [...currentParticipantIds];
+            newIds[pendingUnavailableIndex] = pendingUnavailableParticipant.id;
+            setCurrentParticipantIds(newIds);
+        }
+        setShowUnavailableWarning(false);
+        setPendingUnavailableParticipant(null);
+        setPendingUnavailableIndex(null);
+    };
+
+    const handleCancelUnavailableParticipant = () => {
+        setShowUnavailableWarning(false);
+        setPendingUnavailableParticipant(null);
+        setPendingUnavailableIndex(null);
     };
 
     const handleSave = () => {
@@ -111,59 +173,95 @@ const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({ assignment, s
     };
 
     return (
-        <Modal title={`Modifier : ${subject.label}`} onClose={onClose}>
-            <div className="space-y-4">
-                <p className="text-sm text-slate-blue-400">Semaine : {assignment.week}</p>
-                
-                <div>
-                    <label htmlFor="customLabel" className="block text-sm font-medium text-slate-blue-300">
-                        Intitulé du sujet (Optionnel)
-                    </label>
-                    <input
-                        id="customLabel"
-                        type="text"
-                        value={customLabel}
-                        onChange={(e) => setCustomLabel(e.target.value)}
-                        placeholder={subject.label}
-                        className="w-full bg-slate-blue-700 border border-slate-blue-600 rounded-md px-3 py-2 mt-1 focus:ring-sanctus-blue focus:border-sanctus-blue"
-                    />
-                     <p className="text-xs text-slate-blue-400 mt-1">Laissez vide pour utiliser l'intitulé par défaut.</p>
-                </div>
+        <>
+            <Modal title={`Modifier : ${subject.label}`} onClose={onClose}>
+                <div className="space-y-4">
+                    <p className="text-sm text-slate-blue-400">Semaine : {assignment.week}</p>
 
-                {Array.from({ length: subject.nbParticipants }).map((_, index) => (
-                    <div key={index}>
-                        <label className="block text-sm font-medium text-slate-blue-300">
-                            Participant {subject.nbParticipants > 1 ? index + 1 : ''}
+                    <div>
+                        <label htmlFor="customLabel" className="block text-sm font-medium text-slate-blue-300">
+                            Intitulé du sujet (Optionnel)
                         </label>
-                        <select
-                            value={currentParticipantIds[index] || ''}
-                            onChange={(e) => handleParticipantChange(index, e.target.value)}
-                            className="w-full bg-slate-blue-700 border border-slate-blue-600 rounded-md px-3 py-2 mt-1 focus:ring-sanctus-blue focus:border-sanctus-blue text-slate-blue-50"
-                        >
-                            <option value="" disabled className="bg-slate-blue-800 text-slate-blue-200">Sélectionner un participant</option>
-                            {finalOptions.map(p => {
-                                const isCurrentlyAssignedInAnotherSlot = currentParticipantIds.includes(p.id) && currentParticipantIds[index] !== p.id;
-
-                                return (
-                                    <option
-                                        key={p.id}
-                                        value={p.id}
-                                        disabled={isCurrentlyAssignedInAnotherSlot}
-                                        className="bg-slate-blue-800 text-slate-blue-50"
-                                    >
-                                        {p.name}
-                                    </option>
-                                );
-                            })}
-                        </select>
+                        <input
+                            id="customLabel"
+                            type="text"
+                            value={customLabel}
+                            onChange={(e) => setCustomLabel(e.target.value)}
+                            placeholder={subject.label}
+                            className="w-full bg-slate-blue-700 border border-slate-blue-600 rounded-md px-3 py-2 mt-1 focus:ring-sanctus-blue focus:border-sanctus-blue"
+                        />
+                         <p className="text-xs text-slate-blue-400 mt-1">Laissez vide pour utiliser l'intitulé par défaut.</p>
                     </div>
-                ))}
-                <div className="flex justify-end space-x-3 pt-4">
-                    <Button variant="secondary" onClick={onClose} className="!bg-white !hover:bg-gray-50 !text-white !border !border-gray-300">Annuler</Button>
-                    <Button onClick={handleSave}>Enregistrer</Button>
+
+                    {Array.from({ length: subject.nbParticipants }).map((_, index) => (
+                        <div key={index}>
+                            <label className="block text-sm font-medium text-slate-blue-300">
+                                Participant {subject.nbParticipants > 1 ? index + 1 : ''}
+                            </label>
+                            <select
+                                value={currentParticipantIds[index] || ''}
+                                onChange={(e) => handleParticipantChange(index, e.target.value)}
+                                className="w-full bg-slate-blue-700 border border-slate-blue-600 rounded-md px-3 py-2 mt-1 focus:ring-sanctus-blue focus:border-sanctus-blue text-slate-blue-50"
+                            >
+                                <option value="" disabled className="bg-slate-blue-800 text-slate-blue-200">Sélectionner un participant</option>
+                                {participantOptions.map(p => {
+                                    const isCurrentlyAssignedInAnotherSlot = currentParticipantIds.includes(p.id) && currentParticipantIds[index] !== p.id;
+                                    const isUnavailable = !p.isEligible;
+
+                                    return (
+                                        <option
+                                            key={p.id}
+                                            value={p.id}
+                                            disabled={isCurrentlyAssignedInAnotherSlot}
+                                            className={`${isUnavailable ? 'text-red-400' : 'text-slate-blue-50'} bg-slate-blue-800`}
+                                            style={{ color: isUnavailable ? '#f87171' : undefined }}
+                                        >
+                                            {p.name} {isUnavailable ? '(Indisponible)' : ''}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                        </div>
+                    ))}
+                    <div className="flex justify-end space-x-3 pt-4">
+                        <Button variant="secondary" onClick={onClose} className="!bg-white !hover:bg-gray-50 !text-white !border !border-gray-300">Annuler</Button>
+                        <Button onClick={handleSave}>Enregistrer</Button>
+                    </div>
                 </div>
-            </div>
-        </Modal>
+            </Modal>
+
+            {showUnavailableWarning && pendingUnavailableParticipant && (
+                <Modal title="Participant indisponible" onClose={handleCancelUnavailableParticipant}>
+                    <div className="space-y-4">
+                        <div className="text-center">
+                            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+                                <svg className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                </svg>
+                            </div>
+                            <h3 className="text-lg font-medium text-gray-900 mb-2">
+                                Attention : Participant indisponible
+                            </h3>
+                            <p className="text-sm text-gray-600 mb-4">
+                                <strong>{pendingUnavailableParticipant.name}</strong> n'est pas disponible pour ce sujet cette semaine
+                                en raison des règles d'attribution automatique (rotation, indisponibilités, etc.).
+                            </p>
+                            <p className="text-sm text-gray-500">
+                                Voulez-vous forcer cette assignation malgré tout ?
+                            </p>
+                        </div>
+                        <div className="flex justify-end space-x-3">
+                            <Button variant="secondary" onClick={handleCancelUnavailableParticipant}>
+                                Annuler
+                            </Button>
+                            <Button onClick={handleConfirmUnavailableParticipant} className="bg-red-600 hover:bg-red-700">
+                                Forcer l'assignation
+                            </Button>
+                        </div>
+                    </div>
+                </Modal>
+            )}
+        </>
     );
 };
 

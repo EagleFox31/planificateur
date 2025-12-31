@@ -30,7 +30,7 @@ export const Modal: React.FC<ModalProps> = ({ title, onClose, children, position
             <XMarkIcon className="h-6 w-6" />
           </button>
         </div>
-        <div className="p-6">
+        <div className="p-6 max-h-[70vh] overflow-y-auto">
           {children}
         </div>
       </div>

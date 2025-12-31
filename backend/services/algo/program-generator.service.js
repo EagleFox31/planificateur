@@ -18,6 +18,47 @@
             return difficulty;
         }
 
+        weekToDateRange(weekString) {
+            const [yearStr, weekStr] = weekString.split('-W');
+            const year = parseInt(yearStr, 10);
+            const week = parseInt(weekStr, 10);
+
+            // Find the first Thursday of the year (ISO week date standard)
+            const firstThursday = new Date(year, 0, 1);
+            while (firstThursday.getDay() !== 4) {
+                firstThursday.setDate(firstThursday.getDate() + 1);
+            }
+
+            // Calculate the start of the week (Monday)
+            const weekStart = new Date(firstThursday);
+            weekStart.setDate(firstThursday.getDate() - 3 + (week - 1) * 7);
+
+            // Calculate the end of the week (Sunday)
+            const weekEnd = new Date(weekStart);
+            weekEnd.setDate(weekStart.getDate() + 6);
+
+            return { start: weekStart, end: weekEnd };
+        }
+
+        formatProgramTitle(startWeek, endWeek) {
+            const startRange = this.weekToDateRange(startWeek);
+            const endRange = this.weekToDateRange(endWeek);
+
+            const formatDate = (date) => {
+                const day = date.getDate();
+                const monthNames = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+                                  'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+                const month = monthNames[date.getMonth()];
+                const year = date.getFullYear();
+                return `${day} ${month} ${year}`;
+            };
+
+            const startDateStr = formatDate(startRange.start);
+            const endDateStr = formatDate(endRange.end);
+
+            return `Programme du ${startDateStr} au ${endDateStr}`;
+        }
+
         generateProgram(
             startWeek,
             numWeeks,
@@ -40,7 +81,7 @@
             const endWeek = this.getEndWeek(startWeek, numWeeks - 1);
             const newProgram = {
                 id: `program-${Date.now()}`,
-                title: `Programme des semaines ${startWeek} à ${endWeek}`,
+                title: this.formatProgramTitle(startWeek, endWeek),
                 weekRange: { start: startWeek, end: endWeek },
                 assignments: accumulatedAssignments,
                 createdAt: new Date().toISOString(),
