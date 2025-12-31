@@ -140,7 +140,7 @@ const App: React.FC = () => {
               <Route path="/subjects" element={<SubjectConfiguration role={role} subjectTypes={subjectTypes} setSubjectTypes={setSubjectTypes} spiritualRoles={spiritualRoles} />} />
               <Route path="/statistics" element={<Statistics assignments={allAssignments} participants={participants} subjectTypes={subjectTypes} />} />
               <Route path="/roles" element={<RoleManager role={role} rolePermissions={rolePermissions} setRolePermissions={setRolePermissions} spiritualRoles={spiritualRoles} setSpiritualRoles={setSpiritualRoles} />} />
-              <Route path="/unavailabilities" element={<UnavailabilityViewer participants={participants} />} />
+              <Route path="/unavailabilities" element={<UnavailabilityViewer participants={participants} setParticipants={setParticipants} role={role} />} />
               <Route path="/programs" element={<ProgramsManager role={role} programs={programs} setPrograms={setPrograms} participants={participants} subjectTypes={subjectTypes} rolePermissions={rolePermissions} />} />
               <Route path="/my-assignments" element={<MyAssignmentsView assignments={allAssignments} subjectTypes={subjectTypes} currentUser={currentUser} setParticipants={setParticipants} />} />
               <Route path="/participant-history" element={<ParticipantHistory participants={participants} subjectTypes={subjectTypes} />} />
