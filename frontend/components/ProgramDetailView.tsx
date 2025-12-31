@@ -133,8 +133,9 @@ const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({ assignment, s
                 return false;
             }
 
-            // Check if participant has required capability
-            const requiredCapability = subject.capability || 'canTalk';
+            // Check if participant has required capability (when defined)
+            const requiredCapability = subject.requiredCapability;
+            if (!requiredCapability) return true;
             const participantCapabilities = getRoleCapabilityDefaults(rolePermissions, p.spiritualRole, p.gender);
             const hasCapability = p.capabilities?.[requiredCapability] ?? participantCapabilities[requiredCapability];
 
