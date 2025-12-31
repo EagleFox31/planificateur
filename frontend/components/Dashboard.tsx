@@ -7,7 +7,7 @@ import { Card } from './ui/Card';
 import { Button } from './ui/Button';
 import { Modal } from './ui/Modal';
 import { MagicWandIcon, UserCircleIcon, ChevronLeftIcon, ChevronRightIcon, CalendarDaysIcon } from './ui/Icons';
-import { StartWeekPicker } from './ui/WeekPickerModal';
+import { DatePicker } from './ui/WeekPickerModal';
 import { THEME_CLASSES, COLORS } from '../styles/theme';
 
 interface DashboardProps {
@@ -33,6 +33,23 @@ const getCurrentWeek = (): string => {
 
   // Calculate the week number
   const diff = now.getTime() - firstThursday.getTime();
+  const oneWeek = 7 * 24 * 60 * 60 * 1000;
+  const weekNumber = Math.floor(diff / oneWeek) + 1;
+
+  return `${year}-W${String(weekNumber).padStart(2, '0')}`;
+};
+
+const dateToWeek = (date: Date): string => {
+  const year = date.getFullYear();
+
+  // Find the first Thursday of the year
+  const firstThursday = new Date(year, 0, 1);
+  while (firstThursday.getDay() !== 4) {
+    firstThursday.setDate(firstThursday.getDate() + 1);
+  }
+
+  // Calculate the week number
+  const diff = date.getTime() - firstThursday.getTime();
   const oneWeek = 7 * 24 * 60 * 60 * 1000;
   const weekNumber = Math.floor(diff / oneWeek) + 1;
 
@@ -95,16 +112,27 @@ export const Dashboard: React.FC<DashboardProps> = ({ role, assignments, program
   const [error, setError] = useState<string | null>(null);
 
   const latestWeek = useMemo(() => {
-    if (assignments.length === 0) return getCurrentWeek();
+    if (assignments.length === 0) return null;
     return assignments.reduce((latest, a) => a.week > latest ? a.week : latest, '2025-W01');
   }, [assignments]);
 
-  const [currentWeek, setCurrentWeek] = useState(latestWeek);
+  const [currentWeek, setCurrentWeek] = useState(getCurrentWeek());
+  const [viewMode, setViewMode] = useState<'current' | 'latest'>('current');
+
+  // Update currentWeek when viewMode or latestWeek changes
+  useMemo(() => {
+    if (viewMode === 'latest' && latestWeek) {
+      setCurrentWeek(latestWeek);
+    } else if (viewMode === 'current') {
+      setCurrentWeek(getCurrentWeek());
+    }
+  }, [viewMode, latestWeek]);
 
   const [isGenerationModalOpen, setIsGenerationModalOpen] = useState(false);
-  const [isStartWeekPickerOpen, setIsStartWeekPickerOpen] = useState(false);
-  const [startWeek, setStartWeek] = useState(getCurrentWeek());
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
   const [weeksToGenerate, setWeeksToGenerate] = useState(1);
+  const [showLatestProgram, setShowLatestProgram] = useState(false);
   const [generationProgress, setGenerationProgress] = useState(0);
   const [generationStatusText, setGenerationStatusText] = useState('');
 
@@ -134,6 +162,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ role, assignments, program
         setGenerationStatusText('Génération en cours...');
         setGenerationProgress(50);
 
+        const startWeek = dateToWeek(startDate);
         const newProgram = await api.generateProgram(startWeek, weeksToGenerate, rolePermissions);
 
         setGenerationStatusText('Programme généré avec succès !');
@@ -201,6 +230,26 @@ export const Dashboard: React.FC<DashboardProps> = ({ role, assignments, program
                 <p className={`${THEME_CLASSES.typography.body.medium} text-gray-700`}>
                   {formattedWeekLabel}
                 </p>
+                {latestWeek && viewMode === 'current' && (
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => setViewMode('latest')}
+                    className="!bg-sanctus-blue/10 !hover:bg-sanctus-blue/20 !text-sanctus-blue !border !border-sanctus-blue/20 mt-2"
+                  >
+                    Voir le dernier programme généré
+                  </Button>
+                )}
+                {viewMode === 'latest' && (
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => setViewMode('current')}
+                    className="!bg-gray-100 !hover:bg-gray-200 !text-gray-700 !border !border-gray-300 mt-2"
+                  >
+                    Retour à la semaine actuelle
+                  </Button>
+                )}
               </div>
               {role === Role.ADMIN && (
                 <div className="flex items-center gap-3 md:gap-4">
@@ -425,11 +474,16 @@ export const Dashboard: React.FC<DashboardProps> = ({ role, assignments, program
           </p>
 
           <div className="space-y-2">
-            <label className="block text-sm text-gray-900 font-semibold">Semaine de départ</label>
+            <label className="block text-sm text-gray-900 font-semibold">Date de départ</label>
             <div className="flex items-center gap-2">
               <input
                 type="text"
-                value={formatWeekLabel(startWeek)}
+                value={startDate.toLocaleDateString('fr-FR', {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
                 readOnly
                 className="flex-1 rounded-md bg-gray-50 border border-gray-300 px-3 py-2 text-gray-900 cursor-not-allowed"
               />
@@ -437,7 +491,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ role, assignments, program
                 type="button"
                 variant="secondary"
                 size="sm"
-                onClick={() => setIsStartWeekPickerOpen(true)}
+                onClick={() => setIsDatePickerOpen(true)}
                 disabled={isLoading}
                 className="!bg-gray-100 !hover:bg-gray-200 !border !border-gray-300"
               >
@@ -492,11 +546,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ role, assignments, program
       </Modal>
     )}
 
-    {isStartWeekPickerOpen && (
-      <StartWeekPicker
-        initialWeek={startWeek}
-        onSave={(week) => setStartWeek(week)}
-        onClose={() => setIsStartWeekPickerOpen(false)}
+    {isDatePickerOpen && (
+      <DatePicker
+        initialDate={startDate}
+        onSave={(date) => setStartDate(date)}
+        onClose={() => setIsDatePickerOpen(false)}
       />
     )}
     </>
