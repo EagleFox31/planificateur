@@ -8,7 +8,14 @@
     "build": "echo 'No build step required for Node.js backend'",
     "migrate-to-postgres": "node scripts/migrate-to-postgres.js",
     "backup-db": "node scripts/backup-database.js",
-    "clear-db": "node scripts/clear-database.js"
+    "clear-db": "node scripts/clear-database.js",
+    "extract-legacy-programs": "node scripts/extract-legacy-programs.js",
+    "reconcile-legacy-participants": "node scripts/reconcile-legacy-participants.js",
+    "reconcile-legacy-participants:apply-db": "node scripts/reconcile-legacy-participants.js --apply-db",
+    "seed-legacy-programs:dry": "node scripts/seed-legacy-programs.js",
+    "seed-legacy-programs": "node scripts/seed-legacy-programs.js --apply",
+    "patch-participant-history:dry": "node scripts/patch-participant-history-from-programs.js",
+    "patch-participant-history": "node scripts/patch-participant-history-from-programs.js --apply"
   },
   "dependencies": {
     "@google/genai": "^1.10.0",
@@ -16,6 +23,7 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "mongoose": "^8.20.1",
+    "pdf-parse": "^1.1.1",
     "pg": "^8.16.3"
   },
   "devDependencies": {
