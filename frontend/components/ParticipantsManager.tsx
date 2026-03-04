@@ -1,7 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Participant, Role, Gender, SpiritualRole, Affiliation, RelationshipType, relationshipTypeLabels, CapabilityKey, ParticipantCapabilities, RolePermissions } from '../types';
-import { Card } from './ui/Card';
 import { Button } from './ui/Button';
 import { Modal } from './ui/Modal';
 import { SuccessModal } from './ui/SuccessModal';
@@ -251,7 +249,7 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({ participant, allParti
         <textarea name="notes" value={formData.notes} onChange={handleChange} rows={3} className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 mt-1 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500"/>
       </div>
       <div className="flex justify-end space-x-3 pt-4">
-        <Button type="button" variant="secondary" onClick={onCancel} className="!bg-white !hover:bg-gray-50 !text-white !border !border-gray-300">Annuler</Button>
+        <Button type="button" variant="secondary" onClick={onCancel} className="!bg-white !hover:bg-gray-50 !text-slate-800 !border !border-gray-300">Annuler</Button>
         <Button type="submit">Enregistrer</Button>
       </div>
     </form>
@@ -416,187 +414,168 @@ export const ParticipantsManager: React.FC<ParticipantsManagerProps> = ({ role, 
     const today = new Date();
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-        >
-            <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100">
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-6 p-6">
-                    <motion.div
-                        initial={{ x: -20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.2, duration: 0.5 }}
-                        className="flex items-start gap-4"
-                    >
-                        <div className="bg-white p-3 rounded-xl shadow-sm">
-                            <UsersIcon className="h-8 w-8 text-blue-600" />
-                        </div>
-                        <div>
-                            <h3 className="text-3xl font-bold text-gray-900">Gestion des Participants</h3>
-                            <p className="text-lg text-gray-700 max-w-3xl mt-2">
-                                Gérez la liste complète des participants, leurs rôles, affiliations et statuts d'exclusion.
-                            </p>
-                        </div>
-                    </motion.div>
-                    {role === Role.ADMIN && (
-                        <motion.div
-                            initial={{ x: 20, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            transition={{ delay: 0.3, duration: 0.5 }}
-                            className="flex flex-col sm:flex-row gap-3"
+        <div className="space-y-6">
+            {/* Header */}
+            <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center flex-shrink-0">
+                        <UsersIcon className="h-5 w-5 text-white" />
+                    </div>
+                    <div>
+                        <h1 className="text-xl font-bold text-gray-900">Participants</h1>
+                        <p className="text-xs text-gray-500">
+                            {participants.length} personne{participants.length !== 1 ? 's' : ''} enregistrée{participants.length !== 1 ? 's' : ''}
+                        </p>
+                    </div>
+                </div>
+                {role === Role.ADMIN && (
+                    <div className="flex gap-2">
+                        <Button variant="secondary" size="sm" onClick={() => setIsImportOpen(true)}>
+                            <DocumentTextIcon className="h-4 w-4 mr-1.5" />
+                            Importer
+                        </Button>
+                        <Button size="sm" onClick={handleAdd}>
+                            <PlusIcon className="h-4 w-4 mr-1.5" />
+                            Ajouter
+                        </Button>
+                    </div>
+                )}
+            </div>
+
+            {/* KPIs */}
+            <div className="grid grid-cols-3 gap-4">
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-4">
+                    <p className="text-2xl font-bold text-indigo-600">{participants.length}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Au total</p>
+                </div>
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-4">
+                    <p className="text-2xl font-bold text-green-600">{participants.filter(p => !p.isExcluded).length}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Actifs</p>
+                </div>
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-4">
+                    <p className="text-2xl font-bold text-red-500">{participants.filter(p => p.isExcluded).length}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Exclus</p>
+                </div>
+            </div>
+
+            {/* Filters */}
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
+                    <div className="lg:col-span-4">
+                        <label htmlFor="searchFilter" className="block text-xs font-medium text-gray-500 mb-1.5">Rechercher par nom</label>
+                        <input
+                            id="searchFilter"
+                            type="text"
+                            value={searchTerm}
+                            onChange={e => setSearchTerm(e.target.value)}
+                            placeholder="Tapez un nom…"
+                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
+                        />
+                    </div>
+                    <div className="lg:col-span-2">
+                        <label htmlFor="genderFilter" className="block text-xs font-medium text-gray-500 mb-1.5">Genre</label>
+                        <select id="genderFilter" value={genderFilter} onChange={e => setGenderFilter(e.target.value)} className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900">
+                            <option value="ALL">Tous</option>
+                            <option value={Gender.MALE}>Hommes</option>
+                            <option value={Gender.FEMALE}>Femmes</option>
+                        </select>
+                    </div>
+                    <div className="lg:col-span-2">
+                        <label htmlFor="ageFilter" className="block text-xs font-medium text-gray-500 mb-1.5">Âge</label>
+                        <select id="ageFilter" value={ageFilter} onChange={e => setAgeFilter(e.target.value)} className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900">
+                            <option value="ALL">Tous</option>
+                            <option value="CHILD">Enfants (-18 ans)</option>
+                            <option value="ADULT">Adultes</option>
+                        </select>
+                    </div>
+                    <div className="lg:col-span-2">
+                        <label htmlFor="roleFilter" className="block text-xs font-medium text-gray-500 mb-1.5">Rôle</label>
+                        <select id="roleFilter" value={roleFilter} onChange={e => setRoleFilter(e.target.value)} className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900">
+                            <option value="ALL">Tous les rôles</option>
+                            {spiritualRoles.map(r => <option key={r} value={r}>{r}</option>)}
+                        </select>
+                    </div>
+                    <div className="lg:col-span-2">
+                        <label htmlFor="capabilityFilter" className="block text-xs font-medium text-gray-500 mb-1.5">Capacité</label>
+                        <select
+                            id="capabilityFilter"
+                            value={capabilityFilter}
+                            onChange={e => setCapabilityFilter(e.target.value as 'ALL' | CapabilityKey)}
+                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
                         >
-                            <Button onClick={() => setIsImportOpen(true)} className="bg-blue-600 hover:bg-blue-700">
-                                <DocumentTextIcon className="h-5 w-5 mr-2"/>
-                                Importer
-                            </Button>
-                            <Button onClick={handleAdd} className="bg-blue-600 hover:bg-blue-700">
-                                <PlusIcon className="h-5 w-5 mr-2"/>
-                                Ajouter un participant
-                            </Button>
-                        </motion.div>
-                    )}
-                </div>
-            </Card>
-
-        {/* Filters */}
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-        >
-            <Card className="bg-white border border-gray-200 shadow-sm">
-                <div className="p-6 space-y-3">
-                    <div className="flex items-center justify-between">
-                        <h4 className="text-lg font-semibold text-gray-900">Filtres</h4>
-                        <span className="text-xs uppercase tracking-wide text-gray-400">Affinage instantané</span>
-                    </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-                        <div className="lg:col-span-4">
-                            <label htmlFor="searchFilter" className="block text-sm font-medium text-gray-700 mb-2">Rechercher par nom</label>
-                            <input
-                                id="searchFilter"
-                                type="text"
-                                value={searchTerm}
-                                onChange={e => setSearchTerm(e.target.value)}
-                                placeholder="Tapez un nom…"
-                                className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 shadow-sm"
-                            />
-                        </div>
-                        <div className="lg:col-span-2">
-                            <label htmlFor="genderFilter" className="block text-sm font-medium text-gray-700 mb-2">Genre</label>
-                            <select id="genderFilter" value={genderFilter} onChange={e => setGenderFilter(e.target.value)} className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 shadow-sm">
-                                <option value="ALL">Tous</option>
-                                <option value={Gender.MALE}>Hommes</option>
-                                <option value={Gender.FEMALE}>Femmes</option>
-                            </select>
-                        </div>
-                        <div className="lg:col-span-2">
-                            <label htmlFor="ageFilter" className="block text-sm font-medium text-gray-700 mb-2">Âge</label>
-                            <select id="ageFilter" value={ageFilter} onChange={e => setAgeFilter(e.target.value)} className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 shadow-sm">
-                                <option value="ALL">Tous</option>
-                                <option value="CHILD">Enfants (-18 ans)</option>
-                                <option value="ADULT">Adultes</option>
-                            </select>
-                        </div>
-                        <div className="lg:col-span-2">
-                            <label htmlFor="roleFilter" className="block text-sm font-medium text-gray-700 mb-2">Rôle</label>
-                            <select id="roleFilter" value={roleFilter} onChange={e => setRoleFilter(e.target.value)} className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 shadow-sm">
-                                <option value="ALL">Tous les rôles</option>
-                                {spiritualRoles.map(r => <option key={r} value={r}>{r}</option>)}
-                            </select>
-                        </div>
-                        <div className="lg:col-span-2">
-                            <label htmlFor="capabilityFilter" className="block text-sm font-medium text-gray-700 mb-2">Capacité</label>
-                            <select
-                                id="capabilityFilter"
-                                value={capabilityFilter}
-                                onChange={e => setCapabilityFilter(e.target.value as 'ALL' | CapabilityKey)}
-                                className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 shadow-sm"
-                            >
-                                <option value="ALL">Toutes les capacités</option>
-                                {CAPABILITY_ORDER.map(cap => (
-                                    <option key={cap} value={cap}>{CAPABILITY_LABELS[cap]}</option>
-                                ))}
-                            </select>
-                        </div>
+                            <option value="ALL">Toutes les capacités</option>
+                            {CAPABILITY_ORDER.map(cap => (
+                                <option key={cap} value={cap}>{CAPABILITY_LABELS[cap]}</option>
+                            ))}
+                        </select>
                     </div>
                 </div>
-            </Card>
-        </motion.div>
+            </div>
 
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
-        >
-            <Card className="bg-white border border-gray-200 shadow-sm">
-                <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+            {/* Table */}
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                <div className="overflow-x-auto overflow-y-auto max-h-[420px]">
+                    <table className="min-w-full divide-y divide-gray-100">
+                    <thead className="bg-[#D6C4A8] sticky top-0 z-10">
                         <tr>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">Nom</th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">Affiliation</th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">Rôle</th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">Statut</th>
-                        {role === Role.ADMIN && <th className="px-6 py-4 text-right text-xs font-semibold text-gray-900 uppercase tracking-wider">Actions</th>}
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-[#3d2e1e] uppercase tracking-wide">Nom</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-[#3d2e1e] uppercase tracking-wide">Affiliation</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-[#3d2e1e] uppercase tracking-wide">Rôle</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-[#3d2e1e] uppercase tracking-wide">Statut</th>
+                        {role === Role.ADMIN && <th className="px-4 py-3 text-right text-xs font-semibold text-[#3d2e1e] uppercase tracking-wide">Actions</th>}
                         </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
+                    <tbody className="bg-white divide-y divide-gray-100">
                 {filteredParticipants.length > 0 ? (
                     paginatedParticipants.map((p, index) => {
                         const needsReminder = p.isExcluded && p.exclusionEndDate && new Date(p.exclusionEndDate) < today;
                         return (
-                            <motion.tr
+                            <tr
                                 key={p.id}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.6 + index * 0.05, duration: 0.4 }}
-                                className="transition-colors duration-200 hover:bg-gray-50"
+                                className={`transition-colors hover:bg-gray-50 ${index % 2 === 1 ? 'bg-gray-50/40' : ''}`}
                             >
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{p.name}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{p.name}</td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
                                 {p.affiliation.length > 0
                                     ? p.affiliation.map(aff => `${relationshipTypeLabels[aff.relationship]} ${getParticipantNameById(aff.withParticipantId)}`).join(', ')
-                                    : 'N/A'
+                                    : <span className="text-gray-400">—</span>
                                 }
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-white font-semibold shadow-sm ${getRoleBadgeClasses(p.spiritualRole)}`}>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm">
+                                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-white text-xs font-semibold ${getRoleBadgeClasses(p.spiritualRole)}`}>
                                     {p.spiritualRole}
                                   </span>
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                    <div className="flex items-center space-x-2">
+                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
+                                    <div className="flex items-center gap-2">
                                         {role === Role.ADMIN ? (
                                             <button
                                                 onClick={() => handleToggleExclusion(p.id)}
-                                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors shadow-sm ${p.isExcluded ? 'bg-red-500' : 'bg-green-500'}`}
+                                                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${p.isExcluded ? 'bg-red-500' : 'bg-green-500'}`}
                                             >
-                                                <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform ${p.isExcluded ? 'translate-x-1' : 'translate-x-6'}`}/>
+                                                <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${p.isExcluded ? 'translate-x-1' : 'translate-x-4'}`}/>
                                             </button>
                                         ) : null}
-                                        <span className={p.isExcluded ? 'text-red-600' : 'text-green-600'}>
+                                        <span className={`text-xs font-medium ${p.isExcluded ? 'text-red-600' : 'text-green-600'}`}>
                                             {p.isExcluded ? 'Exclu' : 'Actif'}
                                         </span>
-                                        {needsReminder && role === Role.ADMIN && <BellAlertIcon className="h-5 w-5 text-amber-500" title="Réévaluation requise pour ce participant" />}
+                                        {needsReminder && role === Role.ADMIN && <BellAlertIcon className="h-4 w-4 text-amber-500" title="Réévaluation requise" />}
                                     </div>
                                 </td>
                                 {role === Role.ADMIN && (
-                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <Button variant="secondary" size="sm" onClick={() => handleEdit(p)} className="bg-gray-100 hover:bg-gray-200 text-white border-gray-300">Détails</Button>
+                                    <td className="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
+                                        <Button variant="secondary" size="sm" onClick={() => handleEdit(p)}>Détails</Button>
                                     </td>
                                 )}
-                            </motion.tr>
+                            </tr>
                         );
                     })
                 ) : (
                     <tr>
-                        <td colSpan={role === Role.ADMIN ? 5 : 4} className="text-center py-12 text-gray-500 italic">
-                            <div className="flex flex-col items-center">
-                                <UsersIcon className="h-12 w-12 text-gray-300 mb-3" />
-                                <span className="text-lg">Aucun participant ne correspond aux filtres sélectionnés.</span>
+                        <td colSpan={role === Role.ADMIN ? 5 : 4} className="text-center py-12 text-gray-400">
+                            <div className="flex flex-col items-center gap-2">
+                                <UsersIcon className="h-10 w-10 text-gray-200" />
+                                <span className="text-sm">Aucun participant ne correspond aux filtres.</span>
                             </div>
                         </td>
                     </tr>
@@ -604,32 +583,32 @@ export const ParticipantsManager: React.FC<ParticipantsManagerProps> = ({ role, 
                     </tbody>
                     </table>
                 </div>
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between px-6 py-4 border-t border-gray-200 gap-3 bg-gray-50">
-                    <span className="text-sm text-gray-700">
-                        Affichage {displayRangeText} sur {filteredParticipants.length}
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between px-4 py-3 border-t border-gray-100 gap-3 bg-gray-50/50">
+                    <span className="text-xs text-gray-500">
+                        {filteredParticipants.length === 0 ? 'Aucun résultat' : `${displayRangeText} sur ${filteredParticipants.length}`}
                     </span>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
                         <button
                             onClick={handlePreviousPage}
                             disabled={!canGoPrevious}
-                            className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${canGoPrevious ? 'bg-white hover:bg-gray-50 text-gray-900 border-gray-300 shadow-sm' : 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200'}`}
+                            className={`px-3 py-1.5 rounded-lg border text-xs font-medium transition-colors ${canGoPrevious ? 'bg-white hover:bg-gray-50 text-gray-900 border-gray-200' : 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-100'}`}
                         >
                             Précédent
                         </button>
-                        <span className="text-sm text-gray-700 font-medium">
-                            Page {filteredParticipants.length === 0 ? 1 : currentPage} / {filteredParticipants.length === 0 ? 1 : totalPages}
+                        <span className="text-xs text-gray-500">
+                            {filteredParticipants.length === 0 ? '1 / 1' : `${currentPage} / ${totalPages}`}
                         </span>
                         <button
                             onClick={handleNextPage}
                             disabled={!canGoNext}
-                            className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${canGoNext ? 'bg-white hover:bg-gray-50 text-gray-900 border-gray-300 shadow-sm' : 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200'}`}
+                            className={`px-3 py-1.5 rounded-lg border text-xs font-medium transition-colors ${canGoNext ? 'bg-white hover:bg-gray-50 text-gray-900 border-gray-200' : 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-100'}`}
                         >
                             Suivant
                         </button>
                     </div>
                 </div>
-            </Card>
-        </motion.div>
+            </div>
+
         {isModalOpen && (
             <Modal
                 title={editingParticipant ? "Détails du participant" : "Ajouter un participant"}
@@ -660,6 +639,6 @@ export const ParticipantsManager: React.FC<ParticipantsManagerProps> = ({ role, 
             title="Succès"
             message={successMessage}
         />
-        </motion.div>
+        </div>
     );
 };

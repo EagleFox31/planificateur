@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { useNavigate, useLocation, Routes, Route, Navigate } from 'react-router-dom';
-import { Sidebar } from './components/layout/Sidebar';
-import { Header } from './components/layout/Header';
+import { useNavigate, Routes, Route, Navigate } from 'react-router-dom';
+import { TopBar } from './components/layout/TopBar';
 import { Dashboard } from './components/Dashboard';
 import { ParticipantsManager } from './components/ParticipantsManager';
 import { Statistics } from './components/Statistics';
@@ -12,7 +11,7 @@ import { ProgramsManager } from './components/ProgramsManager';
 import { MyAssignmentsView } from './components/MyAssignmentsView';
 import { SplashScreen } from './components/onboarding/SplashScreen';
 import { Role, Participant, SubjectType, Assignment, AppState, RolePermissions, SpiritualRole, Program } from './types';
-import { INITIAL_PARTICIPANTS, INITIAL_SUBJECT_TYPES, INITIAL_PROGRAMS, INITIAL_ROLE_PERMISSIONS, INITIAL_SPIRITUAL_ROLES } from './constants';
+import { INITIAL_ROLE_PERMISSIONS, INITIAL_SPIRITUAL_ROLES } from './constants';
 import { BottomNavBar } from './components/layout/BottomNavBar';
 import { ParticipantHistory } from './components/ParticipantHistory';
 import { RotationManager } from './components/RotationManager';
@@ -25,7 +24,6 @@ const toArray = (data: any) => Array.isArray(data) ? data : [];
 
 const App: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [appState, setAppState] = useState<AppState>(AppState.SPLASH);
   const [role, setRole] = useState<Role>(Role.ADMIN);
@@ -112,84 +110,75 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="relative min-h-screen text-white">
-      {/* Global background image */}
-      <div
-        className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[url('/images/onboarding-1.jpg')] bg-cover bg-center"
-        aria-hidden="true"
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-black/25 via-slate-blue-900/20 to-black/30" />
-      </div>
+    <div className="min-h-screen bg-slate-100 text-slate-900">
+      <TopBar
+        role={role}
+        setRole={handleRoleChange}
+        programs={programs}
+        navigate={navigate}
+        participants={participants}
+        currentUser={currentUser}
+        setCurrentUser={setCurrentUser}
+        onResetOnboarding={handleResetOnboarding}
+      />
 
-      <div className="relative z-10 flex h-screen bg-transparent">
-        <Sidebar role={role} onResetOnboarding={handleResetOnboarding} />
-        <div className="flex-1 flex flex-col overflow-hidden backdrop-blur-sm bg-black/10">
-          <Header
-              role={role}
-              setRole={handleRoleChange}
-              programs={programs}
-              navigate={navigate}
-              participants={participants}
-              currentUser={currentUser}
-              setCurrentUser={setCurrentUser}
-          />
-          <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-6 lg:p-8 pb-24 lg:pb-8">
-            <Routes>
-              <Route path="/dashboard" element={<Dashboard role={role} assignments={allAssignments} programs={programs} setPrograms={setPrograms} participants={participants} setParticipants={setParticipants} subjectTypes={subjectTypes} rolePermissions={rolePermissions} />} />
-              <Route path="/participants" element={<ParticipantsManager role={role} participants={participants} setParticipants={setParticipants} spiritualRoles={spiritualRoles} />} />
-              <Route path="/subjects" element={<SubjectConfiguration role={role} subjectTypes={subjectTypes} setSubjectTypes={setSubjectTypes} spiritualRoles={spiritualRoles} />} />
-              <Route path="/statistics" element={<Statistics assignments={allAssignments} participants={participants} subjectTypes={subjectTypes} />} />
-              <Route path="/roles" element={<RoleManager role={role} rolePermissions={rolePermissions} setRolePermissions={setRolePermissions} spiritualRoles={spiritualRoles} setSpiritualRoles={setSpiritualRoles} />} />
-              <Route path="/unavailabilities" element={<UnavailabilityViewer participants={participants} setParticipants={setParticipants} role={role} />} />
-              <Route path="/programs" element={<ProgramsManager role={role} programs={programs} setPrograms={setPrograms} participants={participants} subjectTypes={subjectTypes} rolePermissions={rolePermissions} />} />
-              <Route path="/my-assignments" element={<MyAssignmentsView assignments={allAssignments} subjectTypes={subjectTypes} currentUser={currentUser} setParticipants={setParticipants} />} />
-              <Route path="/participant-history" element={<ParticipantHistory participants={participants} subjectTypes={subjectTypes} />} />
-              <Route path="/rotation-rules" element={<RotationManager role={role} subjectTypes={subjectTypes} setSubjectTypes={setSubjectTypes} />} />
-              <Route path="/admin-guide" element={<AdminGuide />} />
-              <Route path="/" element={<Navigate to="/admin-guide" replace />} />
-            </Routes>
-          </main>
-        </div>
-         <BottomNavBar role={role} setRole={handleRoleChange} onResetOnboarding={handleResetOnboarding} />
-        {showUserGuide && (
-          <Modal title="Bienvenue ! Guide rapide" onClose={() => setShowUserGuide(false)} size="lg">
-            <div className="space-y-3 text-slate-blue-50">
-              <p className="text-slate-blue-100">Voici les étapes clés pour démarrer :</p>
-              <ol className="list-decimal list-inside space-y-1 text-slate-blue-50">
-                <li>
-                  <button className="underline text-sanctus-blue" onClick={() => { navigate('/participants'); setShowUserGuide(false); }}>
-                    Ajouter ou importer des participants
-                  </button>
-                </li>
-                <li>
-                  <button className="underline text-sanctus-blue" onClick={() => { navigate('/subjects'); setShowUserGuide(false); }}>
-                    Configurer les sujets et capacités
-                  </button>
-                </li>
-                <li>
-                  <button className="underline text-sanctus-blue" onClick={() => { navigate('/unavailabilities'); setShowUserGuide(false); }}>
-                    Renseigner les indisponibilités
-                  </button>
-                </li>
-                <li>
-                  <button className="underline text-sanctus-blue" onClick={() => { navigate('/programs'); setShowUserGuide(false); }}>
-                    Générer et ajuster les programmes
-                  </button>
-                </li>
-                <li>
-                  <button className="underline text-sanctus-blue" onClick={() => { navigate('/statistics'); setShowUserGuide(false); }}>
-                    Consulter les statistiques
-                  </button>
-                </li>
-              </ol>
-              <div className="flex justify-end gap-2 pt-2">
-                <Button variant="secondary" onClick={() => setShowUserGuide(false)}>Fermer</Button>
-                <Button onClick={() => { navigate('/admin-guide'); setShowUserGuide(false); }}>Voir le guide complet</Button>
-              </div>
+      <main className="mx-auto w-full max-w-[1700px] px-4 pb-24 pt-4 sm:px-6 sm:pb-24 sm:pt-6 lg:px-8 lg:pb-8 lg:pt-8">
+        <Routes>
+          <Route path="/dashboard" element={<Dashboard role={role} assignments={allAssignments} programs={programs} setPrograms={setPrograms} participants={participants} setParticipants={setParticipants} subjectTypes={subjectTypes} rolePermissions={rolePermissions} />} />
+          <Route path="/participants" element={<ParticipantsManager role={role} participants={participants} setParticipants={setParticipants} spiritualRoles={spiritualRoles} rolePermissions={rolePermissions} />} />
+          <Route path="/subjects" element={<SubjectConfiguration role={role} subjectTypes={subjectTypes} setSubjectTypes={setSubjectTypes} spiritualRoles={spiritualRoles} />} />
+          <Route path="/statistics" element={<Statistics assignments={allAssignments} participants={participants} subjectTypes={subjectTypes} />} />
+          <Route path="/roles" element={<RoleManager role={role} rolePermissions={rolePermissions} setRolePermissions={setRolePermissions} spiritualRoles={spiritualRoles} setSpiritualRoles={setSpiritualRoles} />} />
+          <Route path="/unavailabilities" element={<UnavailabilityViewer participants={participants} setParticipants={setParticipants} role={role} />} />
+          <Route path="/programs" element={<ProgramsManager role={role} programs={programs} setPrograms={setPrograms} participants={participants} subjectTypes={subjectTypes} rolePermissions={rolePermissions} />} />
+          <Route path="/my-assignments" element={<MyAssignmentsView assignments={allAssignments} subjectTypes={subjectTypes} currentUser={currentUser} setParticipants={setParticipants} />} />
+          <Route path="/participant-history" element={<ParticipantHistory participants={participants} subjectTypes={subjectTypes} />} />
+          <Route path="/rotation-rules" element={<RotationManager role={role} subjectTypes={subjectTypes} setSubjectTypes={setSubjectTypes} />} />
+          <Route path="/admin-guide" element={<AdminGuide />} />
+          <Route path="/" element={<Navigate to="/admin-guide" replace />} />
+        </Routes>
+      </main>
+
+      <BottomNavBar role={role} setRole={handleRoleChange} onResetOnboarding={handleResetOnboarding} />
+
+      {showUserGuide && (
+        <Modal title="Bienvenue ! Guide rapide" onClose={() => setShowUserGuide(false)} size="lg">
+          <div className="space-y-3 text-slate-800">
+            <p className="text-slate-700">Voici les étapes clés pour démarrer :</p>
+            <ol className="list-decimal list-inside space-y-1 text-slate-800">
+              <li>
+                <button className="underline text-blue-700" onClick={() => { navigate('/participants'); setShowUserGuide(false); }}>
+                  Ajouter ou importer des participants
+                </button>
+              </li>
+              <li>
+                <button className="underline text-blue-700" onClick={() => { navigate('/subjects'); setShowUserGuide(false); }}>
+                  Configurer les sujets et capacités
+                </button>
+              </li>
+              <li>
+                <button className="underline text-blue-700" onClick={() => { navigate('/unavailabilities'); setShowUserGuide(false); }}>
+                  Renseigner les indisponibilités
+                </button>
+              </li>
+              <li>
+                <button className="underline text-blue-700" onClick={() => { navigate('/programs'); setShowUserGuide(false); }}>
+                  Générer et ajuster les programmes
+                </button>
+              </li>
+              <li>
+                <button className="underline text-blue-700" onClick={() => { navigate('/statistics'); setShowUserGuide(false); }}>
+                  Consulter les statistiques
+                </button>
+              </li>
+            </ol>
+            <div className="flex justify-end gap-2 pt-2">
+              <Button variant="secondary" onClick={() => setShowUserGuide(false)}>Fermer</Button>
+              <Button onClick={() => { navigate('/admin-guide'); setShowUserGuide(false); }}>Voir le guide complet</Button>
             </div>
-          </Modal>
-        )}
-      </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

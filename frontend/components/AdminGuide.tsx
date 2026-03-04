@@ -1,227 +1,278 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from './ui/Button';
-import { Card } from './ui/Card';
-import { BookOpenIcon } from './ui/Icons';
+import { ChevronRightIcon, MagicWandIcon, UsersIcon, ListBulletIcon, CalendarDaysIcon, KeyIcon, ClipboardDocumentListIcon, ChartBarIcon } from './ui/Icons';
+
+type IconComponent = React.FC<React.SVGProps<SVGSVGElement>>;
+
+interface Step {
+  Icon: IconComponent;
+  title: string;
+  tagline: string;
+  tip: string;
+  details: string[];
+  cta: string;
+  route: string;
+  badgeClass: string;
+  bgClass: string;
+  textClass: string;
+  borderClass: string;
+  secondary?: { label: string; route: string };
+}
+
+const STEPS: Step[] = [
+  {
+    Icon: UsersIcon,
+    title: 'Participants',
+    tagline: 'Les personnes qui seront assignées',
+    tip: 'Commencez toujours ici — sans participants, rien ne peut être généré.',
+    details: [
+      'Ajoutez chaque frère ou sœur avec son rôle spirituel et ses capacités.',
+      'Importez rapidement depuis Excel si vous avez déjà une liste.',
+      'Mettez les profils à jour dès qu\'un rôle ou une capacité change.',
+    ],
+    cta: 'Gérer les participants',
+    route: '/participants',
+    badgeClass: 'bg-indigo-600',
+    bgClass: 'bg-indigo-50',
+    textClass: 'text-indigo-700',
+    borderClass: 'border-indigo-100',
+  },
+  {
+    Icon: ListBulletIcon,
+    title: 'Sujets',
+    tagline: 'Ce qui doit être planifié chaque semaine',
+    tip: 'Définissez chaque type d\'assignation : qui peut le tenir et combien de personnes.',
+    details: [
+      'Créez ou modifiez les types d\'assignation (Prière, Présidence, Discours…).',
+      'Précisez pour chaque sujet : rôle requis, genre, capacités et si c\'est un binôme.',
+      'Archivez les sujets temporairement inutilisés sans les supprimer.',
+    ],
+    cta: 'Configurer les sujets',
+    route: '/subjects',
+    badgeClass: 'bg-purple-600',
+    bgClass: 'bg-purple-50',
+    textClass: 'text-purple-700',
+    borderClass: 'border-purple-100',
+  },
+  {
+    Icon: CalendarDaysIcon,
+    title: 'Indisponibilités',
+    tagline: 'Les absences connues avant la génération',
+    tip: 'Déclarez les absences avant de générer — évitez les mauvaises surprises.',
+    details: [
+      'Indiquez les semaines où un participant ne peut pas être là.',
+      'L\'algorithme ignorera automatiquement ces personnes sur ces semaines.',
+      'Mettez à jour dès qu\'une absence est confirmée.',
+    ],
+    cta: 'Voir les indisponibilités',
+    route: '/unavailabilities',
+    badgeClass: 'bg-orange-500',
+    bgClass: 'bg-orange-50',
+    textClass: 'text-orange-700',
+    borderClass: 'border-orange-100',
+  },
+  {
+    Icon: KeyIcon,
+    title: 'Rôles & Règles',
+    tagline: 'Qui peut faire quoi, et à quelle fréquence',
+    tip: 'À configurer une bonne fois au démarrage — rarement besoin d\'y revenir.',
+    details: [
+      'Définissez les capacités associées à chaque rôle spirituel.',
+      'Réglez les délais de rotation : combien de semaines entre deux assignations identiques.',
+      'Ajustez selon les décisions des anciens.',
+    ],
+    cta: 'Gérer les rôles',
+    route: '/roles',
+    badgeClass: 'bg-red-600',
+    bgClass: 'bg-red-50',
+    textClass: 'text-red-700',
+    borderClass: 'border-red-100',
+    secondary: { label: 'Règles de rotation', route: '/rotation-rules' },
+  },
+  {
+    Icon: ClipboardDocumentListIcon,
+    title: 'Programmes',
+    tagline: 'Générez et ajustez le planning complet',
+    tip: 'Une fois les 4 étapes précédentes faites, la génération prend quelques secondes.',
+    details: [
+      'Choisissez la plage de semaines et lancez la génération automatique.',
+      'Ajustez manuellement si une affectation ne vous convient pas.',
+      'Exportez ou imprimez pour partager avec la congrégation.',
+    ],
+    cta: 'Aller aux programmes',
+    route: '/programs',
+    badgeClass: 'bg-emerald-600',
+    bgClass: 'bg-emerald-50',
+    textClass: 'text-emerald-700',
+    borderClass: 'border-emerald-100',
+  },
+  {
+    Icon: ChartBarIcon,
+    title: 'Statistiques',
+    tagline: 'Vérifiez l\'équilibre des affectations',
+    tip: 'Pratique après plusieurs semaines générées pour équilibrer la charge.',
+    details: [
+      'Consultez le nombre d\'assignations par personne et par sujet.',
+      'Identifiez les participants sous- ou sur-sollicités.',
+      'Utile pour préparer une réunion du corps des anciens.',
+    ],
+    cta: 'Voir les statistiques',
+    route: '/statistics',
+    badgeClass: 'bg-cyan-600',
+    bgClass: 'bg-cyan-50',
+    textClass: 'text-cyan-700',
+    borderClass: 'border-cyan-100',
+  },
+];
 
 export const AdminGuide: React.FC = () => {
   const navigate = useNavigate();
+  const [openStep, setOpenStep] = useState<number | null>(0);
 
-  const sections = [
-    {
-      title: 'Participants',
-      description: 'Ici vous créez ou importez les frères/soeurs avec leur rôle spirituel et leurs capacités.',
-      details: [
-        'A quoi ça sert : la génération du programme ne peut fonctionner sans les personnes et leurs rôles.',
-        'Quand l’utiliser : avant toute génération ou lorsqu’un profil change (nouveau rôle, capacité, note).',
-        'Actions rapides : ajouter, modifier, supprimer ou importer via Excel.',
-      ],
-      action: () => navigate('/participants'),
-      cta: 'Gérer les participants',
-    },
-    {
-      title: 'Sujets',
-      description: 'Configurez les sujets (types d’assignations), leurs exigences et le nombre de participants.',
-      details: [
-        'A quoi ça sert : dire à l’outil quels sujets doivent être planifiés et qui peut les tenir.',
-        'Quand l’utiliser : au démarrage, quand un sujet change ou pour archiver un sujet non utilisé.',
-        'Actions rapides : créer/éditer un sujet, définir les rôles/genres/capacités requis, activer le binôme.',
-      ],
-      action: () => navigate('/subjects'),
-      cta: 'Configurer les sujets',
-    },
-    {
-      title: 'Indisponibilités',
-      description: 'Déclarez les semaines où un participant ne peut pas être assigné.',
-      details: [
-        'A quoi ça sert : éviter que l’algorithme désigne quelqu’un indisponible.',
-        'Quand l’utiliser : avant chaque génération ou dès qu’une absence est connue.',
-        'Actions rapides : ajouter/retirer une semaine d’indisponibilité pour un participant.',
-      ],
-      action: () => navigate('/unavailabilities'),
-      cta: 'Voir les indisponibilités',
-    },
-    {
-      title: 'Règles et rôles',
-      description: 'Définissez les permissions par rôle et les règles de rotation.',
-      details: [
-        'A quoi ça sert : contrôler qui peut présider, prier, lire, etc., et espacer les affectations.',
-        'Quand l’utiliser : lors de la mise en place initiale ou si les anciens ajustent les règles.',
-        'Actions rapides : configurer les capacités par rôle, régler les délais/rotations entre deux mêmes sujets.',
-      ],
-      action: () => navigate('/roles'),
-      cta: 'Gestion des rôles',
-      secondary: { label: 'Règles de rotation', action: () => navigate('/rotation-rules') },
-    },
-    {
-      title: 'Programmes',
-      description: 'Générez automatiquement, puis ajustez manuellement les affectations par semaine.',
-      details: [
-        'A quoi ça sert : produire le planning complet des semaines avec les bonnes personnes.',
-        'Quand l’utiliser : après avoir renseigné participants, sujets et indisponibilités.',
-        'Actions rapides : générer plusieurs semaines, éditer une affectation, imprimer ou partager.',
-      ],
-      action: () => navigate('/programs'),
-      cta: 'Aller aux programmes',
-    },
-    {
-      title: 'Statistiques',
-      description: 'Suivez l’équilibre des affectations et l’activité des participants.',
-      details: [
-        'A quoi ça sert : vérifier que les assignations sont réparties équitablement.',
-        'Quand l’utiliser : après plusieurs semaines générées ou pour préparer une réunion d’anciens.',
-        'Actions rapides : consulter les compteurs par personne et par sujet.',
-      ],
-      action: () => navigate('/statistics'),
-      cta: 'Voir les statistiques',
-    },
-  ];
-
-  const cardColors = [
-    'bg-gradient-to-br from-blue-500 to-indigo-600',
-    'bg-gradient-to-br from-purple-500 to-pink-600',
-    'bg-gradient-to-br from-green-500 to-teal-600',
-    'bg-gradient-to-br from-orange-500 to-red-600',
-    'bg-gradient-to-br from-cyan-500 to-blue-600',
-    'bg-gradient-to-br from-rose-500 to-pink-600',
-  ];
+  const toggle = (i: number) => setOpenStep((prev: number | null) => (prev === i ? null : i));
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className="space-y-8"
-    >
-      <Card className="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-6 p-6">
-          <motion.div
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="flex items-start gap-4"
-          >
-            <div className="bg-white p-3 rounded-xl shadow-sm">
-              <BookOpenIcon className="h-8 w-8 text-indigo-600" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Guide Admin</h1>
-              <p className="text-lg text-gray-700 max-w-3xl mt-2">
-                Liens directs pour vos actions CRUD, la génération et le suivi.
-              </p>
-            </div>
-          </motion.div>
-          <motion.div
-            initial={{ x: 20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-          >
-            <Button onClick={() => navigate(-1)} variant="secondary" className="bg-white hover:bg-gray-50 text-white border-gray-300">
-              Retour
-            </Button>
-          </motion.div>
-        </div>
-      </Card>
+    <div className="max-w-3xl mx-auto space-y-6 pb-8">
 
+      {/* Header */}
       <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={{
-          hidden: { opacity: 0 },
-          visible: {
-            opacity: 1,
-            transition: {
-              staggerChildren: 0.1,
-              delayChildren: 0.3
-            }
-          }
-        }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
       >
-        {sections.map((section, index) => (
-          <motion.div
-            key={section.title}
-            variants={{
-              hidden: { opacity: 0, y: 30, scale: 0.95 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                transition: {
-                  type: "spring",
-                  stiffness: 100,
-                  damping: 15,
-                  duration: 0.6
-                }
-              }
-            }}
-            whileHover={{
-              y: -8,
-              scale: 1.02,
-              transition: { duration: 0.2 }
-            }}
-            className="h-full"
+        <h1 className="text-2xl font-bold text-gray-900">Par où commencer ?</h1>
+        <p className="text-sm text-gray-500 mt-1">
+          Suivez ces 6 étapes dans l'ordre et votre programme sera prêt en quelques minutes.
+        </p>
+      </motion.div>
+
+      {/* Quick-nav pills */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1, duration: 0.4 }}
+        className="flex flex-wrap gap-2"
+      >
+        {STEPS.map((step, i) => (
+          <button
+            key={i}
+            onClick={() => toggle(i)}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all border ${
+              openStep === i
+                ? `${step.badgeClass} text-white border-transparent shadow-sm scale-105`
+                : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:text-gray-900'
+            }`}
           >
-            <Card className="h-full overflow-hidden relative">
-              <div className={`p-6 ${cardColors[index % cardColors.length]} text-white relative overflow-hidden`}>
-                <motion.div
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
-                >
-                  <h3 className="text-2xl font-bold mb-2">{section.title}</h3>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-50 animate-pulse" />
-                </motion.div>
-              </div>
-              <div className="p-6 space-y-4 bg-white flex-grow">
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.6 + index * 0.1, duration: 0.4 }}
-                  className="text-gray-700 text-base leading-relaxed"
-                >
-                  {section.description}
-                </motion.p>
-                {section.details && (
-                  <motion.ul
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.7 + index * 0.1, duration: 0.4 }}
-                    className="list-disc list-inside text-gray-600 text-sm space-y-2"
-                  >
-                    {section.details.map((line, subIndex) => (
-                      <motion.li
-                        key={line}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.8 + index * 0.1 + subIndex * 0.05, duration: 0.3 }}
-                      >
-                        {line}
-                      </motion.li>
-                    ))}
-                  </motion.ul>
-                )}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.9 + index * 0.1, duration: 0.4 }}
-                  className="flex flex-wrap gap-3 pt-2"
-                >
-                  <Button size="sm" onClick={section.action} className="flex-1 min-w-0">
-                    {section.cta}
-                  </Button>
-                  {section.secondary && (
-                    <Button size="sm" variant="secondary" onClick={section.secondary.action} className="flex-1 min-w-0">
-                      {section.secondary.label}
-                    </Button>
-                  )}
-                </motion.div>
-              </div>
-            </Card>
-          </motion.div>
+            <step.Icon className="h-3.5 w-3.5" />
+            {step.title}
+          </button>
         ))}
       </motion.div>
-    </motion.div>
+
+      {/* Accordion steps */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.4 }}
+        className="space-y-2"
+      >
+        {STEPS.map((step, i) => (
+          <div
+            key={i}
+            className={`rounded-2xl overflow-hidden border shadow-sm transition-shadow ${
+              openStep === i ? `${step.borderClass} shadow-md` : 'border-gray-100'
+            }`}
+          >
+            {/* Row header */}
+            <button
+              onClick={() => toggle(i)}
+              className="w-full flex items-center gap-3 px-4 py-3.5 bg-white hover:bg-gray-50 transition-colors text-left"
+            >
+              <div className={`w-9 h-9 rounded-xl ${step.badgeClass} flex items-center justify-center flex-shrink-0`}>
+                <step.Icon className="h-4 w-4 text-white" />
+              </div>
+              <span className="text-xs font-bold text-gray-400 w-4 text-center flex-shrink-0">{i + 1}</span>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-gray-900 text-sm">{step.title}</p>
+                <p className="text-xs text-gray-500 mt-0.5 truncate">{step.tagline}</p>
+              </div>
+              <ChevronRightIcon
+                className="h-4 w-4 text-gray-400 flex-shrink-0 transition-transform duration-200"
+                style={{ transform: openStep === i ? 'rotate(90deg)' : 'rotate(0deg)' }}
+              />
+            </button>
+
+            {/* Expandable body */}
+            <AnimatePresence initial={false}>
+              {openStep === i && (
+                <motion.div
+                  key="body"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.22, ease: 'easeInOut' }}
+                  className="overflow-hidden"
+                >
+                  <div className={`${step.bgClass} px-5 py-4 border-t ${step.borderClass}`}>
+                    {/* Tip callout */}
+                    <div className="flex items-start gap-2 bg-white/80 rounded-xl px-3 py-2.5 mb-3 border border-white">
+                      <span className="text-sm leading-none mt-0.5 flex-shrink-0">💡</span>
+                      <p className={`text-xs font-medium ${step.textClass}`}>{step.tip}</p>
+                    </div>
+
+                    {/* Detail bullets */}
+                    <ul className="space-y-1.5 mb-4">
+                      {step.details.map((d, di) => (
+                        <li key={di} className="flex items-start gap-2 text-xs text-gray-700">
+                          <span className="text-gray-400 mt-0.5 flex-shrink-0">›</span>
+                          <span>{d}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* CTAs */}
+                    <div className="flex flex-wrap gap-2">
+                      <Button size="sm" onClick={() => navigate(step.route)}>
+                        {step.cta}
+                      </Button>
+                      {step.secondary && (
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          onClick={() => navigate(step.secondary!.route)}
+                        >
+                          {step.secondary.label}
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        ))}
+      </motion.div>
+
+      {/* Bottom CTA banner */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.35, duration: 0.4 }}
+        className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl px-5 py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border border-emerald-100"
+      >
+        <div>
+          <p className="font-bold text-gray-900 text-sm">Tout est configuré ?</p>
+          <p className="text-xs text-gray-500 mt-0.5">
+            Lancez la génération — votre programme sera prêt en quelques secondes.
+          </p>
+        </div>
+        <Button onClick={() => navigate('/programs')} className="flex-shrink-0">
+          <MagicWandIcon className="h-4 w-4 mr-1.5" />
+          Générer un programme
+        </Button>
+      </motion.div>
+    </div>
   );
 };

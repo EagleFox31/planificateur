@@ -136,7 +136,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ initialDate, onSave, onC
         </div>
 
         <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
-          <Button type="button" variant="secondary" onClick={onClose} className="!bg-white !hover:bg-gray-50 !text-white !border !border-gray-300">Annuler</Button>
+          <Button type="button" variant="secondary" onClick={onClose} className="!bg-white !hover:bg-gray-50 !text-slate-800 !border !border-gray-300">Annuler</Button>
           <Button type="button" onClick={handleSaveClick}>Sélectionner cette date</Button>
         </div>
       </div>
@@ -223,7 +223,7 @@ export const WeekPickerModal: React.FC<WeekPickerModalProps> = ({ initialSelecte
         </div>
 
          <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
-            <Button type="button" variant="secondary" onClick={onClose} className="!bg-white !hover:bg-gray-50 !text-white !border !border-gray-300">Annuler</Button>
+            <Button type="button" variant="secondary" onClick={onClose} className="!bg-white !hover:bg-gray-50 !text-slate-800 !border !border-gray-300">Annuler</Button>
             <Button type="button" onClick={handleSaveClick}>Enregistrer</Button>
         </div>
       </div>

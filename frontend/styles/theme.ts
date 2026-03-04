@@ -53,14 +53,14 @@ export const COLORS = {
 // Premium Utility classes using theme variables
 export const THEME_CLASSES = {
   // Cards
-  card: 'bg-gradient-to-br from-[color:var(--surface-card)] to-[color:var(--surface-secondary)] border border-[color:var(--border-primary)] rounded-xl shadow-lg hover:shadow-xl transition-all duration-300',
+  card: 'bg-[color:var(--surface-card)] border border-[color:var(--border-primary)] rounded-2xl shadow-sm transition-colors duration-200',
 
   // Buttons
   button: {
-    primary: 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-indigo-300',
-    secondary: 'bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-gray-400',
-    success: 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300',
-    danger: 'bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300',
+    primary: 'bg-blue-600 hover:bg-blue-700 text-white border border-blue-600 shadow-sm',
+    secondary: 'bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 shadow-sm',
+    success: 'bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-600 shadow-sm',
+    danger: 'bg-red-600 hover:bg-red-700 text-white border border-red-600 shadow-sm',
   },
 
   // Text
@@ -73,7 +73,7 @@ export const THEME_CLASSES = {
 
   // Backgrounds
   bg: {
-    primary: 'bg-gradient-to-br from-[color:var(--surface-primary)] to-[color:var(--surface-secondary)]',
+    primary: 'bg-[color:var(--surface-primary)]',
     secondary: 'bg-[color:var(--surface-secondary)]',
     tertiary: 'bg-[color:var(--surface-tertiary)]',
   },

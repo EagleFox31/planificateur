@@ -2,11 +2,10 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Program, Participant, SubjectType, Assignment, Role, RolePermissions } from '../types';
 import { Button } from './ui/Button';
-import { Card } from './ui/Card';
 import { Modal } from './ui/Modal';
 import { PrintLayout } from './ui/PrintLayout';
-import { MAIN_TOPICS, COLORS } from '../constants';
-import { ArrowLeftIcon, PrinterIcon, ShareIcon, UserCircleIcon, PencilSquareIcon, DocumentTextIcon } from './ui/Icons';
+import { MAIN_TOPICS } from '../constants';
+import { ArrowLeftIcon, PrinterIcon, ShareIcon, PencilSquareIcon, DocumentArrowUpIcon } from './ui/Icons';
 import { api } from '../services/api';
 import { getEligibleCandidates } from '../services/algo/filtering.service';
 import { getDefaultCapabilities, getRoleCapabilityDefaults } from '../utils/capabilities';
@@ -276,7 +275,7 @@ const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({ assignment, s
                         {validationError && (
                             <p className="text-sm text-red-600 mr-auto">{validationError}</p>
                         )}
-                        <Button variant="secondary" onClick={onClose} className="!bg-white !hover:bg-gray-50 !text-white !border !border-gray-300">Annuler</Button>
+                        <Button variant="secondary" onClick={onClose} className="!bg-white !hover:bg-gray-50 !text-slate-800 !border !border-gray-300">Annuler</Button>
                         <Button onClick={handleSave}>Enregistrer</Button>
                     </div>
                 </div>
@@ -342,6 +341,12 @@ export const ProgramDetailView: React.FC<ProgramDetailViewProps> = ({ program, p
     const [isPrinting, setIsPrinting] = useState(false);
     const [editingAssignment, setEditingAssignment] = useState<Assignment | null>(null);
     const [localProgram, setLocalProgram] = useState<Program>(program);
+    const [collapsedWeeks, setCollapsedWeeks] = useState<Set<string>>(new Set());
+    const toggleWeek = (week: string) => setCollapsedWeeks((prev: Set<string>) => {
+        const next = new Set(prev);
+        next.has(week) ? next.delete(week) : next.add(week);
+        return next;
+    });
     useEffect(() => {
         setLocalProgram(program);
     }, [program]);
@@ -444,181 +449,365 @@ export const ProgramDetailView: React.FC<ProgramDetailViewProps> = ({ program, p
         }
     };
 
+    const handleExportDocx = async () => {
+        try {
+            const {
+                AlignmentType,
+                BorderStyle,
+                Document,
+                Packer,
+                Paragraph,
+                Table,
+                TableCell,
+                TableRow,
+                TextRun,
+                WidthType,
+            } = await import('docx');
+            const assignmentsByWeek = groupAssignmentsByWeek(safeAssignments);
+            const sortedWeeks = Object.keys(assignmentsByWeek).sort();
+
+            const textColorBySubject: Record<string, string> = {
+                noir: '1F2937',
+                vert: '047857',
+                marron: '854D0E',
+                rouge: 'B91C1C',
+            };
+
+            const formatParticipantListForDocx = (ids: number[]): string => {
+                const names = ids.map(getParticipantName).filter(Boolean);
+                if (names.length === 0) return '';
+                if (names.length === 1) return names[0];
+                if (names.length === 2) return `${names[0]} et ${names[1]}`;
+                return `${names.slice(0, -1).join(', ')} et ${names[names.length - 1]}`;
+            };
+
+            const subtitle = programRangeLabel
+                ? `Programme ${programRangeLabel}`
+                : `Semaines du ${localProgram.weekRange.start} au ${localProgram.weekRange.end}`;
+
+            const docChildren: any[] = [
+                new Paragraph({
+                    alignment: AlignmentType.CENTER,
+                    spacing: { after: 140 },
+                    children: [new TextRun({ text: localProgram.title, bold: true, size: 36 })],
+                }),
+                new Paragraph({
+                    alignment: AlignmentType.CENTER,
+                    spacing: { after: 380 },
+                    children: [new TextRun({ text: subtitle, size: 28 })],
+                }),
+            ];
+
+            sortedWeeks.forEach((week, weekIndex) => {
+                docChildren.push(
+                    new Paragraph({
+                        pageBreakBefore: weekIndex > 0,
+                        spacing: { after: 240 },
+                        border: {
+                            bottom: {
+                                color: 'D1D5DB',
+                                size: 6,
+                                space: 1,
+                                style: BorderStyle.SINGLE,
+                            },
+                        },
+                        children: [
+                            new TextRun({
+                                text: `Programme de la semaine : ${week}`,
+                                bold: true,
+                                size: 30,
+                                color: '000000',
+                            }),
+                        ],
+                    })
+                );
+
+                MAIN_TOPICS.forEach((topic) => {
+                    const topicSubjects = safeSubjects.filter(
+                        (subject) => subject.mainTopic === topic && !subject.isArchived
+                    );
+                    const assignmentsForTopic = assignmentsByWeek[week]?.filter((assignment) =>
+                        topicSubjects.some((subject) => subject.id === assignment.subjectTypeId)
+                    ) || [];
+
+                    if (assignmentsForTopic.length === 0) return;
+
+                    docChildren.push(
+                        new Paragraph({
+                            spacing: { after: 120 },
+                            children: [new TextRun({ text: topic, bold: true, size: 26, color: '000000' })],
+                        })
+                    );
+
+                    const rows = topicSubjects
+                        .map((subject) => {
+                            const assignment = assignmentsByWeek[week]?.find((item) => item.subjectTypeId === subject.id);
+                            if (!assignment) return null;
+
+                            const displayLabel = subject.uppercaseTitle
+                                ? (assignment.customLabel || subject.label).toUpperCase()
+                                : (assignment.customLabel || subject.label);
+                            const participantNames = formatParticipantListForDocx(assignment.participantIds);
+                            const textColor = textColorBySubject[subject.color] || '000000';
+
+                            return new TableRow({
+                                children: [
+                                    new TableCell({
+                                        width: { size: 50, type: WidthType.PERCENTAGE },
+                                        borders: {
+                                            top: { style: BorderStyle.SINGLE, color: 'E5E7EB', size: 4 },
+                                            bottom: { style: BorderStyle.SINGLE, color: 'E5E7EB', size: 4 },
+                                            left: { style: BorderStyle.NONE, color: 'FFFFFF', size: 0 },
+                                            right: { style: BorderStyle.NONE, color: 'FFFFFF', size: 0 },
+                                        },
+                                        children: [
+                                            new Paragraph({
+                                                children: [
+                                                    new TextRun({
+                                                        text: displayLabel,
+                                                        bold: true,
+                                                        color: textColor,
+                                                    }),
+                                                ],
+                                            }),
+                                        ],
+                                    }),
+                                    new TableCell({
+                                        width: { size: 50, type: WidthType.PERCENTAGE },
+                                        borders: {
+                                            top: { style: BorderStyle.SINGLE, color: 'E5E7EB', size: 4 },
+                                            bottom: { style: BorderStyle.SINGLE, color: 'E5E7EB', size: 4 },
+                                            left: { style: BorderStyle.NONE, color: 'FFFFFF', size: 0 },
+                                            right: { style: BorderStyle.NONE, color: 'FFFFFF', size: 0 },
+                                        },
+                                        children: [
+                                            new Paragraph({
+                                                children: [
+                                                    new TextRun({
+                                                        text: participantNames || 'Non attribue',
+                                                        color: '000000',
+                                                    }),
+                                                ],
+                                            }),
+                                        ],
+                                    }),
+                                ],
+                            });
+                        })
+                        .filter(Boolean) as InstanceType<typeof TableRow>[];
+
+                    if (rows.length > 0) {
+                        docChildren.push(
+                            new Table({
+                                width: { size: 100, type: WidthType.PERCENTAGE },
+                                rows,
+                            })
+                        );
+                        docChildren.push(new Paragraph({ spacing: { after: 120 } }));
+                    }
+                });
+            });
+
+            if (sortedWeeks.length === 0) {
+                docChildren.push(
+                    new Paragraph({
+                        children: [new TextRun({ text: 'Aucune affectation disponible.', color: '6B7280' })],
+                    })
+                );
+            }
+
+            const doc = new Document({
+                sections: [
+                    {
+                        properties: {},
+                        children: docChildren,
+                    },
+                ],
+            });
+
+            const blob = await Packer.toBlob(doc);
+            const filename = `programme-${localProgram.weekRange.start}-${localProgram.weekRange.end}.docx`;
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Erreur lors de l'export DOCX :", error);
+            alert("Impossible d'exporter le programme en DOCX.");
+        }
+    };
+
     if (isPrinting) {
         return <PrintLayout program={program} participants={participants} subjectTypes={subjectTypes} onClose={() => setIsPrinting(false)} />;
     }
 
+
+    const assignmentsByWeekMap = groupAssignmentsByWeek(safeAssignments);
+
     return (
-        <><motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-        >
-            <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-100">
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-6 p-6">
-                    <motion.div
-                        initial={{ x: -20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.2, duration: 0.5 }}
-                        className="flex items-start gap-4"
-                    >
-                        <div className="bg-white p-3 rounded-xl shadow-sm">
-                            <DocumentTextIcon className="h-8 w-8 text-green-600" />
-                        </div>
-                        <div>
-                            <h3 className="text-3xl font-bold text-gray-900">Programme {programRangeLabel}</h3>
-                            <p className="text-lg text-gray-700 max-w-3xl mt-2">
-                                Consultez et modifiez les attributions pour ce programme hebdomadaire.
-                            </p>
-                        </div>
-                    </motion.div>
-                    <motion.div
-                    initial={{ x: 20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.3, duration: 0.5 }}
-                    className="flex flex-col sm:flex-row gap-3"
-                >
-                    <Button onClick={onBack} variant="secondary" size="sm" className="bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 shadow">
-                        <ArrowLeftIcon className="h-4 w-4 mr-2 text-white" />
-                        Retour aux programmes
-                    </Button>
-                    <Button onClick={() => setIsPrinting(true)} variant="secondary" className="bg-green-600 hover:bg-green-700">
-                        <PrinterIcon className="h-5 w-5 mr-2" />
-                        Imprimer
-                    </Button>
-                    <Button onClick={handleShare} className="bg-green-600 hover:bg-green-700">
-                        <ShareIcon className="h-5 w-5 mr-2" />
-                        Partager
-                    </Button>
-                </motion.div>
-            </div>
-        </Card>
+        <>
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="space-y-8"
+            transition={{ duration: 0.4 }}
+            className="space-y-6"
         >
-                {allProgramWeeks.map(week => (
-                    <div key={week}>
-                        <motion.h4
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5 }}
-                            className="text-2xl font-bold text-gray-900 mb-6 pb-3 border-b-2 border-green-200"
-                        >
-                            Semaine : {formatWeekHumanFromStartDate(week, localProgram.weekRange.start, localProgram.startDate)}
-                        </motion.h4>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    {MAIN_TOPICS.map(topic => {
-                                        const topicSubjects = safeSubjects.filter(s => s.mainTopic === topic && !s.isArchived);
-                                if (topicSubjects.length === 0) return null;
-
-                                const assignmentsByWeek = groupAssignmentsByWeek(localProgram.assignments);
-                                const topicColorName = topicSubjects[0].color;
-                                const topicColorClass = COLORS[topicColorName as keyof typeof COLORS] || 'bg-slate-blue-700';
-
-                                return (
-                                    <motion.div
-                                        key={topic}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.5 }}
-                                        whileHover={{ y: -2 }}
-                                        className="h-full"
-                                    >
-                                        <Card className="flex flex-col h-full bg-white border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300">
-                                            <div className={`p-5 rounded-t-xl ${topicColorClass} relative overflow-hidden`}>
-                                                <motion.h4
-                                                    initial={{ scale: 0.9 }}
-                                                    animate={{ scale: 1 }}
-                                                    transition={{ delay: 0.1, duration: 0.3 }}
-                                                    className="text-xl font-bold text-white relative z-10"
-                                                >
-                                                    {topic}
-                                                </motion.h4>
-                                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-50 animate-pulse" />
-                                            </div>
-                                            <div className="p-5 space-y-4 bg-gray-50 rounded-b-xl flex-grow">
-                                                {topicSubjects.map((subject, subIndex) => {
-                                                    const assignment = assignmentsByWeek[week]?.find(a => a.subjectTypeId === subject.id);
-                                                    const labelClass = subject.uppercaseTitle ? 'uppercase tracking-wide' : '';
-                                                    const displayLabel = assignment?.customLabel || subject.label;
-                                                    return (
-                                                        <motion.div
-                                                            key={subject.id}
-                                                            initial={{ opacity: 0, x: -10 }}
-                                                            animate={{ opacity: 1, x: 0 }}
-                                                            transition={{ delay: 0.2 + subIndex * 0.1, duration: 0.4 }}
-                                                        >
-                                                            <div className="flex justify-between items-center">
-                                                                <p className={`font-semibold text-gray-800 ${labelClass} text-base`}>{displayLabel}</p>
-                                                                {role === Role.ADMIN && (
-                                                                    <Button
-                                                                        variant="secondary"
-                                                                        size="sm"
-                                                                        onClick={() => handleOpenAssignmentModal(subject, week, assignment)}
-                                                                        title={assignment ? "Modifier l'affectation" : "Attribuer ce sujet"}
-                                                                        className="bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 shadow-sm"
-                                                                    >
-                                                                        <PencilSquareIcon className="h-4 w-4 text-white" />
-                                                                    </Button>
-                                                                )}
-                                                            </div>
-                                                            {assignment && assignment.participantIds.length > 0 ? (
-                                                                <div className="mt-2 flex flex-col space-y-2">
-                                                                    {assignment.participantIds.map(pid => (
-                                                                        <motion.div
-                                                                            key={pid}
-                                                                            initial={{ opacity: 0 }}
-                                                                            animate={{ opacity: 1 }}
-                                                                            transition={{ delay: 0.3 + subIndex * 0.1, duration: 0.3 }}
-                                                                            className="flex items-center text-indigo-600 hover:text-indigo-700 transition-colors"
-                                                                        >
-                                                                            <UserCircleIcon className="h-5 w-5 mr-3 text-indigo-500" />
-                                                                    <span title={`${getParticipantName(pid)} — ${safeParticipants.find(p => p.id === pid)?.spiritualRole || 'Rôle non défini'}`} className="font-medium">
-                                                                                {getParticipantName(pid)}
-                                                                            </span>
-                                                                        </motion.div>
-                                                                    ))}
-                                                                </div>
-                                                            ) : (
-                                                                <motion.p
-                                                                    initial={{ opacity: 0 }}
-                                                                    animate={{ opacity: 1 }}
-                                                                    transition={{ delay: 0.3 + subIndex * 0.1, duration: 0.3 }}
-                                                                    className="text-gray-500 italic mt-2 text-sm"
-                                                                >
-                                                                    Non attribué
-                                                                </motion.p>
-                                                            )}
-                                                        </motion.div>
-                                                    );
-                                                })}
-                                            </div>
-                                        </Card>
-                                    </motion.div>
-                                );
-                            })}
-                        </div>
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={onBack}
+                        className="p-2 rounded-xl hover:bg-gray-100 transition-colors text-gray-500"
+                    >
+                        <ArrowLeftIcon className="h-5 w-5" />
+                    </button>
+                    <div>
+                        <h1 className="text-xl font-bold text-gray-900 leading-tight">{localProgram.title}</h1>
+                        <p className="text-sm text-gray-400">{programRangeLabel}</p>
                     </div>
-                ))}
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                    <button
+                        onClick={() => setIsPrinting(true)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                    >
+                        <PrinterIcon className="h-4 w-4" /> Imprimer
+                    </button>
+                    <button
+                        onClick={handleExportDocx}
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors"
+                    >
+                        <DocumentArrowUpIcon className="h-4 w-4" /> DOCX
+                    </button>
+                    <button
+                        onClick={handleShare}
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-emerald-600 border border-emerald-200 rounded-lg hover:bg-emerald-50 transition-colors"
+                    >
+                        <ShareIcon className="h-4 w-4" /> Partager
+                    </button>
+                </div>
+            </div>
 
-            </motion.div>
+            {/* Weeks — scrollable container */}
+            <div className="overflow-y-auto max-h-[calc(100vh-180px)] pr-1">
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden divide-y divide-gray-100">
+            {allProgramWeeks.map((week, weekIdx) => {
+                const weekLabel = formatWeekHumanFromStartDate(week, localProgram.weekRange.start, localProgram.startDate);
+                const weekAssignments = assignmentsByWeekMap[week] || [];
+                const isCollapsed = collapsedWeeks.has(week);
+
+                return (
+                    <motion.div
+                        key={week}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: weekIdx * 0.05 }}
+                    >
+                        {/* Week header — collapsible */}
+                        <button
+                            onClick={() => toggleWeek(week)}
+                            className="w-full px-6 py-4 flex items-center justify-between bg-[#D6C4A8] hover:bg-[#C9B599] transition-colors text-left"
+                        >
+                            <div>
+                                <p className="text-base font-bold text-[#3d2e1e]">Programme de la semaine : {week}</p>
+                                <p className="text-xs text-[#7a5c3a] mt-0.5">{weekLabel}</p>
+                            </div>
+                            <svg
+                                className={`h-4 w-4 text-gray-400 transition-transform duration-200 flex-shrink-0 ${isCollapsed ? '-rotate-90' : 'rotate-0'}`}
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            >
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        {/* Sections */}
+                        {!isCollapsed && (
+                            <div className="border-t border-gray-100 pb-3">
+                                {MAIN_TOPICS.map(topic => {
+                                    const topicSubjects = safeSubjects.filter(s => s.mainTopic === topic && !s.isArchived);
+                                    if (topicSubjects.length === 0) return null;
+
+                                    return (
+                                        <div key={topic}>
+                                            {/* Section label */}
+                                            <p className="px-6 pt-4 pb-1 text-sm text-gray-500">{topic}</p>
+
+                                            {/* Subject rows */}
+                                            {topicSubjects.map(subject => {
+                                                const assignment = weekAssignments.find(a => a.subjectTypeId === subject.id);
+                                                const displayLabel = assignment?.customLabel || subject.label;
+                                                const names = assignment?.participantIds.map(id => getParticipantName(id)) ?? [];
+                                                const colorClass: Record<string, string> = {
+                                                    noir: 'text-gray-800',
+                                                    vert: 'text-emerald-700',
+                                                    marron: 'text-amber-800',
+                                                    rouge: 'text-red-700',
+                                                };
+                                                const labelColor = colorClass[subject.color] ?? 'text-gray-800';
+
+                                                return (
+                                                    <div
+                                                        key={subject.id}
+                                                        className="flex items-center justify-between px-6 py-2.5 border-b border-gray-50 hover:bg-gray-50/60 transition-colors group"
+                                                    >
+                                                        {/* Label */}
+                                                        <span className={`text-sm font-semibold ${labelColor} ${subject.uppercaseTitle ? 'uppercase tracking-wide' : ''} flex-1 pr-4 leading-snug`}>
+                                                            {displayLabel}
+                                                        </span>
+
+                                                        {/* Participants + edit */}
+                                                        <div className="flex items-center gap-2 flex-shrink-0">
+                                                            {names.length > 0 ? (
+                                                                <span className="text-sm text-gray-900">
+                                                                    {names.length > 1
+                                                                        ? <>{names[0]} <span className={`font-light ${labelColor}`}>et</span> {names[1]}</>
+                                                                        : names[0]
+                                                                    }
+                                                                </span>
+                                                            ) : (
+                                                                <span className="text-xs text-gray-300 italic">Non attribué</span>
+                                                            )}
+                                                            {role === Role.ADMIN && (
+                                                                <button
+                                                                    onClick={() => handleOpenAssignmentModal(subject, week, assignment)}
+                                                                    title="Modifier"
+                                                                    className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-700"
+                                                                >
+                                                                    <PencilSquareIcon className="h-3.5 w-3.5" />
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </motion.div>
+                );
+            })}
+            </div>
+            </div>{/* end scrollable weeks */}
         </motion.div>
-            {editingAssignment && (
-                <EditAssignmentModal
-                    assignment={editingAssignment}
-                    subject={subjectTypes.find(s => s.id === editingAssignment.subjectTypeId)!}
-                    participants={participants}
-                    onSave={handleSaveAssignment}
-                    onClose={() => setEditingAssignment(null)}
-                    program={localProgram}
-                    subjectTypes={subjectTypes}
-                    rolePermissions={rolePermissions}
-                />
-            )}
+
+        {editingAssignment && (
+            <EditAssignmentModal
+                assignment={editingAssignment}
+                subject={subjectTypes.find(s => s.id === editingAssignment.subjectTypeId)!}
+                participants={participants}
+                onSave={handleSaveAssignment}
+                onClose={() => setEditingAssignment(null)}
+                program={localProgram}
+                subjectTypes={subjectTypes}
+                rolePermissions={rolePermissions}
+            />
+        )}
         </>
     );
 };

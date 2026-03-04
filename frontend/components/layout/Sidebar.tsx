@@ -1,7 +1,19 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Role } from '../../types';
-import { HomeIcon, UsersIcon, ListBulletIcon, ChartBarIcon, BookOpenIcon, KeyIcon, ClipboardDocumentListIcon, DocumentTextIcon, UserCircleIcon, ClockIcon, Cog6ToothIcon } from '../ui/Icons';
+import {
+  HomeIcon,
+  UsersIcon,
+  ListBulletIcon,
+  ChartBarIcon,
+  BookOpenIcon,
+  KeyIcon,
+  ClipboardDocumentListIcon,
+  DocumentTextIcon,
+  UserCircleIcon,
+  ClockIcon,
+  Cog6ToothIcon,
+} from '../ui/Icons';
 
 interface SidebarProps {
   role: Role;
@@ -16,116 +28,123 @@ const NavItem: React.FC<{
 }> = ({ icon, label, isActive, onClick }) => (
   <button
     onClick={onClick}
-    className={`flex items-center w-full px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 border-l-4 relative overflow-hidden ${
+    className={`group flex items-center w-full px-3 py-2.5 text-sm rounded-xl border transition-colors ${
       isActive
-        ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white border-indigo-500 shadow-lg shadow-indigo-500/25'
-        : 'text-gray-700 hover:bg-white/80 hover:text-indigo-700 hover:shadow-md border-transparent'
+        ? 'bg-blue-50 text-blue-700 border-blue-100'
+        : 'bg-white text-slate-600 border-transparent hover:bg-slate-50 hover:text-slate-900'
     }`}
   >
-    {isActive && (
-      <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent animate-pulse" />
-    )}
-    {icon}
-    <span className="ml-4 relative z-10">{label}</span>
+    <span
+      className={`mr-3 transition-colors ${
+        isActive ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-700'
+      }`}
+    >
+      {icon}
+    </span>
+    <span className="font-medium">{label}</span>
   </button>
 );
 
 export const Sidebar: React.FC<SidebarProps> = ({ role, onResetOnboarding }) => {
   const navigate = useNavigate();
   const location = useLocation();
-    
+
   return (
-    <div className="hidden lg:flex flex-col w-64 bg-white/80 backdrop-blur-xl border-r border-white/30 shadow-xl">
-        <div className="flex items-center h-20 px-4 border-b border-white/30">
-          <div className="flex items-center">
-            <img src="/images/logo.webp" alt="Logo" className="h-8 w-8" />
-            <h1 className="text-xl font-bold ml-2 text-gray-900">Planificateur</h1>
-          </div>
-        </div>
-        <div className="flex-1 flex flex-col justify-between p-4">
-          <nav className="space-y-2">
-            {role === Role.ADMIN ? (
-              <>
-                <NavItem
-                  icon={<HomeIcon className="h-6 w-6" />}
-                  label="Tableau de bord"
-                  isActive={location.pathname === '/dashboard'}
-                  onClick={() => navigate('/dashboard')}
-                />
-                <NavItem
-                  icon={<BookOpenIcon className="h-6 w-6" />}
-                  label="Guide admin"
-                  isActive={location.pathname === '/admin-guide'}
-                  onClick={() => navigate('/admin-guide')}
-                />
-                 <NavItem
-                  icon={<DocumentTextIcon className="h-6 w-6" />}
-                  label="Programmes"
-                  isActive={location.pathname === '/programs'}
-                  onClick={() => navigate('/programs')}
-                />
-                <NavItem
-                  icon={<UsersIcon className="h-6 w-6" />}
-                  label="Participants"
-                  isActive={location.pathname === '/participants'}
-                  onClick={() => navigate('/participants')}
-                />
-                 <NavItem
-                  icon={<ClockIcon className="h-6 w-6" />}
-                  label="Historique"
-                  isActive={location.pathname === '/participant-history'}
-                  onClick={() => navigate('/participant-history')}
-                />
-                <NavItem
-                  icon={<ListBulletIcon className="h-6 w-6" />}
-                  label="Sujets"
-                  isActive={location.pathname === '/subjects'}
-                  onClick={() => navigate('/subjects')}
-                />
-                <NavItem
-                  icon={<ChartBarIcon className="h-6 w-6" />}
-                  label="Statistiques"
-                  isActive={location.pathname === '/statistics'}
-                  onClick={() => navigate('/statistics')}
-                />
-                <NavItem
-                  icon={<ClipboardDocumentListIcon className="h-6 w-6" />}
-                  label="Indisponibilités"
-                  isActive={location.pathname === '/unavailabilities'}
-                  onClick={() => navigate('/unavailabilities')}
-                />
-                 <NavItem
-                  icon={<Cog6ToothIcon className="h-6 w-6" />}
-                  label="Règles de Rotation"
-                  isActive={location.pathname === '/rotation-rules'}
-                  onClick={() => navigate('/rotation-rules')}
-                />
-                <NavItem
-                  icon={<KeyIcon className="h-6 w-6" />}
-                  label="Gestion des rôles"
-                  isActive={location.pathname === '/roles'}
-                  onClick={() => navigate('/roles')}
-                />
-              </>
-            ) : (
-                 <NavItem
-                    icon={<UserCircleIcon className="h-6 w-6" />}
-                    label="Mes Sujets"
-                    isActive={location.pathname === '/my-assignments'}
-                    onClick={() => navigate('/my-assignments')}
-                />
-            )}
-          </nav>
-          <div>
-            <hr className="my-4 border-white/30" />
-            <NavItem
-              icon={<BookOpenIcon className="h-6 w-6" />}
-              label="Revoir l'introduction"
-              isActive={false}
-              onClick={onResetOnboarding}
-            />
+    <aside className="hidden lg:flex flex-col w-72 bg-white border-r border-slate-200">
+      <div className="h-20 px-5 border-b border-slate-200 flex items-center">
+        <div className="flex items-center gap-3 min-w-0">
+          <img src="/images/logo.webp" alt="Logo" className="h-9 w-9 rounded-lg object-cover" />
+          <div className="min-w-0">
+            <h1 className="text-base font-semibold text-slate-900 truncate">Planificateur</h1>
+            <p className="text-xs text-slate-500 truncate">Reunions theocratiques</p>
           </div>
         </div>
       </div>
+
+      <div className="flex-1 flex flex-col justify-between p-4">
+        <nav className="space-y-1.5">
+          {role === Role.ADMIN ? (
+            <>
+              <NavItem
+                icon={<HomeIcon className="h-5 w-5" />}
+                label="Tableau de bord"
+                isActive={location.pathname === '/dashboard'}
+                onClick={() => navigate('/dashboard')}
+              />
+              <NavItem
+                icon={<BookOpenIcon className="h-5 w-5" />}
+                label="Guide admin"
+                isActive={location.pathname === '/admin-guide'}
+                onClick={() => navigate('/admin-guide')}
+              />
+              <NavItem
+                icon={<DocumentTextIcon className="h-5 w-5" />}
+                label="Programmes"
+                isActive={location.pathname === '/programs'}
+                onClick={() => navigate('/programs')}
+              />
+              <NavItem
+                icon={<UsersIcon className="h-5 w-5" />}
+                label="Participants"
+                isActive={location.pathname === '/participants'}
+                onClick={() => navigate('/participants')}
+              />
+              <NavItem
+                icon={<ClockIcon className="h-5 w-5" />}
+                label="Historique"
+                isActive={location.pathname === '/participant-history'}
+                onClick={() => navigate('/participant-history')}
+              />
+              <NavItem
+                icon={<ListBulletIcon className="h-5 w-5" />}
+                label="Sujets"
+                isActive={location.pathname === '/subjects'}
+                onClick={() => navigate('/subjects')}
+              />
+              <NavItem
+                icon={<ChartBarIcon className="h-5 w-5" />}
+                label="Statistiques"
+                isActive={location.pathname === '/statistics'}
+                onClick={() => navigate('/statistics')}
+              />
+              <NavItem
+                icon={<ClipboardDocumentListIcon className="h-5 w-5" />}
+                label="Indisponibilites"
+                isActive={location.pathname === '/unavailabilities'}
+                onClick={() => navigate('/unavailabilities')}
+              />
+              <NavItem
+                icon={<Cog6ToothIcon className="h-5 w-5" />}
+                label="Regles de rotation"
+                isActive={location.pathname === '/rotation-rules'}
+                onClick={() => navigate('/rotation-rules')}
+              />
+              <NavItem
+                icon={<KeyIcon className="h-5 w-5" />}
+                label="Gestion des roles"
+                isActive={location.pathname === '/roles'}
+                onClick={() => navigate('/roles')}
+              />
+            </>
+          ) : (
+            <NavItem
+              icon={<UserCircleIcon className="h-5 w-5" />}
+              label="Mes sujets"
+              isActive={location.pathname === '/my-assignments'}
+              onClick={() => navigate('/my-assignments')}
+            />
+          )}
+        </nav>
+
+        <div className="pt-4 mt-4 border-t border-slate-200">
+          <NavItem
+            icon={<BookOpenIcon className="h-5 w-5" />}
+            label="Revoir l'introduction"
+            isActive={false}
+            onClick={onResetOnboarding}
+          />
+        </div>
+      </div>
+    </aside>
   );
 };

@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
 import { SubjectType, Role, Gender, SpiritualRole } from '../types';
-import { Card } from './ui/Card';
 import { COLORS, MAIN_TOPICS } from '../constants';
 import { Button } from './ui/Button';
 import { Modal } from './ui/Modal';
-import { PencilSquareIcon, PlusIcon, ArchiveBoxIcon, ArrowUturnDownIcon } from './ui/Icons';
+import { PencilSquareIcon, PlusIcon, ArchiveBoxIcon, ArrowUturnDownIcon, ListBulletIcon } from './ui/Icons';
 import { CAPABILITY_LABELS, CAPABILITY_ORDER } from '../utils/capabilities';
 import { api } from '../services/api';
 
@@ -130,7 +128,7 @@ const SubjectEditForm: React.FC<SubjectEditFormProps> = ({ subject, onSave, onCa
           type="button"
           variant="secondary"
           onClick={onCancel}
-          className="!bg-white !text-white !font-semibold !border !border-gray-300 !shadow-md hover:!shadow-lg hover:!bg-gray-50"
+          className="!bg-white !text-slate-800 !font-semibold !border !border-gray-300 !shadow-md hover:!shadow-lg hover:!bg-gray-50"
         >
           Annuler
         </Button>
@@ -214,104 +212,106 @@ export const SubjectConfiguration: React.FC<SubjectConfigurationProps> = ({ role
   }, [subjectTypes, showArchived]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      <Card className="bg-white border border-gray-200 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-6 gap-4 p-6 border-b border-gray-100">
-          <motion.div
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-          >
-            <h3 className="text-3xl font-bold text-gray-900">Configuration des types de sujets</h3>
-          </motion.div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center flex-shrink-0">
+            <ListBulletIcon className="h-5 w-5 text-white" />
+          </div>
+          <div>
+            <h1 className="text-xl font-bold text-gray-900">Sujets</h1>
+            <p className="text-xs text-gray-500">{subjectTypes.filter(s => !s.isArchived).length} sujet{subjectTypes.filter(s => !s.isArchived).length !== 1 ? 's' : ''} actif{subjectTypes.filter(s => !s.isArchived).length !== 1 ? 's' : ''}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <label className="flex items-center gap-2 text-xs text-gray-500 cursor-pointer select-none">
+            <input type="checkbox" id="showArchived" checked={showArchived} onChange={() => setShowArchived(p => !p)} className="h-3.5 w-3.5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 bg-white"/>
+            Archivés
+          </label>
           {role === Role.ADMIN && (
-            <motion.div
-              initial={{ x: 20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-            >
-              <Button onClick={handleAdd} className="bg-indigo-600 hover:bg-indigo-700">
-                <PlusIcon className="h-5 w-5 mr-2"/>
-                Ajouter un sujet
-              </Button>
-            </motion.div>
+            <Button size="sm" onClick={handleAdd}>
+              <PlusIcon className="h-4 w-4 mr-1.5"/>
+              Ajouter
+            </Button>
           )}
         </div>
-       <motion.div
-         initial={{ opacity: 0 }}
-         animate={{ opacity: 1 }}
-         transition={{ delay: 0.4, duration: 0.5 }}
-         className="flex items-center space-x-2 p-6 pt-2"
-       >
-          <input type="checkbox" id="showArchived" checked={showArchived} onChange={() => setShowArchived(p => !p)} className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 bg-white"/>
-          <label htmlFor="showArchived" className="text-sm font-medium text-gray-700">Afficher les sujets archivés</label>
-       </motion.div>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.6 }}
-        className="overflow-x-auto"
-      >
-        <table className="min-w-full divide-y divide-gray-200 text-base">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 uppercase tracking-wide">Intitulé</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 uppercase tracking-wide">Sujet principal</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 uppercase tracking-wide">Rotation</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 uppercase tracking-wide">Règles</th>
-              {role === Role.ADMIN && (
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-900 uppercase tracking-wide">Actions</th>
-              )}
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {visibleSubjects.map((s, index) => (
-              <motion.tr
-                key={s.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6 + index * 0.05, duration: 0.4 }}
-                className={`${s.isArchived ? 'opacity-60' : ''} transition-colors duration-200 hover:bg-gray-50`}
-              >
-                <td className="px-6 py-4 whitespace-nowrap text-lg font-semibold text-gray-900">
-                  <div className="flex items-center">
-                    <span className={`h-3 w-3 rounded-full mr-3 ${COLORS[s.color as keyof typeof COLORS]}`}></span>
-                    {s.label}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-lg text-gray-700">{s.mainTopic}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-lg text-gray-700">{s.rotationWeeks} sem.</td>
-                <td className="px-6 py-4 whitespace-nowrap text-lg text-gray-700">
-                  <div className="flex flex-col space-y-1 text-base">
-                    <span>Participants : {s.nbParticipants}</span>
-                    {s.requiredGender && <span>Genre : {s.requiredGender}</span>}
-                    {s.requiredSpiritualRole && <span>Rôle : {s.requiredSpiritualRole}</span>}
-                    {s.requiredCapability && <span>Capacité : {CAPABILITY_LABELS[s.requiredCapability]}</span>}
-                    {s.isBinome && <span className="text-green-600 font-medium">Binôme requis</span>}
-                  </div>
-                </td>
+      </div>
+
+      {/* KPIs */}
+      <div className="grid grid-cols-3 gap-4">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-4">
+          <p className="text-2xl font-bold text-purple-600">{subjectTypes.filter(s => !s.isArchived).length}</p>
+          <p className="text-xs text-gray-500 mt-0.5">Sujets actifs</p>
+        </div>
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-4">
+          <p className="text-2xl font-bold text-gray-400">{subjectTypes.filter(s => s.isArchived).length}</p>
+          <p className="text-xs text-gray-500 mt-0.5">Archivés</p>
+        </div>
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-4">
+          <p className="text-2xl font-bold text-emerald-600">{subjectTypes.filter(s => s.isBinome).length}</p>
+          <p className="text-xs text-gray-500 mt-0.5">Binômes</p>
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="overflow-x-auto overflow-y-auto max-h-[500px]">
+          <table className="min-w-full divide-y divide-gray-100">
+            <thead className="bg-[#D6C4A8] sticky top-0 z-10">
+              <tr>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-[#3d2e1e] uppercase tracking-wide">Intitulé</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-[#3d2e1e] uppercase tracking-wide">Section</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-[#3d2e1e] uppercase tracking-wide">Rotation</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-[#3d2e1e] uppercase tracking-wide">Règles</th>
                 {role === Role.ADMIN && (
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-lg font-semibold space-x-2">
-                    <Button variant="secondary" size="sm" onClick={() => handleEdit(s)} className="bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-300">
-                      <PencilSquareIcon className="h-4 w-4 text-white" />
-                    </Button>
-                    <Button variant="secondary" size="sm" onClick={() => handleToggleArchive(s.id)} className="bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-300">
-                        {s.isArchived ?
-                            <ArrowUturnDownIcon className="h-4 w-4 text-white" title="Désarchiver" /> :
-                            <ArchiveBoxIcon className="h-4 w-4 text-white" title="Archiver" />
-                        }
-                    </Button>
-                  </td>
+                  <th className="px-4 py-3 text-right text-xs font-semibold text-[#3d2e1e] uppercase tracking-wide">Actions</th>
                 )}
-              </motion.tr>
-            ))}
-          </tbody>
-        </table>
-      </motion.div>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-100">
+              {visibleSubjects.map((s, index) => (
+                <tr
+                  key={s.id}
+                  className={`transition-colors hover:bg-gray-50 ${s.isArchived ? 'opacity-50' : ''} ${index % 2 === 1 ? 'bg-gray-50/40' : ''}`}
+                >
+                  <td className="px-4 py-3 whitespace-nowrap text-sm font-semibold text-gray-900">
+                    <div className="flex items-center gap-2">
+                      <span className={`h-2.5 w-2.5 rounded-full flex-shrink-0 ${COLORS[s.color as keyof typeof COLORS]}`}></span>
+                      {s.label}
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">{s.mainTopic}</td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">{s.rotationWeeks} sem.</td>
+                  <td className="px-4 py-3 text-xs text-gray-500">
+                    <div className="flex flex-wrap gap-x-3 gap-y-0.5">
+                      <span>{s.nbParticipants} pers.</span>
+                      {s.requiredGender && <span>{s.requiredGender}</span>}
+                      {s.requiredSpiritualRole && <span>{s.requiredSpiritualRole}</span>}
+                      {s.requiredCapability && <span>{CAPABILITY_LABELS[s.requiredCapability]}</span>}
+                      {s.isBinome && <span className="text-emerald-600 font-medium">Binôme</span>}
+                    </div>
+                  </td>
+                  {role === Role.ADMIN && (
+                    <td className="px-4 py-3 whitespace-nowrap text-right space-x-1">
+                      <Button variant="secondary" size="sm" onClick={() => handleEdit(s)}>
+                        <PencilSquareIcon className="h-4 w-4" />
+                      </Button>
+                      <Button variant="secondary" size="sm" onClick={() => handleToggleArchive(s.id)}>
+                        {s.isArchived
+                          ? <ArrowUturnDownIcon className="h-4 w-4" title="Désarchiver" />
+                          : <ArchiveBoxIcon className="h-4 w-4" title="Archiver" />
+                        }
+                      </Button>
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       {isModalOpen && editingSubject && (
         <Modal title={editingSubject.id === 0 ? "Ajouter un nouveau sujet" : "Modifier les règles du sujet"} onClose={handleClose}>
           <SubjectEditForm
@@ -322,7 +322,6 @@ export const SubjectConfiguration: React.FC<SubjectConfigurationProps> = ({ role
           />
         </Modal>
       )}
-    </Card>
-    </motion.div>
+    </div>
   );
 };

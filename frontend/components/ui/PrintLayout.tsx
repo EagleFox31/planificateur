@@ -160,7 +160,7 @@ export const PrintLayout: React.FC<PrintLayoutProps> = ({ program, participants,
                 `}
             </style>
             <div id="print-section" className="bg-white text-black p-4 font-sans">
-                 <button id="close-print-button" onClick={onClose} className="fixed top-4 right-4 bg-slate-blue-700 text-white px-4 py-2 rounded shadow-lg">
+                 <button id="close-print-button" onClick={onClose} className="fixed top-4 right-4 bg-gray-800 text-white px-4 py-2 rounded shadow-lg z-50">
                     Fermer l'aperçu
                 </button>
                 <h1 className="text-3xl font-bold text-center mb-2 text-black">{program.title}</h1>

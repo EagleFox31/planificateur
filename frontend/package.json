@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@google/genai": "^1.10.0",
+    "docx": "^9.5.3",
     "framer-motion": "^12.23.24",
     "papaparse": "^5.5.3",
     "react": "^19.1.0",

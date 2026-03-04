@@ -1,8 +1,6 @@
 import React, { useMemo, useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import { Participant, Role } from '../types';
-import { Card } from './ui/Card';
-import { UserCircleIcon, ClipboardDocumentListIcon } from './ui/Icons';
+import { UsersIcon, CalendarDaysIcon } from './ui/Icons';
 import { Button } from './ui/Button';
 import { api } from '../services/api';
 import { ConfirmModal } from './ui/ConfirmModal';
@@ -95,165 +93,130 @@ export const UnavailabilityViewer: React.FC<UnavailabilityViewerProps> = ({ part
     };
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-        >
-            <Card className="bg-gradient-to-r from-orange-50 to-red-50 border border-orange-100">
-                <div className="flex items-start sm:items-center gap-6 p-6">
-                    <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.2, duration: 0.5, type: "spring" }}
-                        className="bg-white p-4 rounded-xl shadow-sm"
-                    >
-                       <ClipboardDocumentListIcon className="h-8 w-8 text-orange-600" />
-                    </motion.div>
-                    <motion.div
-                        initial={{ x: 20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.3, duration: 0.5 }}
-                    >
-                        <h3 className="text-3xl font-bold text-gray-900">Indisponibilités</h3>
-                        <p className="text-lg text-gray-700 max-w-3xl mt-2">
-                            Vue d'ensemble de toutes les indisponibilités enregistrées, groupées par semaine.
-                        </p>
-                    </motion.div>
+        <div className="space-y-6">
+            {/* Header */}
+            <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-orange-500 flex items-center justify-center flex-shrink-0">
+                    <CalendarDaysIcon className="h-5 w-5 text-white" />
                 </div>
-            </Card>
+                <div>
+                    <h1 className="text-xl font-bold text-gray-900">Indisponibilités</h1>
+                    <p className="text-xs text-gray-500">Absences et exclusions par semaine</p>
+                </div>
+            </div>
 
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4, duration: 0.6 }}
-                className="grid grid-cols-1 lg:grid-cols-2 gap-6"
-            >
-                <Card className="bg-white border border-gray-200 shadow-sm">
-                    <div className="p-6 bg-gradient-to-r from-rose-50 to-red-50 rounded-t-xl border-b border-gray-100">
-                        <h4 className="font-bold text-xl text-gray-900">Participants exclus</h4>
-                        <p className="text-sm text-gray-600 mt-1">
-                            {excludedParticipants.length} participant{excludedParticipants.length > 1 ? 's' : ''} exclu{excludedParticipants.length > 1 ? 's' : ''}
+            {/* KPIs */}
+            <div className="grid grid-cols-3 gap-4">
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-4">
+                    <p className="text-2xl font-bold text-orange-500">{unavailabilitiesByWeek.length}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Semaines concernées</p>
+                </div>
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-4">
+                    <p className="text-2xl font-bold text-amber-600">{unavailabilitiesByWeek.reduce((n, [, arr]) => n + arr.length, 0)}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Absences déclarées</p>
+                </div>
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-4">
+                    <p className="text-2xl font-bold text-red-500">{excludedParticipants.length}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Exclus</p>
+                </div>
+            </div>
+
+            {/* Two columns */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                {/* Excluded participants */}
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                    <div className="px-5 py-3 bg-[#D6C4A8] border-b border-[#C0A882]">
+                        <p className="text-sm font-semibold text-[#3d2e1e]">Participants exclus</p>
+                        <p className="text-xs text-[#7a5c3a] mt-0.5">
+                            {excludedParticipants.length} exclu{excludedParticipants.length !== 1 ? 's' : ''}
                         </p>
                     </div>
                     {excludedParticipants.length === 0 ? (
-                        <div className="p-6 text-center text-gray-500">
+                        <div className="p-6 text-center text-sm text-gray-400">
                             Aucun participant exclu pour le moment.
                         </div>
                     ) : (
-                        <ul className="divide-y divide-gray-100">
-                            {excludedParticipants.map((p, index) => (
-                                <motion.li
-                                    key={p.id}
-                                    initial={{ opacity: 0, x: -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.5 + index * 0.05, duration: 0.3 }}
-                                    className="p-4 hover:bg-gray-50 transition-colors"
-                                >
+                        <ul className="divide-y divide-gray-100 overflow-y-auto max-h-80">
+                            {excludedParticipants.map((p) => (
+                                <li key={p.id} className="p-4 hover:bg-gray-50 transition-colors">
                                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                                        <div className="flex items-center">
-                                            <UserCircleIcon className="h-6 w-6 mr-4 text-red-500" />
+                                        <div className="flex items-center gap-3">
+                                            <UsersIcon className="h-5 w-5 text-red-400 flex-shrink-0" />
                                             <div>
-                                                <span className="text-gray-900 font-medium block">{p.name}</span>
+                                                <span className="text-sm font-medium text-gray-900 block">{p.name}</span>
                                                 <span className="text-xs text-gray-500">
-                                                    {p.exclusionEndDate ? `Jusqu'au ${p.exclusionEndDate}` : 'Exclusion indefinie'}
+                                                    {p.exclusionEndDate ? `Jusqu'au ${p.exclusionEndDate}` : 'Exclusion indéfinie'}
                                                 </span>
                                             </div>
                                         </div>
                                         {role === Role.ADMIN && (
-                                            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                                            <div className="flex flex-wrap sm:flex-row sm:items-center gap-2">
                                                 <input
                                                     type="date"
                                                     value={dateEdits[p.id] ?? p.exclusionEndDate ?? ''}
                                                     onChange={(e) => handleDateChange(p.id, e.target.value)}
-                                                    className="border border-gray-300 rounded-md px-2 py-1 text-sm text-gray-700"
+                                                    className="border border-gray-200 rounded-lg px-2 py-1 text-xs text-gray-700"
                                                 />
-                                                <Button
-                                                    size="sm"
-                                                    variant="secondary"
-                                                    onClick={() => handleUpdateExclusionDate(p)}
-                                                    className="bg-gray-100 hover:bg-gray-200 text-white border-gray-300"
-                                                >
-                                                    Mettre a jour
+                                                <Button size="sm" variant="secondary" onClick={() => handleUpdateExclusionDate(p)}>
+                                                    Mettre à jour
                                                 </Button>
-                                                <Button
-                                                    size="sm"
-                                                    variant="secondary"
-                                                    onClick={() => handleSetIndefiniteExclusion(p)}
-                                                    className="bg-red-500 hover:bg-red-600 text-white border-red-600"
-                                                >
-                                                    Exclusion indefinie
+                                                <Button size="sm" variant="secondary" onClick={() => handleSetIndefiniteExclusion(p)} className="bg-red-500 hover:bg-red-600 !text-white border-red-600">
+                                                    Indéfinie
                                                 </Button>
-                                                <Button
-                                                    size="sm"
-                                                    variant="secondary"
-                                                    onClick={() => setDeactivateTarget(p)}
-                                                    className="bg-slate-700 hover:bg-slate-800 text-white border-slate-800"
-                                                >
-                                                    Desactiver
+                                                <Button size="sm" variant="secondary" onClick={() => setDeactivateTarget(p)} className="bg-slate-700 hover:bg-slate-800 !text-white border-slate-800">
+                                                    Désactiver
                                                 </Button>
                                             </div>
                                         )}
                                     </div>
-                                </motion.li>
+                                </li>
                             ))}
                         </ul>
                     )}
-                </Card>
+                </div>
 
-                <Card className="bg-white border border-gray-200 shadow-sm">
-                    <div className="p-6 bg-gradient-to-r from-orange-50 to-red-50 rounded-t-xl border-b border-gray-100">
-                        <h4 className="font-bold text-xl text-gray-900">Indisponibilités périodiques</h4>
-                        <p className="text-sm text-gray-600 mt-1">
-                            Vue par semaine des indisponibilités enregistrées.
-                        </p>
+                {/* Weekly unavailabilities */}
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                    <div className="px-5 py-3 bg-[#D6C4A8] border-b border-[#C0A882]">
+                        <p className="text-sm font-semibold text-[#3d2e1e]">Indisponibilités par semaine</p>
+                        <p className="text-xs text-[#7a5c3a] mt-0.5">Absences temporaires enregistrées</p>
                     </div>
                     {unavailabilitiesByWeek.length === 0 ? (
-                        <div className="p-6 text-center text-gray-500">
+                        <div className="p-6 text-center text-sm text-gray-400">
                             Aucune indisponibilité enregistrée pour le moment.
                         </div>
                     ) : (
-                        <div className="space-y-4 p-4">
-                            {unavailabilitiesByWeek.map(([week, unavailableParticipants], index) => (
-                                <motion.div
-                                    key={week}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
-                                    className="border border-gray-200 rounded-lg overflow-hidden"
-                                >
-                                    <div className="p-4 bg-white border-b border-gray-100">
-                                        <h5 className="font-semibold text-gray-900">Semaine : {week}</h5>
-                                        <p className="text-sm text-gray-600 mt-1">
-                                            {unavailableParticipants.length} participant{unavailableParticipants.length > 1 ? 's' : ''} indisponible{unavailableParticipants.length > 1 ? 's' : ''}
-                                        </p>
+                        <div className="divide-y divide-gray-100 overflow-y-auto max-h-80">
+                            {unavailabilitiesByWeek.map(([week, unavailableParticipants]) => (
+                                <div key={week} className="p-4">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <p className="text-sm font-semibold text-gray-900">{week}</p>
+                                        <span className="text-xs text-gray-500 bg-gray-100 rounded-full px-2 py-0.5">
+                                            {unavailableParticipants.length} absent{unavailableParticipants.length !== 1 ? 's' : ''}
+                                        </span>
                                     </div>
-                                    <ul className="divide-y divide-gray-100">
-                                        {unavailableParticipants.map((p, subIndex) => (
-                                            <motion.li
-                                                key={p.id}
-                                                initial={{ opacity: 0, x: -10 }}
-                                                animate={{ opacity: 1, x: 0 }}
-                                                transition={{ delay: 0.6 + index * 0.1 + subIndex * 0.05, duration: 0.3 }}
-                                                className="flex items-center p-3 hover:bg-gray-50 transition-colors"
-                                            >
-                                                <UserCircleIcon className="h-5 w-5 mr-3 text-orange-500" />
-                                                <span className="text-gray-900 font-medium">{p.name}</span>
-                                            </motion.li>
+                                    <div className="flex flex-wrap gap-1.5">
+                                        {unavailableParticipants.map((p) => (
+                                            <span key={p.id} className="inline-flex items-center gap-1 text-xs bg-orange-50 text-orange-700 rounded-full px-2.5 py-1 border border-orange-100">
+                                                <UsersIcon className="h-3 w-3" />
+                                                {p.name}
+                                            </span>
                                         ))}
-                                    </ul>
-                                </motion.div>
+                                    </div>
+                                </div>
                             ))}
                         </div>
                     )}
-                </Card>
-            </motion.div>
+                </div>
+
+            </div>
+
             {deactivateTarget && (
                 <ConfirmModal
-                    title="Desactiver un participant"
-                    description={`Desactiver ${deactivateTarget.name} et le retirer de la base ?`}
-                    confirmLabel="Desactiver"
+                    title="Désactiver un participant"
+                    description={`Désactiver ${deactivateTarget.name} et le retirer de la base ?`}
+                    confirmLabel="Désactiver"
                     confirmClassName="bg-red-600 hover:bg-red-700"
                     onCancel={() => setDeactivateTarget(null)}
                     onConfirm={() => {
@@ -262,6 +225,6 @@ export const UnavailabilityViewer: React.FC<UnavailabilityViewerProps> = ({ part
                     }}
                 />
             )}
-        </motion.div>
+        </div>
     );
 };
