@@ -20,36 +20,29 @@ interface DashboardProps {
   rolePermissions: RolePermissions;
 }
 
-const getCurrentWeek = (): string => {
-  const now = new Date();
-  const year = now.getFullYear();
+const getISOWeek = (inputDate: Date): { year: number; week: number } => {
+  // ISO week is based on Thursday; shift to that reference to avoid off-by-one errors.
+  const date = new Date(inputDate);
+  date.setHours(0, 0, 0, 0);
+  date.setDate(date.getDate() + 3 - ((date.getDay() + 6) % 7));
 
-  const firstThursday = new Date(year, 0, 1);
-  while (firstThursday.getDay() !== 4) {
-    firstThursday.setDate(firstThursday.getDate() + 1);
-  }
+  const isoYear = date.getFullYear();
+  const week1 = new Date(isoYear, 0, 4);
+  week1.setHours(0, 0, 0, 0);
+  week1.setDate(week1.getDate() + 3 - ((week1.getDay() + 6) % 7));
 
-  const diff = now.getTime() - firstThursday.getTime();
-  const oneWeek = 7 * 24 * 60 * 60 * 1000;
-  const weekNumber = Math.floor(diff / oneWeek) + 1;
-
-  return `${year}-W${String(weekNumber).padStart(2, '0')}`;
+  const weekNumber = 1 + Math.round((date.getTime() - week1.getTime()) / (7 * 24 * 60 * 60 * 1000));
+  return { year: isoYear, week: weekNumber };
 };
 
-const dateToWeek = (date: Date): string => {
-  const year = date.getFullYear();
-
-  const firstThursday = new Date(year, 0, 1);
-  while (firstThursday.getDay() !== 4) {
-    firstThursday.setDate(firstThursday.getDate() + 1);
-  }
-
-  const diff = date.getTime() - firstThursday.getTime();
-  const oneWeek = 7 * 24 * 60 * 60 * 1000;
-  const weekNumber = Math.floor(diff / oneWeek) + 1;
-
-  return `${year}-W${String(weekNumber).padStart(2, '0')}`;
+const toWeekString = (date: Date): string => {
+  const { year, week } = getISOWeek(date);
+  return `${year}-W${String(week).padStart(2, '0')}`;
 };
+
+const getCurrentWeek = (): string => toWeekString(new Date());
+
+const dateToWeek = (date: Date): string => toWeekString(date);
 
 const formatDateOnly = (date: Date): string => {
   const year = date.getFullYear();
